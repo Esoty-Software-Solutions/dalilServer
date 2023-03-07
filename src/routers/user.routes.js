@@ -12,7 +12,7 @@ const {
 const { checkToken } = require("../utilities/tokenAuth");
 var router = express.Router();
 
-router.post("/v1/login", login);
+router.post("/login", login);
 router.post("/logout", checkToken, logout);
 
 router.get("", getUsers);
