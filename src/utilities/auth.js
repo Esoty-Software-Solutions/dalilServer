@@ -50,6 +50,39 @@ const isAdmin = (req, res, next) => {
   next();
 };
 
+const checkAccess = async (req, res, next) => {
+  const auth = req.headers.authorization;
+  const payload = jwt.verify(auth.split(` `)[1], process.env.jwtSecret);
+
+  let allowed = false;
+  res.locals.user = payload;
+  //getting user to get user roles
+  let getUserRole = await UserServices.getUserDetails({ _id: payload.userId });
+
+  //checking each role
+  getUserRole?.userRole?.forEach((each) => {
+    //checking each route in role
+    each.apiPrivilages?.forEach((route) => {
+      //checking if user have all authority
+      if (route.slice(-1) === "*") {
+        let url = route.slice(0, -2);
+        if (req.originalUrl.includes(url)) {
+          allowed = true;
+        }
+      }
+      //checking for specific authority
+      if (req.originalUrl === route) {
+        allowed = true;
+      }
+    });
+  });
+  //returning if user don't have permission
+  if (!allowed) {
+    return authorizationErrorResponse(res, messageUtil.unauthorized);
+  }
+  next();
+};
+
 const cookieVerification = (req, res, next) => {
   // const { access_token } = req.cookies;
   // if (!access_token) {
@@ -63,4 +96,4 @@ const cookieVerification = (req, res, next) => {
   next();
 };
 
-module.exports = { authentication, cookieVerification, isAdmin };
+module.exports = { authentication, cookieVerification, isAdmin, checkAccess };
