@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
   username: {
     type: String,
     required: [true, `please provide valid username`],
-    unique: [true, 'username already exist']
+    unique: [true, "username already exist"],
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -39,7 +39,7 @@ const userSchema = mongoose.Schema({
   subscriberId: {
     type: mongoose.Schema.Types.ObjectId,
     set: (v) => mongoose.Types.ObjectId(v),
-    unique: [true, 'employee ID has to be unique'],
+    unique: [true, "employee ID has to be unique"],
     ref: "subscribers",
   },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
@@ -58,6 +58,10 @@ const userSchema = mongoose.Schema({
   },
   userFile: {
     type: [String],
+  },
+  userRole: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "userRoles",
   },
 });
 
