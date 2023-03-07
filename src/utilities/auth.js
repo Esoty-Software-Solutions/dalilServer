@@ -1,5 +1,5 @@
 const jwt = require(`jsonwebtoken`);
-
+const config = require("../config/config");
 const authentication = (req, res, next) => {
   // console.log(req.headers.authorization)
   // console.log(req.headers.authorization.includes(` `))
@@ -10,7 +10,7 @@ const authentication = (req, res, next) => {
   }
   const auth = req.headers.authorization;
   try {
-    const payload = jwt.verify(auth.split(` `)[1], process.env.jwtSecret);
+    const payload = jwt.verify(auth.split(` `)[1], config.jwtSecret);
     // res.locals.id = payload._id;
     console.log("🚀 ~ file: auth.js:15 ~ authentication ~ payload:", payload);
     res.locals.user = payload;
@@ -36,7 +36,7 @@ const isAdmin = (req, res, next) => {
       .json({ msg: `Not Authorized. No Authorization header found` });
   }
   const auth = req.headers.authorization;
-  const payload = jwt.verify(auth.split(` `)[1], process.env.jwtSecret);
+  const payload = jwt.verify(auth.split(` `)[1], config.jwtSecret);
   if (!auth.startsWith(`Bearer `) || !payload) {
     return res
       .status(401)
