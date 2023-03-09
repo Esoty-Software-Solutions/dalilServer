@@ -1,10 +1,35 @@
-const SubscriberServices = require("../services/SubscriberServices");
+const SubscriberServices = require("../services/subscriberServices");
 const {
   successResponse,
   serverErrorResponse,
   badRequestErrorResponse,
+  notFoundResponse,
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
+const csv = require("csvtojson");
+const path = require("path");
+const fs = require("fs");
+
+let checkFields = (feilds, res) => {
+  const errors = [];
+
+  Object.keys(feilds).forEach((key) => {
+    if (!feilds[key]) errors.push(key);
+  });
+
+  if (errors.length > 0) {
+    res.status(400).send({
+      text: `These fields can not be empty for any record ${errors} `,
+      error: true,
+    });
+  }
+
+  if (errors.length > 0) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 const createSubscriber = async (req, res) => {
   try {
@@ -63,10 +88,63 @@ const getSubscribers = async (req, res) => {
 const getSubscriber = async (req, res) => {};
 const deleteSubscriber = async (req, res) => {};
 
+const createUsingCSV = async (req, res) => {
+  await csv()
+    .fromFile(req.files[0].path)
+    .then(async (result) => {
+      try {
+        // result is the array of json objects
+        //this loop is checking all the required fields but it will not check enum valid values
+        for (let i = 0; i < result.length; i++) {
+          let subscriberData = await SubscriberServices.getSubscriber({
+            _id: result[i].employeeId,
+          });
+
+          if (!subscriberData) {
+            return res.status(404).json({
+              message: `Please provide valid employee id for record ${i + 1}`,
+            });
+          }
+          //checking required fields in beneficiary schema
+          const isError = checkFields(
+            {
+              FirstName: result[i].firstName,
+              LastName: result[i].lastName,
+              MiddleName: result[i].middleName,
+              birthdate: result[i].birthdate,
+              gender: result[i].gender,
+              relationshipToSubscriber: result[i].relationshipToSubscriber,
+            },
+            res
+          );
+          if (isError) return;
+        }
+        //Creating records in beneficiary schema
+        for (let i = 0; i < result.length; i++) {
+          let beneficiary = await SubscriberServices.createBeneficiaries(
+            result[i]
+          );
+          //Updating subscriber service
+          let updateSubscriber = await SubscriberServices.updateSubscriberById(
+            { _id: result[i].employeeId },
+            { $push: { beneficiaries: beneficiary } }
+          );
+        }
+        //unlinking csv file from disk
+        fs.unlinkSync(path.resolve(req.files[0].path));
+
+        return successResponse(res, messageUtil.resourceCreated);
+      } catch (error) {
+        console.log(error);
+        return serverErrorResponse(res, error.message);
+      }
+    });
+};
 module.exports = {
   createSubscriber,
   updateSubscriber,
   getSubscriber,
   deleteSubscriber,
   getSubscribers,
+  createUsingCSV,
 };
