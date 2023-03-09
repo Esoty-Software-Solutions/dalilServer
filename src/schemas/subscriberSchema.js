@@ -36,13 +36,13 @@ const medicalFileSchema = mongoose.Schema({
 
 // beneficiary schema or structure
 const beneficiarySchema = mongoose.Schema({
-  beneficiaryId: {
-    type: mongoose.Schema.Types.ObjectId,
-    set: (v) => new mongoose.Types.ObjectId(),
-    required: [true, `please provide valid userId`],
-    default: new mongoose.Types.ObjectId(),
-    unique: true,
-  },
+  // beneficiaryId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   set: (v) => new mongoose.Types.ObjectId(),
+  //   required: [true, `please provide valid userId`],
+  //   default: new mongoose.Types.ObjectId(),
+  //   unique: true,
+  // },
   firstName: {
     type: String,
     required: [true, `please provide valid firstName`],
@@ -84,21 +84,20 @@ const institutionObjectSchema = mongoose.Schema({
   },
   employeeId: {
     type: String,
-    unique: [true, 'employee ID has to be unique'],
+    unique: [true, "employee ID has to be unique"],
     required: [false, `please provide valid employee ID`],
   },
-
 });
 
 // subscriber schema or structure
 const subscriberSchema = mongoose.Schema({
-  subscriberId: {
-    type: mongoose.Schema.Types.ObjectId,
-    set:(v) => new mongoose.Types.ObjectId(),
-    required: [true, `please provide valid userId`],
-    default: new mongoose.Types.ObjectId(),
-    unique: true,
-  },
+  // subscriberId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   set:(v) => new mongoose.Types.ObjectId(),
+  //   required: [true, `please provide valid userId`],
+  //   default: new mongoose.Types.ObjectId(),
+  //   unique: true,
+  // },
   firstName: {
     type: String,
     required: [true, `please provide valid firstName`],
@@ -128,15 +127,16 @@ const subscriberSchema = mongoose.Schema({
     required: [true, `please provide valid gender`],
   },
   beneficiaries: {
-    type: [beneficiarySchema],
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "beneficiaries",
     required: [false, `please provide valid family member `],
   },
   institutionObject: {
     type: institutionObjectSchema,
     required: false,
-    strict: false
+    strict: false,
   },
-  
+
   residentCity: {
     type: String,
     // required: [true, `please provide valid resident City `],
@@ -152,7 +152,7 @@ const subscriberSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     set: (v) => mongoose.Types.ObjectId(v),
     ref: "users",
-    // required: [true, `please record the user who created this`],    
+    // required: [true, `please record the user who created this`],
   },
   createdTimeStamp: {
     type: Date,
@@ -175,5 +175,6 @@ const subscriberSchema = mongoose.Schema({
 });
 
 const subscribers = mongoose.model(`subscribers`, subscriberSchema);
+const beneficiaries = mongoose.model(`beneficiaries`, beneficiarySchema);
 
-module.exports = subscribers;
+module.exports = { subscribers, beneficiaries };
