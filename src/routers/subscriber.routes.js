@@ -11,7 +11,7 @@ const { authentication } = require("../utilities/auth");
 const uploader = require("../utilities/uploader");
 var router = express.Router();
 
-router.post("/bycsv", uploader.uploads.any({ name: "file" }), createUsingCSV);
+router.post("/uploadCSV", uploader.uploads.any({ name: "file" }), createUsingCSV);
 router.get("", authentication, getSubscribers);
 router.post("", authentication, createSubscriber);
 router.get("/:subscriberId", authentication, getSubscriber);

@@ -1,7 +1,7 @@
-const { subscribers, beneficiaries } = require("../schemas/subscriberSchema");
+const subscriberSchema = require("../schemas/subscriberSchema");
 
 exports.createSubscriber = async (query) => {
-  return await subscribers.create(query);
+  return await subscriberSchema.create(query);
 };
 
 exports.createBeneficiaries = async (query) => {
@@ -9,19 +9,17 @@ exports.createBeneficiaries = async (query) => {
 };
 
 exports.updateSubscriber = async (query, data) => {
-  return await subscribers.findOneAndUpdate(query, data, {
-    new: true,
-  });
+  return await subscriberSchema.findOneAndUpdate(query, data);
 };
 
 exports.deleteSubscriber = async (query) => {
-  return await subscribers.findOneAndDelete(query);
+  return await subscriberSchema.findOneAndDelete(query);
 };
 
 exports.getSubscribers = async (filter, sort, skip, limit) => {
-  documentsCount = await subscribers.find(filter).count(sort);
+  documentsCount = await subscriberSchema.find(filter);
 
-  documents = await subscribers
+  documents = await subscriberSchema
     .find(filter)
     .sort(sort)
     .skip(skip)
@@ -33,13 +31,11 @@ exports.getSubscribers = async (filter, sort, skip, limit) => {
 };
 
 exports.getSubscriber = async (query) => {
-  return await subscribers.findOne(query).select("-__v");
+  return await subscriberSchema.findOne(query).select("-__v");
 };
 
 exports.updateSubscriberById = async (query, data) => {
-  return await subscribers
-    .findOneAndUpdate(query, data, {
-      new: true,
-    })
+  return await subscriberSchema
+    .findOneAndUpdate(query, data)
     .select("-__v -createdAt -updatedAt");
 };

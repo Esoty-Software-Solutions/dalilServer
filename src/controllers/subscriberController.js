@@ -10,11 +10,11 @@ const csv = require("csvtojson");
 const path = require("path");
 const fs = require("fs");
 
-let checkFields = (feilds, res) => {
+let checkFields = (fields, res) => {
   const errors = [];
 
-  Object.keys(feilds).forEach((key) => {
-    if (!feilds[key]) errors.push(key);
+  Object.keys(fields).forEach((key) => {
+    if (!fields[key]) errors.push(key);
   });
 
   if (errors.length > 0) {
@@ -88,7 +88,7 @@ const getSubscribers = async (req, res) => {
 const getSubscriber = async (req, res) => {};
 const deleteSubscriber = async (req, res) => {};
 
-const createUsingCSV = async (req, res) => {
+const createSubscribersCSV = async (req, res) => {
   await csv()
     .fromFile(req.files[0].path)
     .then(async (result) => {
@@ -146,5 +146,5 @@ module.exports = {
   getSubscriber,
   deleteSubscriber,
   getSubscribers,
-  createUsingCSV,
+  createSubscribersCSV,
 };
