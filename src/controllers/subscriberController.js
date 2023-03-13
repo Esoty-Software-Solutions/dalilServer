@@ -169,10 +169,7 @@ const createMedicalFile = async (req, res) => {
   try {
     // Update document and register the user
 
-    console.log("req.files: ", req.files);
     if (req.files.length > 0) {
-      console.log("in if");
-
       req.body = {
         ...req.body,
         file: req.files[0].location,
