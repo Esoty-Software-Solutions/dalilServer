@@ -33,15 +33,18 @@ const medicalFileSchema = mongoose.Schema({
     type: Array,
     required: [false, `specify medical tests`],
   },
+  file: {
+    type: String,
+  },
 });
 
 // beneficiary schema or structure
 const beneficiarySchema = mongoose.Schema({
-  beneficiaryId: {
-    type: String,
-    required: [true, `please provide valid beneficiaryId`],
-    unique: true,
-  },
+  // beneficiaryId: {
+  //   type: String,
+  //   required: [true, `please provide valid beneficiaryId`],
+  //   unique: true,
+  // },
   firstName: {
     type: String,
     required: [true, `please provide valid firstName`],
@@ -69,19 +72,20 @@ const beneficiarySchema = mongoose.Schema({
     required: [true, `please specify relationship to the main subscriber `],
   },
   medicalFiles: {
-    type: medicalFileSchema,
+    // type: medicalFileSchema,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "medicalFiles",
     required: false,
   },
 });
 
-
 // subscriber schema or structure
 const subscriberSchema = mongoose.Schema({
-  subscriberId: {
-    type: String,
-    required: [true, `please provide valid userId`],
-    unique: true,
-  },
+  // subscriberId: {
+  //   type: String,
+  //   required: [true, `please provide valid userId`],
+  //   unique: true,
+  // },
   firstName: {
     type: String,
     required: [true, `please provide valid firstName`],
@@ -111,7 +115,9 @@ const subscriberSchema = mongoose.Schema({
     required: [true, `please provide valid gender`],
   },
   beneficiaries: {
-    type: [beneficiarySchema],
+    // type: [beneficiarySchema],
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "beneficiaries",
     required: [false, `please provide valid beneficiary ID `],
   },
   institutionId: {
@@ -142,5 +148,7 @@ const subscriberSchema = mongoose.Schema({
 });
 
 const subscribers = mongoose.model(`subscribers`, subscriberSchema);
+const beneficiaries = mongoose.model(`beneficiaries`, beneficiarySchema);
+const medicalFiles = mongoose.model(`medicalFiles`, medicalFileSchema);
 
-module.exports = { subscribers };
+module.exports = { subscribers, beneficiaries, medicalFiles };
