@@ -253,8 +253,8 @@ const specificAppointment = async (req, res) => {
     // console.log("length is " + documents.length)
     // console.log(documents[0])
     documents.forEach((document) => {
-      if (document.appointmentId.equals(lastDocument.appointmentId))
-        hasMore = false;
+      // if (document.appointmentId.equals(lastDocument.appointmentId))
+      //   hasMore = false;
     });
 
     let message = "good";
@@ -264,8 +264,8 @@ const specificAppointment = async (req, res) => {
     }
 
     documents.forEach((document) => {
-      if (document.appointmentId.equals(lastDocument.appointmentId))
-        hasMore = false;
+      // if (document.appointmentId.equals(lastDocument.appointmentId))
+      //   hasMore = false;
       document.doctorObject = document.doctorObject[0];
       document.medicalCenterObject = document.medicalCenterObject[0];
       // document.patient.birthDate = document.patient.birthDate
