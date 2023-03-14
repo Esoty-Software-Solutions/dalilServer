@@ -1,8 +1,9 @@
-
 messageUtil = {
+  success: "Success",
   resourceCreated: "Resource created",
   resourceUpdated: "Resource updated",
   resourceDeleted: "Resource deleted",
+  resourceNotFound: "Resource not found",
   tokenInvalid: "Verification code is invalid",
   userRegister: "Register successful",
   loginSuccessful: "login successful",
@@ -15,7 +16,7 @@ messageUtil = {
   notFound: "User not found",
   tokenRegistered: "User app token registered",
   found: "Users found successful",
-  methodUnderDev: "method under development"
-}
+  methodUnderDev: "method under development",
+};
 
-module.exports = {messageUtil};
+module.exports = { messageUtil };
