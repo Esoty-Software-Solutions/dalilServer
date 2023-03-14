@@ -5,13 +5,26 @@ const {
 
 class Notification {
   SendNotificationOnSingleDevice = async (req, res) => {
-    //need to pass single device token
+    // const getUser = await UserServices.getUser({
+    //   _id: req.userId,
+    // });
 
+    //token is hardcoded for now. Will get the token from user data
+    let TOKEN = `enT-54FkaooxgX61IJteLZ:APA91bFCmJBEN4t0l18IxSEOA1b1iL0e1a3R2EbdNIStNSZlBKz0Bn8YeQAhW9xEVb3VJ0fWROrCoXPGUTFhMfAL_bAh1V6eTq0BM_B7CftWY9ksgWUQInr55AUyxUu472JZTBXi5GfM`;
+    // TOKEN = getUser.Token
+
+    let TITLE = `YOUR TITLE HERE`;
+    let BODY = `YOUR BODY HERE`;
+    let TYPE = `booking-status-update`;
+    let BOOKING_ID = `booking_id`;
     try {
-      let title = `Hello user!`;
-      let body = `Notification from dalil server`;
-      singleNotification(title, body, user.userAppToken);
-
+      let test = await singleNotification(TITLE, BODY, TOKEN, TYPE, BOOKING_ID);
+      console.log("TEST ", test);
+      if (!test.successCount >= 1) {
+        return res.status(400).json({
+          message: "Notification failed.",
+        });
+      }
       return res.status(200).json({
         message: "Notification sent.",
       });
