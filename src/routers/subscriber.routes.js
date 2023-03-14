@@ -6,7 +6,6 @@ const {
   deleteSubscriber,
   getSubscribers,
   createSubscribersCSV,
-  createMedicalFile,
 } = require("../controllers/subscriberController");
 const { authentication } = require("../utilities/auth");
 const uploader = require("../utilities/uploader");
@@ -19,12 +18,6 @@ router.post(
 );
 router.get("", authentication, getSubscribers);
 router.post("", authentication, createSubscriber);
-router.post(
-  "/medicalFile/:beneficiaryId",
-  authentication,
-  uploader.singleFileUpload.any({ name: "medicalFile" }),
-  createMedicalFile
-);
 router.get("/:subscriberId", authentication, getSubscriber);
 router.post(
   "/:subscriberId",
