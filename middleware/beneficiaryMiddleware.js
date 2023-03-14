@@ -30,8 +30,9 @@ const createBeneficiary = async (req, res) => {
 const getBeneficiaries = async (req, res) => {
   try {
     const limitQuery = req.query.limit;
+    const skipQP = Number(req.query.skip ?? 0);
     let beneficiaryIdQuery = req.query.starting_after_object;
-    const insurancePolicyId = req.query.insurancePolicyId;
+    const institutionId = req.query.institutionId;
 
     const limit = Number(limitQuery);
     if (!beneficiaryIdQuery) {
@@ -44,67 +45,63 @@ const getBeneficiaries = async (req, res) => {
     // }
 
     let beneficiaryId = Number(beneficiaryIdQuery.split(`-`)[1]);
-    const insurancePolicy = insurancePolicyId;
+    const institution = institutionId;
 
     if (limit > 100 || limit < 1) {
       limit = 30;
     }
 
-    if (!insurancePolicy) {
-      const totalBeneficiaries = await beneficiaries.find({
-        sd: { $gt: beneficiaryId },
-      });
-      let object = await beneficiaries
-        .find({
-          sd: {
-            $gt: beneficiaryId,
-          },
-        })
+    if (!institution) {
+      const documents = await beneficiaries
+        .find()
+        .skip(skipQP)
         .limit(!limit ? 30 : limit);
-      if (object.length === 0) {
-        return res.status(404).json({
-          message: `beneficiary not found`,
-        });
-      }
-      object.forEach((object) => {
-        delete object._doc.sd;
-      });
 
-      res.status(200).json({
-        object,
-        objectCount: totalBeneficiaries.length,
-        hasMore: object.length >= totalBeneficiaries.length ? false : true,
-      });
+      const count = await beneficiaries.find().count();
+      let message = "good";
+      if (documents.length === 0) {
+        message = "list is empty change your query";
+      }
+      const responseBody = {
+        codeStatus: "200",
+        message: message,
+        data: {
+          objectCount: count,
+          objectArray: documents,
+        },
+      };
+
+      res.status(200).json({ ...responseBody });
     }
 
     // checking for isurancePolicy Query
-    if (insurancePolicy) {
-      const totalBeneficiaries = await beneficiaries.find({
-        sd: { $gt: beneficiaryId },
-        insurancePolicyId: insurancePolicy,
-      });
-      let object = await beneficiary
+    if (institution) {
+      const documents = await beneficiary
         .find({
-          sd: {
-            $gt: beneficiaryId,
-          },
-          insurancePolicyId: insurancePolicy,
+          institutionId: institution,
         })
+        .skip(skipQP)
         .limit(!limit ? 30 : limit);
-      if (object.length === 0) {
-        return res.status(404).json({
-          message: `beneficiary not found`,
-        });
-      }
-      object.forEach((object) => {
-        delete object._doc.sd;
-      });
 
-      res.status(200).json({
-        object,
-        objectCount: totalBeneficiaries.length,
-        hasMore: object.length >= totalBeneficiaries.length ? false : true,
-      });
+      const count = await beneficiaries
+        .find({
+          institutionId: institution,
+        })
+        .count();
+      let message = "good";
+      if (documents.length === 0) {
+        message = "list is empty change your query";
+      }
+      const responseBody = {
+        codeStatus: "200",
+        message: message,
+        data: {
+          objectCount: count,
+          objectArray: documents,
+        },
+      };
+
+      res.status(200).json({ ...responseBody });
     }
   } catch (error) {
     console.log(error);
