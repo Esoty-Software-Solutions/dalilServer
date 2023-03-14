@@ -165,36 +165,6 @@ const createSubscribersCSV = async (req, res) => {
     });
 };
 
-const createMedicalFile = async (req, res) => {
-  try {
-    // Update document and register the user
-
-    if (req.files.length > 0) {
-      req.body = {
-        ...req.body,
-        file: req.files[0].location,
-      };
-    }
-    const document = await SubscriberServices.createMedicalFile(
-      req.body
-      // {
-      //   _id: req.params.subscriberId,
-      //   "beneficiaries._id": req.body.beneficiaryId,
-      // },
-      // { $set: { "beneficiaries.$.medicalFiles": req.body } }
-    );
-
-    const updateBeneficiary = await SubscriberServices.updateBeneficiaries(
-      { _id: req.params.beneficiaryId },
-      { medicalFiles: document._id }
-    );
-
-    return res.status(200).json(messageUtil.resourceUpdated);
-  } catch (error) {
-    console.log(error);
-    return serverErrorResponse(res, error.message);
-  }
-};
 module.exports = {
   createSubscriber,
   updateSubscriber,
@@ -202,5 +172,4 @@ module.exports = {
   deleteSubscriber,
   getSubscribers,
   createSubscribersCSV,
-  createMedicalFile,
 };
