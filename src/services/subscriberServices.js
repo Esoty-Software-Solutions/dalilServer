@@ -1,8 +1,4 @@
-const {
-  subscribers,
-  beneficiaries,
-  medicalFiles,
-} = require("../schemas/subscriberSchema");
+const { subscribers, beneficiaries } = require("../schemas/subscriberSchema");
 
 exports.createSubscriber = async (query) => {
   return await subscribers.create(query);
@@ -14,10 +10,6 @@ exports.createBeneficiaries = async (query) => {
 
 exports.updateBeneficiaries = async (query, data) => {
   return await beneficiaries.findByIdAndUpdate(query, data);
-};
-
-exports.createMedicalFile = async (query) => {
-  return await medicalFiles.create(query);
 };
 
 exports.updateSubscriber = async (query, data) => {
