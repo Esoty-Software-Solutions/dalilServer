@@ -113,6 +113,9 @@ const { authentication, cookieVerification, isAdmin } = require(`../auth`);
 const { appointmentStatusEnum,timeslotEnum, accountStatusEnum,relationshipToBeneficiaryEnum, genderEnum } = require(`../middleware/miscMiddleware`);
 
 
+const { getSMSs,createSMS, updateSMS,getSMS } = require(`../middleware/smsMiddleware`);
+
+
 // const uploader = require("../uploader");
 // All routes
 // routes for user
@@ -285,6 +288,17 @@ router
 router
 .route(`/v1/genderEnum`)
 .get(genderEnum);
+
+router
+.route(`/v1/sms`)
+.post(createSMS)
+.get(getSMSs);
+
+router
+.route(`/v1/sms/:smsId`)
+.post(updateSMS)
+.patch(updateSMS)
+.get(getSMS);
 
 // exporting router
 module.exports = router;
