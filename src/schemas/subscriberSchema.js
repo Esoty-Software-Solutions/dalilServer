@@ -33,9 +33,9 @@ const medicalFileSchema = mongoose.Schema({
     type: Array,
     required: [false, `specify medical tests`],
   },
-  file: {
-    type: String,
-  },
+  // file: {
+  //   type: String,
+  // },
 });
 
 // beneficiary schema or structure
