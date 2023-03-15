@@ -53,6 +53,7 @@ const getUsers = async (req, res) => {
   try {
     let userIdQuery = req.query.starting_after_object;
     let limitQuery = req.query.limit;
+    const skipQP = Number(req.query.skip ?? 0);
 
     if (!userIdQuery) {
       userIdQuery = `SSD-0`;
@@ -72,37 +73,33 @@ const getUsers = async (req, res) => {
 
     const idNumber = Number(userIdQuery.split(`-`)[1]);
     if (limit > 100 || limit < 1) {
-      limit = 5;
+      limit = 30;
     }
     const totalUsers = await user.find({
       sd: { $gt: idNumber },
     });
 
-    const object = await user
-      .find({
-        sd: { $gt: idNumber },
-      })
-      .limit(limit)
-      .lean();
+    const documents = await user
+      .find()
+      .skip(skipQP)
+      .limit(!limit ? 30 : limit);
 
-    if (object.length === 0) {
-      return res.status(404).json({
-        statusCode: "404",
-        message: `User not found`,
-      });
+    const count = await user.find().count();
+
+    let message = "good";
+    if (documents.length === 0) {
+      message = "list is empty change your query";
     }
+    const responseBody = {
+      codeStatus: "200",
+      message: message,
+      data: {
+        objectCount: count,
+        objectArray: documents,
+      },
+    };
 
-    object.forEach((each) => {
-      delete each.password;
-      delete each.sd;
-    });
-
-    res.status(200).json({
-      statusCode: "200",
-      object,
-      objectCount: totalUsers.length,
-      hasMore: object.length >= totalUsers.length ? false : true,
-    });
+    res.status(200).json({ ...responseBody });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ statusCode: "500", message: error.message });
@@ -111,20 +108,21 @@ const getUsers = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-
     const document = await user.findOne(req.params).lean();
 
     if (!document) {
-      return res.status(404).json({ statusCode: "404", message: `user not found` });
+      return res
+        .status(404)
+        .json({ statusCode: "404", message: `user not found` });
     }
 
     const responseBody = {
       codeStatus: "200",
       message: "good",
-      data: document
+      data: document,
     };
 
-    res.status(200).json({... responseBody});
+    res.status(200).json({ ...responseBody });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ statusCode: "500", message: error.message });

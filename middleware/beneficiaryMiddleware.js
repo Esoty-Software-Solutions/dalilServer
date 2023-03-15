@@ -76,7 +76,7 @@ const getBeneficiaries = async (req, res) => {
 
     // checking for isurancePolicy Query
     if (institution) {
-      const documents = await beneficiary
+      const documents = await beneficiaries
         .find({
           institutionId: institution,
         })
