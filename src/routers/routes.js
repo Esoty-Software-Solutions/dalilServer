@@ -14,7 +14,6 @@ const schedulesRouter = require("./schedule.routes");
 const medicalFileRouter = require("./midcalFiles.routes");
 const smsRouter = require("./sms.routes");
 
-const medicalFileRouter = require("./midcalFiles.routes");
 const API_VERSION = "/v1";
 
 router.use(API_VERSION + "/login", loginRouter);
