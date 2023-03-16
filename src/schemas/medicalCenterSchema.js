@@ -1,10 +1,12 @@
 // importing mongooose for medicalCenterSchema and collection setup
 const mongoose = require(`mongoose`);
+const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 // medicalCenter schema setup
 const medicalCenterSchema = mongoose.Schema(
   {
-    // medicalCenterId: { type: mongoose.ObjectId, unique: true },
+    medicalCenterId: { type: String },
+    // medicalCenterId: { type: Number },
     name: {
       type: String,
       required: [true, `please enter valid  name`],
@@ -56,7 +58,12 @@ const medicalCenterSchema = mongoose.Schema(
   { timestamps: true }
   // { collection: 'medicalCenters' }
 );
-
+// medicalCenterSchema.plugin(AutoIncrement, {
+//   id: "medicalCenterId",
+//   inc_field: "medicalCenterId",
+//   start_seq: "1000000",
+//   inc_amount: 1,
+// });
 const medicalCenter = mongoose.model(`medicalCenters`, medicalCenterSchema);
 
 module.exports = medicalCenter;
