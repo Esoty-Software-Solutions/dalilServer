@@ -1,5 +1,5 @@
 const MedicalCenterServices = require("../services/medicalCenterServices");
-
+const { sequenceGenerator } = require("../utilities/sequenceGenerator");
 const CreateMedicalCenter = async (req, res) => {
   try {
     const fieldNamesList = [];
@@ -14,9 +14,13 @@ const CreateMedicalCenter = async (req, res) => {
         originalNamesList.push(file.originalname);
       });
     }
+    const medicalCenters = await MedicalCenterServices.getAllMedicalCenters();
+
+    let newId = sequenceGenerator("MC", medicalCenters.length);
 
     const document = await MedicalCenterServices.createMedicalCenter({
       ...req.body,
+      medicalCenterId: newId,
       createdBy: req.userId,
 
       isActive: true,
