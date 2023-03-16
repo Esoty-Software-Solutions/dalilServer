@@ -6,12 +6,12 @@ const {
   DeleteMedicalCenter,
   AllMedicalCenter,
 } = require("../controllers/medicalCenterController");
-const { checkToken } = require("../utilities/tokenAuth");
+const { authentication } = require("../utilities/auth");
 var router = express.Router();
 
-router.post("", checkToken, CreateMedicalCenter);
-router.patch("/:medicalCenterId", checkToken, UpdateMedicalCenter);
+router.post("", authentication, CreateMedicalCenter);
+router.patch("/:medicalCenterId", authentication, UpdateMedicalCenter);
 router.get("", AllMedicalCenter);
-router.get("/:id", checkToken, SingleMedicalCenter);
-router.delete("/:medicalCenterId", checkToken, DeleteMedicalCenter);
+router.get("/:id", authentication, SingleMedicalCenter);
+router.delete("/:medicalCenterId", authentication, DeleteMedicalCenter);
 module.exports = router;
