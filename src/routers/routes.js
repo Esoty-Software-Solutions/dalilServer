@@ -26,7 +26,6 @@ router.use(API_VERSION + "/medicalCenters", medicalCentersRouter);
 router.use(API_VERSION + "/schedules", schedulesRouter);
 router.use(API_VERSION + "/sms", smsRouter);
 router.use(API_VERSION + "/medicalFiles", medicalFileRouter);
-
 // router.use("/claims", claimsRouter);
 
 module.exports = router;
