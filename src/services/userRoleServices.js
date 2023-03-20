@@ -1,25 +1,34 @@
-const UserRoleSchema = require("../schemas/userRoleSchema");
+import UserRoleSchema from "../schemas/userRoleSchema.js";
 
-exports.createUserRole = async (query) => {
+const createUserRole = async (query) => {
   return await UserRoleSchema.create(query);
 };
 
-exports.updateUserRole = async (query, data) => {
+const updateUserRole = async (query, data) => {
   return await UserRoleSchema.findOneAndUpdate(query, data, {
     new: true,
   });
 };
 
-exports.deleteUserRole = async (query) => {
+const deleteUserRole = async (query) => {
   return await UserRoleSchema.findOneAndDelete(query);
 };
 
-exports.getAllUserRoles = async (query, limit) => {
+const getAllUserRoles = async (query, limit) => {
   return await UserRoleSchema.find(query);
 };
 
-exports.getUserRoleDetails = async (query) => {
+const getUserRoleDetails = async (query) => {
   return await UserRoleSchema.findOne(query).select(
     "-__v -createdAt -updatedAt"
   );
 };
+const UserRoleServices = {
+  createUserRole,
+  updateUserRole,
+  getAllUserRoles,
+  getUserRoleDetails,
+  deleteUserRole,
+};
+
+export default UserRoleServices;
