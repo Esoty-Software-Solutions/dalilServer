@@ -1,11 +1,11 @@
-const InstitutionServices = require("../services/institutionServices");
-const aws = require("aws-sdk");
-require("dotenv").config();
+import InstitutionServices from "../services/institutionServices.js";
+import aws from "aws-sdk";
+import config from "../config/config.js";
 
 const s3 = new aws.S3({
-  accessKeyId: process.env.aws_accessKeyID,
-  secretAccessKey: process.env.aws_secretAccessKey,
-  // Bucket: process.env.aws_bucketName,
+  accessKeyId: config.aws_accessKeyID,
+  secretAccessKey: config.aws_secretAccessKey,
+  // Bucket: config.aws_bucketName,
 });
 let S3_BUCKET_URL = "https://pistas-bucket.s3.amazonaws.com/";
 
@@ -65,7 +65,7 @@ const InstitutionById = async (req, res) => {
   //this function will be moved in utilities
   const getSignedUrl = (image, expiry_time) => {
     let bucket_params = {
-      Bucket: process.env.aws_bucketName,
+      Bucket: config.aws_bucketName,
       Key: image.split(S3_BUCKET_URL)[1],
       Expires: expiry_time ? Number(expiry_time) : 60,
     };
@@ -131,7 +131,7 @@ const UpdateInstitution = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   AddInstitution,
   UpdateInstitution,
   DeleteInstitution,
