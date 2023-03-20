@@ -1,4 +1,4 @@
-const MedicalCenterServices = require("../services/medicalCenterServices");
+import MedicalCenterServices from "../services/medicalCenterServices.js";
 
 const CreateMedicalCenter = async (req, res) => {
   try {
@@ -103,6 +103,7 @@ const AllMedicalCenter = async (req, res) => {
       {},
       limitQP
     );
+    let message = "success";
     const responseBody = {
       codeStatus: "200",
       message: message,
@@ -119,7 +120,7 @@ const AllMedicalCenter = async (req, res) => {
     res.status(200).json({ message: error.message });
   }
 };
-module.exports = {
+export {
   CreateMedicalCenter,
   SingleMedicalCenter,
   UpdateMedicalCenter,
