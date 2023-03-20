@@ -1,39 +1,48 @@
-const UserSchema = require("../schemas/userSchema");
+import UserSchema from "../schemas/userSchema.js";
 
-exports.createUser = async (query) => {
+const createUser = async (query) => {
   return await UserSchema.create(query);
 };
 
-exports.updateUser = async (query, data) => {
+const updateUser = async (query, data) => {
   return await UserSchema.findOneAndUpdate(query, data, {
     new: true,
   });
 };
 
-exports.deleteUser = async (query) => {
+const deleteUser = async (query) => {
   return await UserSchema.findOneAndDelete(query);
 };
 
-exports.getUsers = async (filter, sort, skip, limit) => {
-  
-  documentsCount = await UserSchema.find(filter)
-  .count(sort);
+const getUsers = async (filter, sort, skip, limit) => {
+  let documentsCount = await UserSchema.find(filter).count(sort);
 
-  documents = await UserSchema.find(filter)
-  .sort(sort)
-  .skip(skip)
-  .limit(limit)
-  .select("-__v -password")
-  .lean();
+  let documents = await UserSchema.find(filter)
+    .sort(sort)
+    .skip(skip)
+    .limit(limit)
+    .select("-__v -password")
+    .lean();
   return [documents, documentsCount];
 };
 
-exports.getUser = async (query) => {
+const getUser = async (query) => {
   return await UserSchema.findOne(query).select("-__v");
 };
 
-exports.updateUserById = async (query, data) => {
+const updateUserById = async (query, data) => {
   return await UserSchema.findOneAndUpdate(query, data, {
     new: true,
   }).select("-__v -createdAt -updatedAt");
 };
+
+const UserServices = {
+  createUser,
+  getUser,
+  getUsers,
+  updateUser,
+  updateUserById,
+  deleteUser,
+};
+
+export default UserServices;
