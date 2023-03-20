@@ -1,15 +1,15 @@
-var express = require("express");
-const {
+import express from "express";
+import {
   authentication,
   cookieVerification,
   isAdmin,
-} = require(`../utilities/auth`);
-const {
+} from "../utilities/auth.js";
+import {
   CreateUserRole,
   GetAllRoles,
-} = require("../controllers/userRoleController");
+} from "../controllers/userRoleController.js";
 var router = express.Router();
 
 router.post("", authentication, CreateUserRole);
 router.get("", GetAllRoles);
-module.exports = router;
+export default router;
