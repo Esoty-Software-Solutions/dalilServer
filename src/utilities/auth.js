@@ -1,5 +1,5 @@
-const jwt = require(`jsonwebtoken`);
-const config = require("../config/config");
+import jwt from "jsonwebtoken";
+import config from "../config/config.js";
 const authentication = (req, res, next) => {
   // console.log(req.headers.authorization)
   // console.log(req.headers.authorization.includes(` `))
@@ -96,4 +96,4 @@ const cookieVerification = (req, res, next) => {
   next();
 };
 
-module.exports = { authentication, cookieVerification, isAdmin, checkAccess };
+export { authentication, cookieVerification, isAdmin, checkAccess };
