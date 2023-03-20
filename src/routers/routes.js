@@ -9,7 +9,7 @@ import userRolesRouter from "./userRole.routes.js";
 // const appointmentsRouter = require("./appointment.routes");
 import institutesRouter from "./institution.routes.js";
 import medicalCentersRouter from "./medicalCenter.routes.js";
-// const schedulesRouter = require("./schedule.routes");
+import schedulesRouter from "./schedule.routes.js";
 // const medicalFileRouter = require("./midcalFiles.routes");
 const API_VERSION = "/v1";
 
@@ -21,7 +21,7 @@ router.use(API_VERSION + "/userRoles", userRolesRouter);
 // router.use(API_VERSION + "/appointments", appointmentsRouter);
 router.use(API_VERSION + "/institutions", institutesRouter);
 router.use(API_VERSION + "/medicalCenters", medicalCentersRouter);
-// router.use(API_VERSION + "/schedules", schedulesRouter);
+router.use(API_VERSION + "/schedules", schedulesRouter);
 // router.use(API_VERSION + "/medicalFiles", medicalFileRouter);
 // router.use("/claims", claimsRouter);
 
