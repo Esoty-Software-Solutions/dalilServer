@@ -1,9 +1,10 @@
-const express = require("express");
-var cors = require("cors");
+import express from "express";
+import cors from "cors";
 const app = express();
-const routes = require("./src/routers/routes");
-const dotenv = require(`dotenv`).config();
-const config = require("./src/config/config");
+import routes from "./src/routers/routes.js";
+// const dotenv = require(`dotenv`).config();
+import config from "./src/config/config.js";
+import connectDB from "./src/config/database.js";
 // app.use(express.json({ urlencoded: true }));
 
 app.use(cors());
@@ -19,7 +20,6 @@ app.get("/", (req, res) => {
   res.send("Hello from pirate studio Server");
 });
 /*******MongoDB Connectivity */
-const connectDB = require("./src/config/database");
 connectDB();
 
 app.listen(PORT, () => {
