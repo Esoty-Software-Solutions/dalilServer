@@ -1,5 +1,5 @@
 // importing mongooose for medicalCenterSchema and collection setup
-const mongoose = require(`mongoose`);
+import mongoose from "mongoose";
 
 // medicalCenter schema setup
 const medicalCenterSchema = mongoose.Schema(
@@ -59,4 +59,4 @@ const medicalCenterSchema = mongoose.Schema(
 
 const medicalCenter = mongoose.model(`medicalCenters`, medicalCenterSchema);
 
-module.exports = medicalCenter;
+export default medicalCenter;
