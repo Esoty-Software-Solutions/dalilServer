@@ -1,5 +1,5 @@
-var express = require("express");
-const {
+import express from "express";
+import {
   createUser,
   getUsers,
   updateUser,
@@ -8,12 +8,12 @@ const {
   RegisterAppToken,
   SendNotification,
   SendNotificationToUsers,
-} = require("../controllers/userController");
-const { checkToken } = require("../utilities/tokenAuth");
+} from "../controllers/userController.js";
+import { authentication } from "../utilities/auth.js";
 var router = express.Router();
 
 router.post("/login", login);
-router.post("/logout", checkToken, logout);
+router.post("/logout", authentication, logout);
 
 router.get("", getUsers);
 router.post("", createUser);
@@ -22,7 +22,7 @@ router.post("/:id", updateUser);
 router.patch("/:id", updateUser);
 // router.delete("/:id", deleteUser);
 
-router.post("/registerToken", checkToken, RegisterAppToken);
-router.post("/sendNotification", checkToken, SendNotification);
+router.post("/registerToken", authentication, RegisterAppToken);
+router.post("/sendNotification", authentication, SendNotification);
 router.post("/sendToAll", SendNotificationToUsers);
-module.exports = router;
+export default router;
