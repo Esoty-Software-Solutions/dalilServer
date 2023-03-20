@@ -1,17 +1,17 @@
-var express = require("express");
-const {
+import express from "express";
+import {
   AddInstitution,
   UpdateInstitution,
   DeleteInstitution,
   InstitutionById,
   AllInstitutions,
-} = require("../controllers/institutionController");
-const { checkToken } = require("../utilities/tokenAuth");
+} from "../controllers/institutionController.js";
+import { authentication } from "../utilities/auth.js";
 var router = express.Router();
 
-router.post("", checkToken, AddInstitution);
-router.patch("/:institutionId", checkToken, UpdateInstitution);
+router.post("", authentication, AddInstitution);
+router.patch("/:institutionId", authentication, UpdateInstitution);
 router.get("", AllInstitutions);
-router.get("/:id", checkToken, InstitutionById);
-router.delete("/:id", checkToken, DeleteInstitution);
-module.exports = router;
+router.get("/:id", authentication, InstitutionById);
+router.delete("/:id", authentication, DeleteInstitution);
+export default router;
