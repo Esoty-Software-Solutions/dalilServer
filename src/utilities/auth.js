@@ -12,7 +12,6 @@ const authentication = (req, res, next) => {
   try {
     const payload = jwt.verify(auth.split(` `)[1], config.jwtSecret);
     // res.locals.id = payload._id;
-    console.log("🚀 ~ file: auth.js:15 ~ authentication ~ payload:", payload);
     res.locals.user = payload;
     if (!auth.startsWith(`Bearer `) || !payload) {
       return res
