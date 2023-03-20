@@ -1,4 +1,4 @@
-messageUtil = {
+const messageUtil = {
   success: "Success",
   resourceCreated: "Resource created",
   resourceUpdated: "Resource updated",
@@ -19,4 +19,4 @@ messageUtil = {
   methodUnderDev: "method under development",
 };
 
-module.exports = { messageUtil };
+export default messageUtil;
