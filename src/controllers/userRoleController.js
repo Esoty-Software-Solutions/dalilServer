@@ -1,8 +1,7 @@
-const UserRoleServices = require("../services/userRoleServices");
+import UserRoleServices from "../services/userRoleServices.js";
 
 const CreateUserRole = async (req, res) => {
   try {
-    
     const document = await UserRoleServices.createUserRole({
       ...req.body,
       createdBy: req.userId,
@@ -52,4 +51,4 @@ const updateUser = async (req, res) => {
   }
 };
 
-module.exports = { CreateUserRole, GetAllRoles, updateUser };
+export { CreateUserRole, GetAllRoles, updateUser };
