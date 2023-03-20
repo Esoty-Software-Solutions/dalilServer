@@ -1,5 +1,5 @@
 // importing mongoose for userRole schema and collection
-const mongoose = require(`mongoose`);
+import mongoose from "mongoose";
 
 // userRole schema or structure
 const userRoleSchema = mongoose.Schema(
@@ -26,4 +26,4 @@ const userRoleSchema = mongoose.Schema(
 const userRole = mongoose.model("userRoles", userRoleSchema);
 
 // exporting userRole collection
-module.exports = userRole;
+export default userRole;
