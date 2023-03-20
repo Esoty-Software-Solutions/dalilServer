@@ -1,12 +1,12 @@
-const UserServices = require("../services/userServices");
-const bcrypt = require("bcrypt");
-const jwt = require(`jsonwebtoken`);
-const {
+import UserServices from "../services/userServices.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import {
   successResponse,
   serverErrorResponse,
-  badRequestErrorResponse
-} = require("../utilities/response");
-const { messageUtil } = require("../utilities/message");
+  badRequestErrorResponse,
+} from "../utilities/response.js";
+import messageUtil from "../utilities/message.js";
 
 const createUser = async (req, res) => {
   try {
@@ -235,7 +235,8 @@ const logout = async (req, res) => {
     serverErrorResponse(res, err);
   }
 };
-module.exports = {
+
+export {
   createUser,
   getUsers,
   updateUser,
