@@ -1,5 +1,5 @@
-const messageUtil = require("./message.js");
-const { StatusCodes, getReasonPhrase } = require("http-status-codes");
+import messageUtil from "./message.js";
+import { StatusCodes, getReasonPhrase } from "http-status-codes";
 
 const successResponse = (res, message, data, dataCount, token) => {
   const response = {
@@ -75,7 +75,7 @@ const manyRequestErrorResponse = (res, message) => {
   });
 };
 
-module.exports = {
+export {
   successResponse,
   serverErrorResponse,
   validationErrorResponse,
