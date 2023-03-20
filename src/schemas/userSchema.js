@@ -1,5 +1,5 @@
 // importing mongoose dependency for user schema and model creation
-const mongoose = require(`mongoose`);
+import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema({
   username: {
@@ -68,4 +68,4 @@ const userSchema = mongoose.Schema({
 const user = mongoose.model(`users`, userSchema);
 
 /// exporting user model to usermiddleware for querying user collection
-module.exports = user;
+export default user;
