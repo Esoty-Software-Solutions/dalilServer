@@ -1,25 +1,34 @@
-const InstitutionSchema = require("../schemas/institutionSchema");
+import InstitutionSchema from "../schemas/institutionSchema.js";
 
-exports.createInstitution = async (query) => {
+const createInstitution = async (query) => {
   return await InstitutionSchema.create(query);
 };
 
-exports.updateInstitution = async (query, data) => {
+const updateInstitution = async (query, data) => {
   return await InstitutionSchema.findOneAndUpdate(query, data, {
     new: true,
   });
 };
 
-exports.deleteInstitution = async (query) => {
+const deleteInstitution = async (query) => {
   return await InstitutionSchema.findOneAndDelete(query);
 };
 
-exports.getAllInstitution = async () => {
+const getAllInstitution = async () => {
   return await InstitutionSchema.find().sort({ _id: -1 }).select("-__v");
 };
 
-exports.getInstitutionDetails = async (query) => {
+const getInstitutionDetails = async (query) => {
   return await InstitutionSchema.findOne(query).select(
     "-__v -createdAt -updatedAt"
   );
 };
+
+const InstitutionServices = {
+  createInstitution,
+  updateInstitution,
+  getAllInstitution,
+  getInstitutionDetails,
+  deleteInstitution,
+};
+export default InstitutionServices;
