@@ -1,4 +1,4 @@
-const mongoose = require(`mongoose`);
+import mongoose from "mongoose";
 
 const institutionSchema = mongoose.Schema(
   {
@@ -52,4 +52,4 @@ const institutionSchema = mongoose.Schema(
 const institution = mongoose.model(`institutions`, institutionSchema);
 
 // exporting institution collection
-module.exports = institution;
+export default institution;
