@@ -1,17 +1,17 @@
-var express = require("express");
-const {
+import express from "express";
+import {
   CreateMedicalCenter,
   SingleMedicalCenter,
   UpdateMedicalCenter,
   DeleteMedicalCenter,
   AllMedicalCenter,
-} = require("../controllers/medicalCenterController");
-const { checkToken } = require("../utilities/tokenAuth");
+} from "../controllers/medicalCenterController.js";
+import { authentication } from "../utilities/auth.js";
 var router = express.Router();
 
-router.post("", checkToken, CreateMedicalCenter);
-router.patch("/:medicalCenterId", checkToken, UpdateMedicalCenter);
+router.post("", authentication, CreateMedicalCenter);
+router.patch("/:medicalCenterId", authentication, UpdateMedicalCenter);
 router.get("", AllMedicalCenter);
-router.get("/:id", checkToken, SingleMedicalCenter);
-router.delete("/:medicalCenterId", checkToken, DeleteMedicalCenter);
-module.exports = router;
+router.get("/:id", authentication, SingleMedicalCenter);
+router.delete("/:medicalCenterId", authentication, DeleteMedicalCenter);
+export default router;
