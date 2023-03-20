@@ -1,9 +1,8 @@
 "use strict";
-const jwtHelper = require("./jwt");
+import jwtHelper from "./jwt";
 
 let checkToken = (req, res, next) => {
   let token = req.header("x-auth-token"); // in header token will be send in "x-auth-token" variable
-  console.log("🚀 ~ file: tokenAuth.js:6 ~ checkToken ~ token:", token);
   if (token) {
     const isVerified = jwtHelper.verify(token);
     if (isVerified) {
@@ -24,6 +23,4 @@ let checkToken = (req, res, next) => {
   }
 };
 
-module.exports = {
-  checkToken: checkToken,
-};
+export { checkToken };
