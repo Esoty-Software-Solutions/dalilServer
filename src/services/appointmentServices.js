@@ -1,20 +1,20 @@
-const AppointmentSchema = require("../schemas/appointmentSchema");
+import AppointmentSchema from "../schemas/appointmentSchema.js";
 
-exports.createAppointment = async (query) => {
+const createAppointment = async (query) => {
   return await AppointmentSchema.create(query);
 };
 
-exports.updateAppointment = async (query, data) => {
+const updateAppointment = async (query, data) => {
   return await AppointmentSchema.findOneAndUpdate(query, data, {
     new: true,
   });
 };
 
-exports.deleteAppointment = async (query) => {
+const deleteAppointment = async (query) => {
   return await AppointmentSchema.findOneAndDelete(query);
 };
 
-exports.getAppointments = async (query, limit) => {
+const getAppointments = async (query, limit) => {
   return await AppointmentSchema.find(query)
     .populate("scheduleId")
     .populate("medicalCenterId")
@@ -24,8 +24,16 @@ exports.getAppointments = async (query, limit) => {
     .select("-__v");
 };
 
-exports.getAppointmentDetails = async (query) => {
+const getAppointmentDetails = async (query) => {
   return await AppointmentSchema.findOne(query).select(
     "-__v -createdAt -updatedAt"
   );
 };
+const AppointmentServices = {
+  createAppointment,
+  updateAppointment,
+  getAppointmentDetails,
+  getAppointments,
+  deleteAppointment,
+};
+export default AppointmentServices;
