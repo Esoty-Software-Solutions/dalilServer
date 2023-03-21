@@ -1,14 +1,14 @@
-var express = require("express");
-const {
+import express from "express";
+import {
   createSubscriber,
   updateSubscriber,
   getSubscriber,
   deleteSubscriber,
   getSubscribers,
   createSubscribersCSV,
-} = require("../controllers/subscriberController");
-const { authentication } = require("../utilities/auth");
-const uploader = require("../utilities/uploader");
+} from "../controllers/subscriberController.js";
+import { authentication } from "../utilities/auth.js";
+import uploader from "../utilities/uploader.js";
 var router = express.Router();
 
 router.post(
@@ -28,4 +28,4 @@ router.post(
 router.patch("/:subscriberId", authentication, updateSubscriber);
 router.delete("/:subscriberId", authentication, deleteSubscriber);
 
-module.exports = router;
+export default router;
