@@ -1,12 +1,12 @@
-const MedicalFilesServices = require("../services/medicalFilesServices");
-const SubscriberServices = require("../services/subscriberServices");
-const {
+import MedicalFilesServices from "../services/medicalFilesServices.js";
+import SubscriberServices from "../services/subscriberServices.js";
+import {
   successResponse,
   serverErrorResponse,
   badRequestErrorResponse,
   notFoundResponse,
-} = require("../utilities/response");
-const { messageUtil } = require("../utilities/message");
+} from "../utilities/response.js";
+import messageUtil from "../utilities/message.js";
 
 const createMedicalFile = async (req, res) => {
   try {
@@ -25,7 +25,6 @@ const createMedicalFile = async (req, res) => {
 };
 
 const updateMedicalFile = async (req, res) => {
-  console.log("in update medical file");
   try {
     // Update document and register the user
     const { type } = req.body;
@@ -62,8 +61,4 @@ const getMedicalFiles = async (req, res) => {
     return serverErrorResponse(res, error.message);
   }
 };
-module.exports = {
-  createMedicalFile,
-  updateMedicalFile,
-  getMedicalFiles,
-};
+export { createMedicalFile, updateMedicalFile, getMedicalFiles };
