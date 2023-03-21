@@ -1,5 +1,4 @@
-const ScheduleServices = require("../services/scheduleServices");
-const doctor = require("../schemas/doctorSchema");
+import ScheduleServices from "../services/scheduleServices.js";
 
 const CreateSchedule = async (req, res) => {
   try {
@@ -90,7 +89,7 @@ const AllSchedule = async (req, res) => {
       codeStatus: "200",
       message: message,
       data: {
-        objectCount: count,
+        objectCount: documents.length,
         objectArray: documents,
       },
     };
@@ -101,7 +100,7 @@ const AllSchedule = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-module.exports = {
+export {
   CreateSchedule,
   UpdateSchedule,
   SpecificSchedule,
