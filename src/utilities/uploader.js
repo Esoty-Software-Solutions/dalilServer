@@ -1,7 +1,7 @@
-const multer = require("multer");
-const aws = require("aws-sdk");
-const multerS3 = require("multer-s3-v2");
-const path = require("path");
+import multer from "multer";
+import aws from "aws-sdk";
+import multerS3 from "multer-s3-v2";
+import path from "path";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -75,7 +75,8 @@ function checkFileType(file, cb) {
   }
 }
 
-module.exports = {
+const uploader = {
   singleFileUpload,
   uploads,
 };
+export default uploader;
