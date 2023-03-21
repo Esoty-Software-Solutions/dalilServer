@@ -1,11 +1,11 @@
-var express = require("express");
-const {
+import express from "express";
+import {
   updateMedicalFile,
   createMedicalFile,
   getMedicalFiles,
-} = require("../controllers/medicalFilesController");
-const { authentication } = require("../utilities/auth");
-const uploader = require("../utilities/uploader");
+} from "../controllers/medicalFilesController.js";
+import { authentication } from "../utilities/auth.js";
+import uploader from "../utilities/uploader.js";
 var router = express.Router();
 
 router.post("/:beneficiaryId", authentication, createMedicalFile);
@@ -16,4 +16,4 @@ router.post(
   updateMedicalFile
 );
 
-module.exports = router;
+export default router;
