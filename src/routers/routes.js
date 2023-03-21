@@ -1,7 +1,7 @@
 import express from "express";
 var router = express.Router();
 
-// const loginRouter = require("./login.routes");
+import loginRouter from "./login.routes.js";
 // const logoutRouter = require("./logout.routes");
 import usersRouter from "./user.routes.js";
 import userRolesRouter from "./userRole.routes.js";
@@ -13,7 +13,7 @@ import schedulesRouter from "./schedule.routes.js";
 import medicalFileRouter from "./midcalFiles.routes.js";
 const API_VERSION = "/v1";
 
-// router.use(API_VERSION + "/login", loginRouter);
+router.use(API_VERSION + "/login", loginRouter);
 // router.use(API_VERSION + "/logout", logoutRouter);
 router.use(API_VERSION + "/users", usersRouter);
 router.use(API_VERSION + "/userRoles", userRolesRouter);
