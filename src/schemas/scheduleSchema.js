@@ -1,4 +1,4 @@
-const mongoose = require(`mongoose`);
+import mongoose from "mongoose";
 
 const scheduleSchema = mongoose.Schema(
   {
@@ -69,4 +69,4 @@ const scheduleSchema = mongoose.Schema(
 
 const schedule = mongoose.model(`schedules`, scheduleSchema);
 
-module.exports = schedule;
+export default schedule;
