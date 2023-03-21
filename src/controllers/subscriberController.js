@@ -1,14 +1,14 @@
-const SubscriberServices = require("../services/subscriberServices");
-const {
+import SubscriberServices from "../services/subscriberServices.js";
+import {
   successResponse,
   serverErrorResponse,
   badRequestErrorResponse,
   notFoundResponse,
-} = require("../utilities/response");
-const { messageUtil } = require("../utilities/message");
-const csv = require("csvtojson");
-const path = require("path");
-const fs = require("fs");
+} from "../utilities/response.js";
+import messageUtil from "../utilities/message.js";
+import csv from "csvtojson";
+import path from "path";
+import fs from "fs";
 
 let checkFields = (fields, res) => {
   const errors = [];
@@ -165,7 +165,7 @@ const createSubscribersCSV = async (req, res) => {
     });
 };
 
-module.exports = {
+export {
   createSubscriber,
   updateSubscriber,
   getSubscriber,
