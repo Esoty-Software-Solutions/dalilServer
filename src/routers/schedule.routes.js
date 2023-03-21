@@ -1,17 +1,17 @@
-var express = require("express");
-const {
+import express from "express";
+import {
   CreateSchedule,
   UpdateSchedule,
   SpecificSchedule,
   DeleteSchedule,
   AllSchedule,
-} = require("../controllers/scheduleController");
-const { checkToken } = require("../utilities/tokenAuth");
+} from "../controllers/scheduleController.js";
+import { authentication } from "../utilities/auth.js";
 var router = express.Router();
 
-router.post("", checkToken, CreateSchedule);
-router.patch("/:id", checkToken, UpdateSchedule);
+router.post("", authentication, CreateSchedule);
+router.patch("/:id", authentication, UpdateSchedule);
 router.get("", AllSchedule);
-router.get("/:id", checkToken, SpecificSchedule);
-router.delete("/:id", checkToken, DeleteSchedule);
-module.exports = router;
+router.get("/:id", authentication, SpecificSchedule);
+router.delete("/:id", authentication, DeleteSchedule);
+export default router;
