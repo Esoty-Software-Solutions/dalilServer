@@ -1,19 +1,19 @@
-var express = require("express");
-const {
+import express from "express";
+import {
   createAppointment,
   updateAppointment,
   getAppointment,
   deleteAppointment,
   getAppointments,
-} = require("../controllers/appointmentController");
-const { checkToken } = require("../utilities/tokenAuth");
+} from "../controllers/appointmentController.js";
+import { authentication } from "../utilities/auth.js";
 var router = express.Router();
 
 router.get("", getAppointments);
-router.post("", checkToken, createAppointment);
-router.get("/:appointmentId", checkToken, getAppointment);
-router.post("/:appointmentId", checkToken, updateAppointment);
-router.patch("/:appointmentId", checkToken, updateAppointment);
-router.delete("/:appointmentId", checkToken, deleteAppointment);
+router.post("", authentication, createAppointment);
+router.get("/:appointmentId", authentication, getAppointment);
+router.post("/:appointmentId", authentication, updateAppointment);
+router.patch("/:appointmentId", authentication, updateAppointment);
+router.delete("/:appointmentId", authentication, deleteAppointment);
 
-module.exports = router;
+export default router;
