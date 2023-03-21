@@ -1,20 +1,20 @@
-const ScheduleSchema = require("../schemas/medicalCenterSchema");
+import ScheduleSchema from "../schemas/scheduleSchema.js";
 
-exports.createSchedule = async (query) => {
+const createSchedule = async (query) => {
   return await ScheduleSchema.create(query);
 };
 
-exports.updateSchedule = async (query, data) => {
+const updateSchedule = async (query, data) => {
   return await ScheduleSchema.findOneAndUpdate(query, data, {
     new: true,
   });
 };
 
-exports.deleteSchedule = async (query) => {
+const deleteSchedule = async (query) => {
   return await ScheduleSchema.findOneAndDelete(query);
 };
 
-exports.getAllSchedules = async (query, limit) => {
+const getAllSchedules = async (query, limit) => {
   return await ScheduleSchema.find(query)
     .populate("medicalCenterId")
     .populate("doctorId")
@@ -22,8 +22,17 @@ exports.getAllSchedules = async (query, limit) => {
     .select("-__v ");
 };
 
-exports.getScheduleDetails = async (query) => {
+const getScheduleDetails = async (query) => {
   return await ScheduleSchema.findOne(query).select(
     "-__v -createdAt -updatedAt"
   );
 };
+
+const ScheduleServices = {
+  createSchedule,
+  updateSchedule,
+  getAllSchedules,
+  getScheduleDetails,
+  deleteSchedule,
+};
+export default ScheduleServices;
