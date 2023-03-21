@@ -1,27 +1,27 @@
-const { subscribers, beneficiaries } = require("../schemas/subscriberSchema");
+import { subscribers, beneficiaries } from "../schemas/subscriberSchema.js";
 
-exports.createSubscriber = async (query) => {
+const createSubscriber = async (query) => {
   return await subscribers.create(query);
 };
 
-exports.createBeneficiaries = async (query) => {
+const createBeneficiaries = async (query) => {
   return await beneficiaries.create(query);
 };
 
-exports.updateBeneficiaries = async (query, data) => {
+const updateBeneficiaries = async (query, data) => {
   return await beneficiaries.findByIdAndUpdate(query, data);
 };
 
-exports.updateSubscriber = async (query, data) => {
+const updateSubscriber = async (query, data) => {
   return await subscribers.findOneAndUpdate(query, data);
 };
 
-exports.deleteSubscriber = async (query) => {
+const deleteSubscriber = async (query) => {
   return await subscribers.findOneAndDelete(query);
 };
 
-exports.getSubscribers = async (filter, sort, skip, limit) => {
-  documentsCount = await subscribers.find(filter).populate({
+const getSubscribers = async (filter, sort, skip, limit) => {
+  let documentsCount = await subscribers.find(filter).populate({
     path: "beneficiaries",
     populate: [
       {
@@ -31,7 +31,7 @@ exports.getSubscribers = async (filter, sort, skip, limit) => {
     ],
   });
 
-  documents = await subscribers
+  let documents = await subscribers
     .find(filter)
     .sort(sort)
     .skip(skip)
@@ -42,12 +42,25 @@ exports.getSubscribers = async (filter, sort, skip, limit) => {
   return [documents, documentsCount];
 };
 
-exports.getSubscriber = async (query) => {
+const getSubscriber = async (query) => {
   return await subscribers.findOne(query).select("-__v");
 };
 
-exports.updateSubscriberById = async (query, data) => {
+const updateSubscriberById = async (query, data) => {
   return await subscribers
     .findOneAndUpdate(query, data)
     .select("-__v -createdAt -updatedAt");
 };
+
+const SubscriberServices = {
+  createBeneficiaries,
+  createSubscriber,
+  updateBeneficiaries,
+  updateSubscriber,
+  updateSubscriberById,
+  deleteSubscriber,
+  getSubscriber,
+  getSubscribers,
+};
+
+export default SubscriberServices;
