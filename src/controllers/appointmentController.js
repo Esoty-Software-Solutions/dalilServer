@@ -1,9 +1,9 @@
-const AppointmentServices = require("../services/appointmentServices");
+import AppointmentServices from "../services/appointmentServices.js";
 const createAppointment = async (req, res) => {
   try {
     const document = await AppointmentServices.createAppointment({
       ...req.body,
-      userId: req.params.userId,
+      userId: req.userId,
       appointmentStatus: `pending`,
       dateCreated: Date(),
     });
@@ -83,8 +83,7 @@ const getAppointments = async (req, res) => {
 const getAppointment = async (req, res) => {};
 const deleteAppointment = async (req, res) => {};
 
-
-module.exports = {
+export {
   createAppointment,
   updateAppointment,
   getAppointment,
