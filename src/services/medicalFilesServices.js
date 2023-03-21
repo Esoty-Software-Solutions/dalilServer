@@ -1,13 +1,21 @@
-const { medicalFiles } = require("../schemas/subscriberSchema");
+import { medicalFiles } from "../schemas/subscriberSchema.js";
 
-exports.createMedicalFile = async (query) => {
+const createMedicalFile = async (query) => {
   return await medicalFiles.create(query);
 };
 
-exports.updateMedicalFile = async (query, data) => {
+const updateMedicalFile = async (query, data) => {
   return await medicalFiles.findByIdAndUpdate(query, data, { new: true });
 };
 
-exports.getMedicalFiles = async (filter) => {
+const getMedicalFiles = async (filter) => {
   return await medicalFiles.find(filter);
 };
+
+const MedicalFilesServices = {
+  createMedicalFile,
+  updateMedicalFile,
+  getMedicalFiles,
+};
+
+export default MedicalFilesServices;
