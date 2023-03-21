@@ -1,6 +1,6 @@
 // importing mongoose dependency for subscriber schema and model creation
-const mongoose = require(`mongoose`);
-const audit = require(`./auditSchema`);
+import mongoose from "mongoose";
+// import audit from "./auditSchema.js";
 
 // medicalFile schema or structure
 const medicalFileSchema = mongoose.Schema({
@@ -151,4 +151,4 @@ const subscribers = mongoose.model(`subscribers`, subscriberSchema);
 const beneficiaries = mongoose.model(`beneficiaries`, beneficiarySchema);
 const medicalFiles = mongoose.model(`medicalFiles`, medicalFileSchema);
 
-module.exports = { subscribers, beneficiaries, medicalFiles };
+export { subscribers, beneficiaries, medicalFiles };
