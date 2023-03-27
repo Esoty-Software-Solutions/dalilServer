@@ -35,11 +35,17 @@ const createUsers = async (req, res) => {
     const document = await user.create(newBody);
     const { userId, username, password } = document._doc;
 
-    const document = await beneficiaries
+    const update = { 
+      userId: req.body.userId,
+      account: {
+        hasAccount: true,
+        userId: req.body.userId
+      }
+    };
+    const document_ = await beneficiaries
       .findOneAndUpdate(
-        { beneficiaryId: req.params.beneficiaryId, userId: doc.userId },
-        req.body,
-        { new: true }
+        { beneficiaryId: req.body.beneficiaryId },
+        update,
       )
       .lean();
 

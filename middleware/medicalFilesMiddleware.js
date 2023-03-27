@@ -14,7 +14,6 @@ const singleMedicalFiles = async (req, res) => {
     const document = await beneficiarys.findOne(req.params,
         { beneficiaryId: 1, account: 1, familyMembers: "$familyMembers", _id: 0 } 
         ).lean()
-        
     // console.log(req.params);
     
     if (!document) {

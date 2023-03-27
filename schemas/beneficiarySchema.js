@@ -66,10 +66,10 @@ const familyMemberSchema = mongoose.Schema({
     enum: ["self", "father", "mother", "wife", "husband", "daughter", "son"],
     required: [true, `please specify relationship to the main beneficiary `],
   },
-  // medicalFiles: {
-  //   type: medicalFileSchema,
-  //   required: [false, `please provide valid family member `],
-  // },
+  medicalFiles: {
+    type: medicalFileSchema,
+    required: [false, `please provide valid family member `],
+  },
 });
 
 // beneficiary schema or structure
@@ -118,13 +118,14 @@ const beneficiarySchema = mongoose.Schema({
   //   required: [true, `please provide valid resident City `],
   // },
   // residentDistrict: String,
-  // account: {
-  //   hasAccount: { type: Boolean, required: true },
-  //   userId: {
-  //     type: String,
-  //     unique: true,
-  //   },
-  // },
+  userId: String,
+  account: {
+    hasAccount: { type: Boolean, required: true },
+    userId: {
+      type: String,
+      unique: true,
+    },
+  },
   // created: {
   //   createdBy: { type: String},
   //   dateCreated: { type: Date},
