@@ -120,10 +120,9 @@ const beneficiarySchema = mongoose.Schema({
   // residentDistrict: String,
   userId: String,
   account: {
-    hasAccount: { type: Boolean, required: true },
+    hasAccount: { type: Boolean },
     userId: {
-      type: String,
-      unique: true,
+      type: String
     },
   },
   // created: {
