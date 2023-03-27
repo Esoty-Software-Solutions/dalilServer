@@ -8,6 +8,14 @@ const mongoose = require("mongoose");
 // api for creating Beneficiary
 const createBeneficiary = async (req, res) => {
   try {
+
+
+    req.body.familyMembers.forEach((each) => {
+      each.familyMemberId = new mongoose.Types.ObjectId().toString()
+      each.medicalFiles.medicalFileId = new mongoose.Types.ObjectId().toString()
+    });
+
+
     const newBody = {
       ...req.body,
       beneficiaryId: new mongoose.Types.ObjectId().toString(),
