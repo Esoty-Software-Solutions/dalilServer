@@ -40,6 +40,7 @@ const {
 const {
   singleMedicalFiles,
   singlePatientMedicalFiles,
+  singleFamilyMemberMedicalFile
 } = require(`../middleware/medicalFilesMiddleware`);
 
 // importing beneficiary middleware
@@ -115,6 +116,28 @@ const { appointmentStatusEnum,timeslotEnum, accountStatusEnum,relationshipToBene
 
 const { getSMSs,createSMS, updateSMS,getSMS } = require(`../middleware/smsMiddleware`);
 
+const {
+  createAllergy,
+  getMedicalFiles,
+  getAllergies,
+  deleteAllergy,
+  createChronicDisease,
+  getChronicDiseases,
+  deleteChronicDisease,
+  createChronicMedicine,
+  getChronicMedicine,
+  deleteChronicMedicine,
+  createSurgeryHistory,
+  getSurgeryHistories,
+  deleteSurgeryHistory,
+  createClinicVisit,
+  getClinicVisits,
+  deleteClinicVisit,
+  createMedicalTest,
+  getMedicalTests,
+  deleteMedicalTest
+} = require(`../middleware/medicalFileMiddleware`);
+
 
 // const uploader = require("../uploader");
 // All routes
@@ -139,6 +162,10 @@ router
 router
   .route(`/v1/beneficiaries/:beneficiaryId/medicalFiles`)
   .get(authentication, cookieVerification, singleMedicalFiles);
+
+  router
+  .route(`/v1/beneficiaries/:beneficiaryId/medicalFiles/familyMembers/:familyMemberId`)
+  .get(authentication, cookieVerification, getMedicalFiles);
 
 // routes for single beneficiary and updating it
 router
@@ -299,6 +326,46 @@ router
 .post(updateSMS)
 .patch(updateSMS)
 .get(getSMS);
+
+// router
+// .route(`/v1/medicalFile/allergies`)
+// .post(createAllergy)
+// .get(getAllergies)
+// .delete(deleteAllergy);
+
+// router
+// .route(`/v1/medicalFile/chronicDiseases`)
+// .post(createChronicDisease)
+// .get(getChronicDiseases)
+// .delete(deleteChronicDisease);
+
+// router
+// .route(`/v1/medicalFile/chronicMedicine`)
+// .post(createChronicMedicine)
+// .get(getChronicMedicine)
+// .delete(deleteChronicMedicine);
+
+// router
+// .route(`/v1/medicalFile/surgeryHistories`)
+// .post(createSurgeryHistory)
+// .get(getSurgeryHistories)
+// .delete(deleteSurgeryHistory);
+
+// router
+// .route(`/v1/medicalFile/clinicVisit`)
+// .post(createClinicVisit)
+// .get(getClinicVisits)
+// .delete(deleteClinicVisit);
+
+// router
+// .route(`/v1/medicalFile/medicalTest`)
+// .post(createMedicalTest)
+// .get(getMedicalTests)
+// .delete(deleteMedicalTest);
+
+
+
+
 
 // exporting router
 module.exports = router;

@@ -67,6 +67,31 @@ const singleMedicalFiles = async (req, res) => {
   }
 };
 
+
+const singleFamilyMemberMedicalFile = async (req, res) => {
+  try {
+    console.log("getting medical file for family member")
+    console.log(req.params);
+    // const document = await beneficiarys.findOne(req.params,).lean();
+   
+    // const responseBody = {
+    //   codeStatus: "200",
+    //   message: "good",
+    //   data: {
+    //     objectCount: 0,
+    //     hasMore: false,
+    //     objectArray: medicalFiles
+    //   }
+    // };
+
+    res.status(200).json({... responseBody});
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 const singlePatientMedicalFiles = async (req, res) => {
   try {
 
@@ -137,5 +162,6 @@ const singlePatientMedicalFiles = async (req, res) => {
 
 module.exports = {
   singleMedicalFiles,
-  singlePatientMedicalFiles
+  singlePatientMedicalFiles,
+  singleFamilyMemberMedicalFile
 };

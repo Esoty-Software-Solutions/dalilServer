@@ -7,6 +7,19 @@ const mongoose = require(`mongoose`);
 
 // api for creating new user
 
+const passwordReset = async (req, res) => {
+  try {
+    // server response
+    res.status(201).json({
+      statusCode: "201",
+      message: "password reset successful"
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ statusCode: "500", message: error.message });
+  }
+};
+
 const createUsers = async (req, res) => {
   try {
     const myPlaintextPassword = req.body.password ?? "123";
