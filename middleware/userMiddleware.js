@@ -1,5 +1,6 @@
 // importing users collection
 const user = require(`../schemas/userSchema`);
+const beneficiaries = require(`../schemas/beneficiarySchema`);
 // importing  dependencies
 const bcrypt = require("bcrypt");
 const jwt = require(`jsonwebtoken`);
@@ -33,6 +34,14 @@ const createUsers = async (req, res) => {
     };
     const document = await user.create(newBody);
     const { userId, username, password } = document._doc;
+
+    const document = await beneficiaries
+      .findOneAndUpdate(
+        { beneficiaryId: req.params.beneficiaryId, userId: doc.userId },
+        req.body,
+        { new: true }
+      )
+      .lean();
 
     // siginig/authenticating user with jwt token for authorization
     const token = jwt.sign(

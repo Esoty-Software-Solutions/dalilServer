@@ -119,7 +119,7 @@ const singleBeneficiary = async (req, res) => {
         .status(404)
         .json({ statusCode: "404", message: `beneficiary not found` });
     }
-
+    
     // if (res.locals.user.userId !== document.account.userId) {
     //   return res.status(401).json({ message: `Not Authorized for this user` });
     // }
