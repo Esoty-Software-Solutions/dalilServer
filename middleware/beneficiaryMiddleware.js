@@ -12,7 +12,10 @@ const createBeneficiary = async (req, res) => {
 
     req.body.familyMembers.forEach((each) => {
       each.familyMemberId = new mongoose.Types.ObjectId().toString()
-      each.medicalFiles.medicalFileId = new mongoose.Types.ObjectId().toString()
+      let temp = {
+        medicalFileId: new mongoose.Types.ObjectId().toString()
+      }
+      each.medicalFiles = temp;
     });
 
 
