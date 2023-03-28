@@ -6,14 +6,14 @@ const {
   deleteAppointment,
   getAppointments,
 } = require("../controllers/appointmentController");
-const { checkToken } = require("../utilities/tokenAuth");
+const { authentication } = require("../utilities/auth");
 var router = express.Router();
 
 router.get("", getAppointments);
-router.post("", checkToken, createAppointment);
-router.get("/:appointmentId", checkToken, getAppointment);
-router.post("/:appointmentId", checkToken, updateAppointment);
-router.patch("/:appointmentId", checkToken, updateAppointment);
-router.delete("/:appointmentId", checkToken, deleteAppointment);
+router.post("", authentication, createAppointment);
+router.get("/:appointmentId", authentication, getAppointment);
+router.post("/:appointmentId", authentication, updateAppointment);
+router.patch("/:appointmentId", authentication, updateAppointment);
+router.delete("/:appointmentId", authentication, deleteAppointment);
 
 module.exports = router;
