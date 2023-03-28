@@ -357,6 +357,45 @@ const getMedicalFiles = async (req, res) => {
   }
 };
 
+const createMedicalFiles = async (req, res) => {
+  try {
+    console.log("Submit Claim -----------------------------------------------")
+    console.log("req.headers")
+    console.log(req.headers)
+
+    // console.log("req.body")
+    // console.log(req.body)
+
+    // console.log("req.files")
+    // console.log(req.files)
+    // console.log("req")
+    // console.log(req)
+
+    let fieldnames = []
+    let originalnames = []
+
+    console.log("Submit Claim response ---------------------------------------------------")
+    req.files.forEach(file => {
+      fieldnames.push(file.fieldname)
+      originalnames.push(file.originalname)
+    })
+    const responseBody = {
+      codeStatus: "200",
+      message: "good",
+      data: {
+        requestBody: req.body,
+        fileFieldName: fieldnames,
+        originalname: originalnames
+      },
+    };
+
+    res.status(200).json({ ...responseBody });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const createAllergy = async (req, res) => {
   try {
     let fieldnames = []
@@ -426,4 +465,4 @@ const getSMSs = async (req, res) => {
 };
 
 
-module.exports = { createAllergy, getMedicalFiles };
+module.exports = { createAllergy, getMedicalFiles, createMedicalFiles };

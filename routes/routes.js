@@ -119,6 +119,7 @@ const { getSMSs,createSMS, updateSMS,getSMS } = require(`../middleware/smsMiddle
 const {
   createAllergy,
   getMedicalFiles,
+  createMedicalFiles,
   getAllergies,
   deleteAllergy,
   createChronicDisease,
@@ -159,13 +160,14 @@ router
   .get(authentication, getBeneficiaries);
 
 // routes for beneficiary's medicalFiles
-router
+router 
   .route(`/v1/beneficiaries/:beneficiaryId/medicalFiles`)
   .get(authentication, cookieVerification, singleMedicalFiles);
 
   router
   .route(`/v1/beneficiaries/:beneficiaryId/medicalFiles/familyMembers/:familyMemberId`)
-  .get(authentication, cookieVerification, getMedicalFiles);
+  .get(authentication, cookieVerification, getMedicalFiles)
+  .post(authentication, createMedicalFiles);
 
 // routes for single beneficiary and updating it
 router

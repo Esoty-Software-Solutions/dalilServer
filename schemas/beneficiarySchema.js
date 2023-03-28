@@ -118,7 +118,7 @@ const beneficiarySchema = mongoose.Schema({
   //   required: [true, `please provide valid resident City `],
   // },
   // residentDistrict: String,
-  userId: String,
+  userId: {type: String},
   account: {
     hasAccount: { type: Boolean },
     userId: {

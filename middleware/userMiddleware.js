@@ -36,10 +36,10 @@ const createUsers = async (req, res) => {
     const { userId, username, password } = document._doc;
 
     const update = { 
-      userId: req.body.userId,
+      userId: newBody.userId,
       account: {
         hasAccount: true,
-        userId: req.body.userId
+        userId: newBody.userId
       }
     };
     const document_ = await beneficiaries
@@ -48,6 +48,8 @@ const createUsers = async (req, res) => {
         update,
       )
       .lean();
+
+    console.log(document_);
 
     // siginig/authenticating user with jwt token for authorization
     const token = jwt.sign(
