@@ -13,16 +13,19 @@ const medicalFile = {
     {
       "allergyName": "Asthma",
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": "https://img.freepik.com/premium-vector/modern-flat-design-jpeg-file-icon-web-simple-style_599062-465.jpg",
       "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg"
     },
     {
       "allergyName": "Atopic Eczema",
       "notes": "Lorem ipsum dolor sit amet,u, sagittis cmperdi",
+      "thumbnail": null,
       "file": null
     },
     {
       "allergyName": "Drug Allergy",
       "notes": "Lorem ipu, sagittis consimus ibero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": "https://img.freepik.com/premium-vector/modern-flat-design-jpeg-file-icon-web-simple-style_599062-465.jpg",
       "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg"
     }
   ],
@@ -32,6 +35,7 @@ const medicalFile = {
       "diagnosisDate": "1940-10-24",
       "diagnosedBy": "Ahmed Salman",
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": "https://img.freepik.com/premium-vector/modern-flat-design-jpeg-file-icon-web-simple-style_599062-465.jpg",
       "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg"
     },
     {
@@ -39,6 +43,7 @@ const medicalFile = {
       "diagnosisDate": "1940-10-24",
       "diagnosedBy": "Ahmed Salman",
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/267px-PDF_file_icon.svg.png",
       "file": "https://www.weblyzard.com/data/sites/21/tesla-weblyzard-report.pdf"
     },
     {
@@ -46,6 +51,7 @@ const medicalFile = {
       "diagnosisDate": "1940-10-24",
       "diagnosedBy": "Ahmed Salman",
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/267px-PDF_file_icon.svg.png",
       "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg"
     },
     {
@@ -53,6 +59,7 @@ const medicalFile = {
       "diagnosisDate": "1940-10-24",
       "diagnosedBy": "Ahmed Salman",
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": "https://img.freepik.com/premium-vector/modern-flat-design-jpeg-file-icon-web-simple-style_599062-465.jpg",
       "file": "https://www.weblyzard.com/data/sites/21/tesla-weblyzard-report.pdf"
     },
     {
@@ -60,6 +67,7 @@ const medicalFile = {
       "diagnosisDate": "1940-10-24",
       "diagnosedBy": "Ahmed Salman",
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": null,
       "file": null
     }
   ],
@@ -70,6 +78,7 @@ const medicalFile = {
       "doctorName": "Salma Fatima Mohammed",
       "medicalCenterName": "Shafa Hospital",
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": "https://img.freepik.com/premium-vector/modern-flat-design-jpeg-file-icon-web-simple-style_599062-465.jpg",
       "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg"
     },
     {
@@ -78,6 +87,7 @@ const medicalFile = {
       "doctorName": "Salma Fatima Mohammed",
       "medicalCenterName": "Shafa Hospital",
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": null,
       "file": null
     },
     {
@@ -86,6 +96,7 @@ const medicalFile = {
       "doctorName": "Salma Fatima Mohammed",
       "medicalCenterName": "Shafa Hospital",
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": null,
       "file": null
     },
     {
@@ -94,6 +105,7 @@ const medicalFile = {
       "doctorName": "Salma Fatima Mohammed",
       "medicalCenterName": "Shafa Hospital",
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": "https://img.freepik.com/premium-vector/modern-flat-design-jpeg-file-icon-web-simple-style_599062-465.jpg",
       "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg"
     },
     {
@@ -102,6 +114,7 @@ const medicalFile = {
       "doctorName": "Salma Fatima Mohammed",
       "medicalCenterName": "Shafa Hospital",
       "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": null,
       "file": null
     },
     {
@@ -110,6 +123,7 @@ const medicalFile = {
       "doctorName": "Salma Fatima Mohammed",
       "medicalCenterName": "Hekma Hospital",
       "notes": "Lorem ipsum dolor sit amet",
+      "thumbnail": null,
       "file": null
     }
   ],
@@ -120,6 +134,7 @@ const medicalFile = {
       "doctorName": "Salma Fatima Mohammed",
       "centerName": "Shafa Hospital",
       "notes": "Lorem ipsuet augue arcu, sagittis consectethoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": null,
       "file": null
     },
     {
@@ -128,6 +143,7 @@ const medicalFile = {
       "doctorName": "Salma Fatima Mohammed",
       "centerName": "Shafa Hospital",
       "notes": "Lorem ipsuet augue arcu, sagittis consectethoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": "https://img.freepik.com/premium-vector/modern-flat-design-jpeg-file-icon-web-simple-style_599062-465.jpg",
       "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg"
     },
     {
@@ -136,6 +152,7 @@ const medicalFile = {
       "doctorName": "Salma Fatima Mohammed",
       "centerName": "Shafa Hospital",
       "notes": "Lorem ipsuet augue arcu, sagittis consectethoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/267px-PDF_file_icon.svg.png",
       "file": "https://www.weblyzard.com/data/sites/21/tesla-weblyzard-report.pdf"
     },
     {
@@ -144,6 +161,7 @@ const medicalFile = {
       "doctorName": "Salma Fatima Mohammed",
       "centerName": "Hekma Hospital",
       "notes": "Lorem ipsuet augue arcu, sagittis consectethoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/267px-PDF_file_icon.svg.png",
       "file": "https://www.weblyzard.com/data/sites/21/tesla-weblyzard-report.pdf"
     },
     {
@@ -152,6 +170,7 @@ const medicalFile = {
       "doctorName": "Salma Fatima Mohammed",
       "centerName": "Safwa Clinic",
       "notes": "Lorem ipsuet augue arcu, sagiint sfsdaf",
+      "thumbnail": null,
       "file": null
     }
   ],
@@ -163,6 +182,7 @@ const medicalFile = {
       "reportDate": "2019-06-24",
       "district": "Janzour",
       "city": "Misurata",
+      "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/267px-PDF_file_icon.svg.png",
       "file": "https://www.weblyzard.com/data/sites/21/tesla-weblyzard-report.pdf",
       "testInformation": null
     },
@@ -173,6 +193,7 @@ const medicalFile = {
       "reportDate": "2019-07-24",
       "district": "Rewasat",
       "city": "Misurata",
+      "thumbnail": "https://img.freepik.com/premium-vector/modern-flat-design-jpeg-file-icon-web-simple-style_599062-465.jpg",
       "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg",
       "testInformation": null
     }
