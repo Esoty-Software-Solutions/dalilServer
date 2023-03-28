@@ -12,15 +12,18 @@ const medicalFile = {
   "allergies": [
     {
       "allergyName": "Asthma",
-      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg"
     },
     {
       "allergyName": "Atopic Eczema",
-      "notes": "Lorem ipsum dolor sit amet,u, sagittis cmperdi"
+      "notes": "Lorem ipsum dolor sit amet,u, sagittis cmperdi",
+      "file": null
     },
     {
       "allergyName": "Drug Allergy",
-      "notes": "Lorem ipu, sagittis consimus ibero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipu, sagittis consimus ibero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg"
     }
   ],
   "chronicDiseases": [
@@ -28,31 +31,36 @@ const medicalFile = {
       "DiseaseName": "heart disease",
       "diagnosisDate": "1940-10-24",
       "diagnosedBy": "Ahmed Salman",
-      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg"
     },
     {
       "DiseaseName": "heart disease",
       "diagnosisDate": "1940-10-24",
       "diagnosedBy": "Ahmed Salman",
-      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": "https://www.weblyzard.com/data/sites/21/tesla-weblyzard-report.pdf"
     },
     {
       "DiseaseName": "depression",
       "diagnosisDate": "1940-10-24",
       "diagnosedBy": "Ahmed Salman",
-      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg"
     },
     {
       "DiseaseName": "arthritis",
       "diagnosisDate": "1940-10-24",
       "diagnosedBy": "Ahmed Salman",
-      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": "https://www.weblyzard.com/data/sites/21/tesla-weblyzard-report.pdf"
     },
     {
       "DiseaseName": "osteoporosis",
       "diagnosisDate": "1940-10-24",
       "diagnosedBy": "Ahmed Salman",
-      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": null
     }
   ],
   "surgeryHistory": [
@@ -61,42 +69,48 @@ const medicalFile = {
       "SurgeryDate": "1940-10-24",
       "doctorName": "Salma Fatima Mohammed",
       "medicalCenterName": "Shafa Hospital",
-      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg"
     },
     {
       "SurgeryName": "Inguinal hernia repair",
       "SurgeryDate": "1940-10-24",
       "doctorName": "Salma Fatima Mohammed",
       "medicalCenterName": "Shafa Hospital",
-      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": null
     },
     {
       "SurgeryName": "Appendectomy",
       "SurgeryDate": "1940-10-24",
       "doctorName": "Salma Fatima Mohammed",
       "medicalCenterName": "Shafa Hospital",
-      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": null
     },
     {
       "SurgeryName": "Surgery 4",
       "SurgeryDate": "2010-10-24",
       "doctorName": "Salma Fatima Mohammed",
       "medicalCenterName": "Shafa Hospital",
-      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg"
     },
     {
       "SurgeryName": "Surgery 5",
       "SurgeryDate": "1920-10-24",
       "doctorName": "Salma Fatima Mohammed",
       "medicalCenterName": "Shafa Hospital",
-      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet augue arcu, sagittis consectetur urna pharetra et. Praesent imperdiet egestas risus, nec rhoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": null
     },
     {
       "SurgeryName": "Surgery 6",
       "SurgeryDate": "1940-10-24",
       "doctorName": "Salma Fatima Mohammed",
       "medicalCenterName": "Hekma Hospital",
-      "notes": "Lorem ipsum dolor sit amet"
+      "notes": "Lorem ipsum dolor sit amet",
+      "file": null
     }
   ],
   "clinicalVisits": [
@@ -105,35 +119,40 @@ const medicalFile = {
       "visitDate": "1940-10-24",
       "doctorName": "Salma Fatima Mohammed",
       "centerName": "Shafa Hospital",
-      "notes": "Lorem ipsuet augue arcu, sagittis consectethoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipsuet augue arcu, sagittis consectethoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": null
     },
     {
       "visitType": "Dental111",
       "visitDate": "1940-10-14",
       "doctorName": "Salma Fatima Mohammed",
       "centerName": "Shafa Hospital",
-      "notes": "Lorem ipsuet augue arcu, sagittis consectethoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipsuet augue arcu, sagittis consectethoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg"
     },
     {
       "visitType": "Family Doctor",
       "visitDate": "1940-11-24",
       "doctorName": "Salma Fatima Mohammed",
       "centerName": "Shafa Hospital",
-      "notes": "Lorem ipsuet augue arcu, sagittis consectethoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipsuet augue arcu, sagittis consectethoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": "https://www.weblyzard.com/data/sites/21/tesla-weblyzard-report.pdf"
     },
     {
       "visitType": "Optometry",
       "visitDate": "2020-11-01",
       "doctorName": "Salma Fatima Mohammed",
       "centerName": "Hekma Hospital",
-      "notes": "Lorem ipsuet augue arcu, sagittis consectethoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int"
+      "notes": "Lorem ipsuet augue arcu, sagittis consectethoncus eros consectetur eget. Mauris maximus, purus vel maximus pharetra, dui massa tincidunt eros, sit amet efficitur nulla mi nec libero. Proin facilisis eu quam vel pharetra. Sed in ipsum semper, malesuada massa in, euismod orci. Aliquam erat volutpat. Nunc vitae quam lobortis, malesuada augue et, int",
+      "file": "https://www.weblyzard.com/data/sites/21/tesla-weblyzard-report.pdf"
     },
     {
       "visitType": "Pediatrics ",
       "visitDate": "2010-10-24",
       "doctorName": "Salma Fatima Mohammed",
       "centerName": "Safwa Clinic",
-      "notes": "Lorem ipsuet augue arcu, sagiint sfsdaf"
+      "notes": "Lorem ipsuet augue arcu, sagiint sfsdaf",
+      "file": null
     }
   ],
   "medicalTests": [
@@ -144,100 +163,8 @@ const medicalFile = {
       "reportDate": "2019-06-24",
       "district": "Janzour",
       "city": "Misurata",
-      "testInformation": [
-        {
-          "testName": "testName",
-          "acronym": "TN",
-          "resultType": "quantitative",
-          "result": {
-            "value": 18,
-            "upperRange": 15,
-            "lowerRange": 10,
-            "level": "high",
-            "unit": "ml/s"
-          }
-        },
-        {
-          "testName": "testName",
-          "acronym": "TN",
-          "resultType": "quantitative",
-          "result": {
-            "value": 8,
-            "upperRange": 15,
-            "lowerRange": 10,
-            "level": "low",
-            "unit": "ml/s"
-          }
-        },
-        {
-          "testName": "testName",
-          "acronym": "TN",
-          "resultType": "quantitative",
-          "result": {
-            "value": 12,
-            "upperRange": 15,
-            "lowerRange": 10,
-            "level": "normal",
-            "unit": "mg/s"
-          }
-        },
-        {
-          "testName": "testName",
-          "acronym": "TN",
-          "resultType": "quantitative",
-          "result": {
-            "value": 12,
-            "upperRange": 15,
-            "lowerRange": 10,
-            "level": "normal",
-            "unit": "mg/s"
-          }
-        },
-        {
-          "testName": "testName",
-          "acronym": "TN",
-          "resultType": "qualitative",
-          "result": {
-            "value": "positive",
-            "reference": "negative",
-            "level": "critical",
-            "unit": "sign"
-          }
-        },
-        {
-          "testName": "testName",
-          "acronym": "TN",
-          "resultType": "qualitative",
-          "result": {
-            "value": "positive",
-            "reference": "negative",
-            "level": "abnormal",
-            "unit": ""
-          }
-        },
-        {
-          "testName": "testName",
-          "acronym": "TN",
-          "resultType": "qualitative",
-          "result": {
-            "value": "yellow",
-            "reference": "white",
-            "level": "abnormal",
-            "unit": "color"
-          }
-        },
-        {
-          "testName": "testName",
-          "acronym": "TN",
-          "resultType": "qualitative",
-          "result": {
-            "value": "20-39",
-            "reference": "NONE SEEN",
-            "level": "abnormal",
-            "unit": "hpf"
-          }
-        }
-      ]
+      "file": "https://www.weblyzard.com/data/sites/21/tesla-weblyzard-report.pdf",
+      "testInformation": null
     },
     {
       "labReportId": "LCS-1914-23",
@@ -246,100 +173,8 @@ const medicalFile = {
       "reportDate": "2019-07-24",
       "district": "Rewasat",
       "city": "Misurata",
-      "testInformation": [
-        {
-          "testName": "testName222",
-          "acronym": "TN",
-          "resultType": "quantitative",
-          "result": {
-            "value": 13,
-            "upperRange": 15,
-            "lowerRange": 10,
-            "level": "normal",
-            "unit": "ml/s"
-          }
-        },
-        {
-          "testName": "sample test",
-          "acronym": "TN",
-          "resultType": "quantitative",
-          "result": {
-            "value": 20,
-            "upperRange": 20,
-            "lowerRange": 15,
-            "level": "normal",
-            "unit": "ml/s"
-          }
-        },
-        {
-          "testName": "testName",
-          "acronym": "TN",
-          "resultType": "quantitative",
-          "result": {
-            "value": 12,
-            "upperRange": 15,
-            "lowerRange": 10,
-            "level": "normal",
-            "unit": "mg/s"
-          }
-        },
-        {
-          "testName": "testName",
-          "acronym": "TN",
-          "resultType": "quantitative",
-          "result": {
-            "value": 12,
-            "upperRange": 15,
-            "lowerRange": 10,
-            "level": "normal",
-            "unit": "mg/s"
-          }
-        },
-        {
-          "testName": "testName",
-          "acronym": "TN",
-          "resultType": "qualitative",
-          "result": {
-            "value": "positive",
-            "reference": "negative",
-            "level": "critical",
-            "unit": "sign"
-          }
-        },
-        {
-          "testName": "testName",
-          "acronym": "TN",
-          "resultType": "qualitative",
-          "result": {
-            "value": "positive",
-            "reference": "negative",
-            "level": "abnormal",
-            "unit": ""
-          }
-        },
-        {
-          "testName": "testName",
-          "acronym": "TN",
-          "resultType": "qualitative",
-          "result": {
-            "value": "yellow",
-            "reference": "white",
-            "level": "abnormal",
-            "unit": "color"
-          }
-        },
-        {
-          "testName": "testName",
-          "acronym": "TN",
-          "resultType": "qualitative",
-          "result": {
-            "value": "20-39",
-            "reference": "NONE SEEN",
-            "level": "abnormal",
-            "unit": "hpf"
-          }
-        }
-      ]
+      "file": "https://5.imimg.com/data5/ANDROID/Default/2020/8/AF/PC/CU/22985242/product-jpeg-1000x1000.jpg",
+      "testInformation": null
     }
   ]
 }
