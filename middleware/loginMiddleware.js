@@ -62,9 +62,9 @@ const login = async (req, res) => {
             firstName: 1,
             middleName: 1,
             lastName: 1,
-            phoneNumber: 1,            
+            phoneNumber: 1,
             beneficiary: { $first: "$beneficiary" },
-            doctorId:1,
+            doctorId: 1,
           },
         },
         // { $unwind: "$beneficiary" },
@@ -88,6 +88,49 @@ const login = async (req, res) => {
       message: "good",
       token: `Bearer ${token}`,
       data: response[0],
+    };
+
+    res.status(200).json({ ...responseBody });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const changePassword = async (req, res) => {
+  try {
+    console.log("change password");
+    const myPlaintextCurrentPassword = req.body.currentPassword;
+    const myPlaintextNewPassword = req.body.newPassword;
+    // hashing user password
+    const newHash = bcrypt.hashSync(myPlaintextNewPassword, 10);
+
+    const doc = await user.findOne({
+      userId: req.params.userId,
+    });
+    if (!doc) {
+      return res.status(404).json({ message: `userId is invalid` });
+    }
+    const hashedPassword = doc.password;
+    // comparing hashed password
+    const hash = await bcrypt.compare(myPlaintextCurrentPassword, hashedPassword);
+    if (!hash) {
+      return res.status(404).json({ message: `password is invalid` });
+    }
+
+    const newbody = {
+      password: newHash,
+    };
+    const document = await user.findOneAndUpdate(
+      {
+        userId: req.params.userId,
+      },
+      newbody
+    );
+
+    const responseBody = {
+      statusCode: "201",
+      message: "password updated",
     };
 
     res.status(200).json({ ...responseBody });
@@ -128,4 +171,5 @@ const logout = async (req, res) => {
 module.exports = {
   login,
   logout,
+  changePassword
 };

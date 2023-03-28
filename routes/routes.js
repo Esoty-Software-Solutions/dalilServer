@@ -99,7 +99,7 @@ const {
 
 const { createCity, allCity } = require(`../middleware/cityMiddleware`);
 
-const { login, logout } = require(`../middleware/loginMiddleware`);
+const { login, logout, changePassword } = require(`../middleware/loginMiddleware`);
 
 const {
   createInstitute,
@@ -153,6 +153,11 @@ router
   .get(authentication, getUser);
   // .patch(uploader.singleFileUpload.any({ name: "userImage" }), updateUser);
 
+
+// change password
+router
+  .route(`/v1/users/:userId/changePassword`)
+  .post(authentication, changePassword);
 // routes for beneficiary
 router
   .route(`/v1/beneficiaries`)
