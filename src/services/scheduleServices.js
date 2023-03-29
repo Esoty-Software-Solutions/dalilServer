@@ -1,4 +1,4 @@
-const ScheduleSchema = require("../schemas/medicalCenterSchema");
+const ScheduleSchema = require("../schemas/scheduleSchema");
 
 exports.createSchedule = async (query) => {
   return await ScheduleSchema.create(query);

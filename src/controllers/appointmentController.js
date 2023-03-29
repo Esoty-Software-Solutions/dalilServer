@@ -1,12 +1,59 @@
 const AppointmentServices = require("../services/appointmentServices");
+const MedicalCenterServices = require("../services/medicalCenterServices");
+const ScheduleServices = require("../services/scheduleServices");
+const DoctorServices = require("../services/doctorServices");
+const UserServices = require("../services/userServices");
+const SmsServices = require("../services/smsServices");
+
+const createMessage = async (
+  doctor,
+  medicalCenterName,
+  appointmentDate,
+  appointmentStatus,
+  phone
+) => {
+  let message_body = `Your appointment for ${doctor} at ${medicalCenterName} on ${appointmentDate} is ${appointmentStatus}`;
+  const sms = await SmsServices.createSms({
+    phone: phone,
+    message: message_body,
+  });
+  return sms;
+};
+
 const createAppointment = async (req, res) => {
   try {
+    const doctorObject = await DoctorServices.getDoctorDetails({
+      _id: req.body.doctorId,
+    });
+    const medicalCenterObject =
+      await MedicalCenterServices.getMedicalCenterDetails({
+        _id: req.body.medicalCenterId,
+      });
+
+    const scheduleObject = await ScheduleServices.getScheduleDetails({
+      _id: req.body.scheduleId,
+    });
+    const userObject = await UserServices.getUser({
+      _id: req.body.userId,
+    });
     const document = await AppointmentServices.createAppointment({
       ...req.body,
-      userId: req.params.userId,
+      doctor: doctorObject,
+      medicalCenter: medicalCenterObject,
+      schedule: scheduleObject,
+      user: userObject,
+      // userId: req.params.userId,
       appointmentStatus: `pending`,
       dateCreated: Date(),
     });
+
+    const sms = await createMessage(
+      doctorObject?.firstName,
+      medicalCenterObject?.name,
+      document.appointmentDate,
+      document.appointmentStatus,
+      userObject?.phoneNumber
+    );
 
     let message = "good";
     const responseBody = {
@@ -26,16 +73,25 @@ const updateAppointment = async (req, res) => {
   try {
     const document = await AppointmentServices.updateAppointment(
       {
-        appointmentId: req.params.appointmentId,
-        userId: req.userId,
+        _id: req.params.appointmentId,
+        // userId: req.userId,
       },
       {
         ...req.body,
       }
     );
+
     if (!document) {
       return res.status(404).json({ message: `document not found` });
     }
+
+    const sms = await createMessage(
+      document.doctor?.firstName,
+      document.medicalCenter?.name,
+      document.appointmentDate,
+      document.appointmentStatus,
+      document.user?.phoneNumber
+    );
 
     return res.status(200).json(document);
   } catch (error) {
@@ -82,7 +138,6 @@ const getAppointments = async (req, res) => {
 
 const getAppointment = async (req, res) => {};
 const deleteAppointment = async (req, res) => {};
-
 
 module.exports = {
   createAppointment,

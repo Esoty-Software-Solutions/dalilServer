@@ -45,9 +45,34 @@ const createSubscriber = async (req, res) => {
 const updateSubscriber = async (req, res) => {
   try {
     // Update document and register the user
-    // const document = await SubscriberServices.updateSubscriber()
+    let obj = {
+      ...req.body,
+    };
+    console.log("req.files: ", req.files);
+    if (req.files.length > 0) {
+      console.log("in if");
 
-    return res.status(200).json(messageUtil.methodUnderDev);
+      req.body = {
+        ...req.body,
+        file: req.files[0].location,
+      };
+
+      obj.file = req.files[0].location;
+    }
+    console.log("Obj: ", obj);
+    const document = await SubscriberServices.updateSubscriber(
+      {
+        _id: req.params.subscriberId,
+        "beneficiaries._id": req.body.beneficiaryId,
+      },
+      { $set: { "beneficiaries.$.medicalFiles": req.body } }
+    );
+    console.log(
+      "🚀 ~ file: subscriberController.js:59 ~ updateSubscriber ~ document:",
+      document
+    );
+
+    return res.status(200).json(messageUtil.resourceUpdated);
   } catch (error) {
     console.log(error);
     return serverErrorResponse(res, error.message);
@@ -56,7 +81,6 @@ const updateSubscriber = async (req, res) => {
 
 const getSubscribers = async (req, res) => {
   try {
-    console.log("getSubscribers");
     let limitQP = Number(req.query.limit) ?? 100;
     if (limitQP > 100) limitQP = 100;
     if (limitQP < 1) limitQP = 1;
@@ -140,6 +164,7 @@ const createSubscribersCSV = async (req, res) => {
       }
     });
 };
+
 module.exports = {
   createSubscriber,
   updateSubscriber,

@@ -22,6 +22,18 @@ const appointmentSchema = mongoose.Schema(
         required: [true, `please provide valid patientRelationship`],
       },
     },
+    schedule: {
+      type: Object,
+    },
+    doctor: {
+      type: Object,
+    },
+    medicalCenter: {
+      type: Object,
+    },
+    user: {
+      type: Object,
+    },
     scheduleId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "schedules",
@@ -34,15 +46,17 @@ const appointmentSchema = mongoose.Schema(
     },
     doctorId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
+      ref: "doctors",
       required: [true, `please provide valid doctor id`],
     },
-    notes: { type: String },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
       required: [true, `please provide valid userId`],
     },
+
+    notes: { type: String },
+
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
 
     updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },

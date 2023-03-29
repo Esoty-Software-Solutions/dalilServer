@@ -105,7 +105,7 @@ const AllMedicalCenter = async (req, res) => {
     );
     const responseBody = {
       codeStatus: "200",
-      message: message,
+      message: "good",
       data: {
         objectCount: documents.length,
         objectArray: documents,
