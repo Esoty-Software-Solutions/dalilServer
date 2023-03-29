@@ -219,11 +219,11 @@ const createMedicalFiles = async (req, res) => {
     console.log("req.headers")
     console.log(req.headers)
 
-    // console.log("req.body")
-    // console.log(req.body)
+    console.log("req.body")
+    console.log(req.body)
 
-    // console.log("req.files")
-    // console.log(req.files)
+    console.log("req.files")
+    console.log(req.files)
     // console.log("req")
     // console.log(req)
 
