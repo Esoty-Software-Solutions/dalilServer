@@ -9,7 +9,7 @@ const {
 const { checkToken } = require("../utilities/tokenAuth");
 var router = express.Router();
 
-router.post("", checkToken, CreateMedicalCenter);
+router.post("", CreateMedicalCenter);
 router.patch("/:medicalCenterId", checkToken, UpdateMedicalCenter);
 router.get("", AllMedicalCenter);
 router.get("/:id", checkToken, SingleMedicalCenter);
