@@ -26,12 +26,12 @@ jobs:
 # remote host ---> public ipv4 dns
 # target -----> directory where the code will be uploaded
     - name: Deploy to ec2
-       uses: easingthemes/ssh-deploy@v2.1.5
-       env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.HOST_DNS }}
-          REMOTE_USER: ${{ secrets.USERNAME }}
-          TARGET: ${{ secrets.TARGET_DIR }}
+      uses: easingthemes/ssh-deploy@v2.1.5
+      env:
+         SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+         REMOTE_HOST: ${{ secrets.HOST_DNS }}
+         REMOTE_USER: ${{ secrets.USERNAME }}
+         TARGET: ${{ secrets.TARGET_DIR }}
 # the below code will restat the pm2 server with the updated code 
     - name: restart PM2 server
       uses: appleboy/ssh-action@master
