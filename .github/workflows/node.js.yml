@@ -5,13 +5,14 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "feature/github-actions-auto-deployment" ]
+    branches:
+      - "feature/github-actions-auto-deployment"
 
 
 jobs:
-  build:
+  deploy: 
+    name: Deploy the code to EC2 server
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [18.x]
@@ -19,26 +20,26 @@ jobs:
 
     steps:
     - name: Checkout the files
-    - uses: actions/checkout@v3
+      uses: actions/checkout@v3
 # the below job will deploy the code to ec2 server by using the 4 environment variables that we are using in the github secrets
 # ssh_private_key-----> THE PRIVATE KEY FOR SERVER SSH
 # remote host ---> public ipv4 dns
 # target -----> directory where the code will be uploaded
-     - name: Deploy to ec2
-        uses: easingthemes/ssh-deploy@v2.1.5
-        env:
+    - name: Deploy to ec2
+       uses: easingthemes/ssh-deploy@v2.1.5
+       env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
           REMOTE_USER: ${{ secrets.USERNAME }}
           TARGET: ${{ secrets.TARGET_DIR }}
 # the below code will restat the pm2 server with the updated code 
-      - name: restart PM2 server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST_DNS }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
+    - name: restart PM2 server
+      uses: appleboy/ssh-action@master
+      with:
+         host: ${{ secrets.HOST_DNS }}
+         username: ${{ secrets.USERNAME }}
+         key: ${{ secrets.EC2_SSH_KEY }}
+         script: |
             echo "jumping to the code directory"
             cd "${{ env.TARGET }}"
             echo "Install app dependencies and starting server"
