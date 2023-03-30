@@ -16,7 +16,7 @@ const PORT = config.PORT || 3000;
 /***Route binding*/
 app.use("/", routes);
 app.get("/", (req, res) => {
-  res.send("Hello from pirate studio Server");
+  res.send("Hello from pirate studio Server, updated with github actions");
 });
 /*******MongoDB Connectivity */
 const connectDB = require("./src/config/database");
