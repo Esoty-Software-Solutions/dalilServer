@@ -18,26 +18,20 @@ const UserRole = require("../schemas/userRoleSchema");
 const UserServices = require("../services/userServices");
 const bcrypt = require("bcrypt");
 const jwt = require(`jsonwebtoken`);
+const UsersData = require("./users.json");
 
-const seedUser = {
-  username: "user",
-  phoneNumber: "0912314455",
-  phoneAuthenticated: false,
-  firstName: "ahmad",
-  secondName: "mohammed",
-  lastName: "salem",
-  password: "234",
-};
 const createData = async () => {
   try {
-    const hash = bcrypt.hashSync(seedUser.password, 10);
+    for (let i = 0; i < UsersData.length; i++) {
+      const hash = bcrypt.hashSync(UsersData[i].password, 10);
 
-    const newBody = {
-      ...seedUser,
-      password: hash,
-    };
-    await UserServices.createUser(newBody);
-    console.log("User created");
+      const newBody = {
+        ...UsersData[i],
+        password: hash,
+      };
+      await UserServices.createUser(newBody);
+      console.log("User created");
+    }
     process.exit();
   } catch (err) {
     console.error(err);
