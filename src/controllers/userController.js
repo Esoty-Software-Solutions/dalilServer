@@ -4,9 +4,11 @@ const jwt = require(`jsonwebtoken`);
 const {
   successResponse,
   serverErrorResponse,
-  badRequestErrorResponse
+  badRequestErrorResponse,
+  notFoundResponse,
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
+const checkFeilds = require("../utilities/checkFields");
 
 const createUser = async (req, res) => {
   try {
@@ -235,6 +237,46 @@ const logout = async (req, res) => {
     serverErrorResponse(res, err);
   }
 };
+
+const ChangePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    //checking the required fields
+    const isError = checkFeilds(
+      {
+        currentPassword,
+        newPassword,
+      },
+      res
+    );
+    //returning if required filed is missing
+    if (isError) return;
+
+    //getting user by id
+    let user = await UserServices.getUser({ _id: req.params.userId });
+    if (!user) {
+      return notFoundResponse(res, messageUtil.notFound);
+    }
+
+    //verifying the old password
+    const hash = await bcrypt.compare(currentPassword, user.password);
+    if (!hash) {
+      return badRequestErrorResponse(res, messageUtil.invalidCurrentPassword);
+    }
+
+    //creating new hash password after verifying old password
+    const newHash = bcrypt.hashSync(newPassword, 10);
+
+    //updating user
+    const updatedUser = await UserServices.updateUser(
+      { _id: req.params.userId },
+      { password: newHash }
+    );
+    return successResponse(res, messageUtil.resourceUpdated, updatedUser);
+  } catch (err) {
+    serverErrorResponse(res, err);
+  }
+};
 module.exports = {
   createUser,
   getUsers,
@@ -245,4 +287,5 @@ module.exports = {
   RegisterAppToken,
   SendNotification,
   SendNotificationToUsers,
+  ChangePassword,
 };
