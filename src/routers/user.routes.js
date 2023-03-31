@@ -8,6 +8,7 @@ const {
   RegisterAppToken,
   SendNotification,
   SendNotificationToUsers,
+  ChangePassword,
 } = require("../controllers/userController");
 const { checkToken } = require("../utilities/tokenAuth");
 var router = express.Router();
@@ -25,4 +26,5 @@ router.patch("/:id", updateUser);
 router.post("/registerToken", checkToken, RegisterAppToken);
 router.post("/sendNotification", checkToken, SendNotification);
 router.post("/sendToAll", SendNotificationToUsers);
+router.post("/:userId/changePassword", ChangePassword);
 module.exports = router;
