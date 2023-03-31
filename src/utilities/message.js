@@ -16,6 +16,7 @@ messageUtil = {
   notFound: "User not found",
   tokenRegistered: "User app token registered",
   found: "Users found successful",
+  invalidCurrentPassword: "Current password is not correct",
   methodUnderDev: "method under development",
 };
 
