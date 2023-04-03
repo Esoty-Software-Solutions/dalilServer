@@ -1,11 +1,4 @@
-var admin = require("firebase-admin");
-
-var serviceAccount = require("../../esoty-test-firebase-adminsdk-s6ee9-f65f1a4f9f.json");
-// var serviceAccount = require("../../test-notification-36f92-firebase-adminsdk-6ogfl-98da7f585e.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+const firebaseAdmin  = require("../config/firebase.config");
 
 //to send to a specific device
 const singleNotification = async (
@@ -15,20 +8,24 @@ const singleNotification = async (
   type,
   booking_id
 ) => {
-  var payload = {
-    data: {
-      body,
-      title,
-      type,
-      booking_id,
-    },
-  };
 
+  const payload = {
+    notification: {
+              title: title,
+              body: body,
+              // clickAction : "" // this is used when we have to click something and it routes us somewhere
+            },
+    data: {
+        message: body,
+        type : type,
+        booking_id : booking_id,
+    }
+}
   var options = {
     priority: "high",
     timeToLive: 60 * 60 * 24,
   };
-  return admin
+  return firebaseAdmin
     .messaging()
     .sendToDevice(registrationToken, payload, options)
     .then(function (response) {
@@ -55,7 +52,7 @@ const multipleNotification = async (tokens) => {
     priority: "high",
     timeToLive: 60 * 60 * 24,
   };
-  admin
+  firebaseAdmin
     .messaging()
     .sendMulticast(payload)
     .then(function (response) {
