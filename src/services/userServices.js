@@ -15,7 +15,9 @@ exports.deleteUser = async (query) => {
 };
 
 exports.getUsers = async (filter, sort, skip, limit) => {
-  documentsCount = await UserSchema.find(filter).count(sort);
+  documentsCount = await UserSchema.find(filter)
+    .select("-__v -password")
+    .count(sort);
 
   documents = await UserSchema.find(filter)
     .sort(sort)
