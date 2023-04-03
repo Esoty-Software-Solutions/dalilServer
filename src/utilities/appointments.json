@@ -1,0 +1,79 @@
+[
+    {
+        "appointmentId": "642ae89984810dda25dc4113",
+        "timeslot": "morning",
+        "appointmentStatus": "pending",
+        "patient": {
+          "userId": "642ac80e48bbdbec89360b88",
+          "patientType": "self",
+          "patientId": "642ac76c48bbdbec89360b75",
+          "patientName": "عبدالله محمد الفورتية",
+          "patientRelationship": "self"
+        },
+        "scheduleId": "642ace07a6910808aedb5e8f",
+        "medicalCenterId": "64281f746db4bcf6d51baa81",
+        "doctorId": "642accdda6910808aedb5e86",
+        "notes": null,
+        "medicalCenterObject": {
+          "_id": {
+            "$oid": "64281f746db4bcf6d51baa82"
+          },
+          "medicalCenterId": "64281f746db4bcf6d51baa81",
+          "name": "مستشفي السلام الدولي",
+          "city": "مصراتة",
+          "district": "9363+2CP, Unnamed Road،, مصراتة‎",
+          "description": "",
+          "address": "مدينة مصراتة - الطريق الدائري الرابع بالقرب من المدينة الرياضية",
+          "phoneNumber": [
+            "0945825696"
+          ],
+          "facebookLink": "https://www.facebook.com/Salam.int.omar/?locale=ar_AR",
+          "website": "",
+          "creation": {
+            "createdBy": "SSD-1",
+            "dateCreated": {
+              "$date": "2023-04-01T12:11:32Z"
+            }
+          },
+          "fieldNames": [],
+          "originalNames": [],
+          "isActive": true,
+          "__v": 0
+        },
+        "doctorObject": {
+          "_id": {
+            "$oid": "642accdda6910808aedb5e87"
+          },
+          "doctorId": "642accdda6910808aedb5e86",
+          "firstName": "سناء",
+          "middleName": "",
+          "lastName": "ابوحجر",
+          "specialty": "باطنة",
+          "level": "General Doctor",
+          "gender": "female",
+          "birthdate": "1990-01-01",
+          "__v": 0
+        },
+        "scheduleObject": {
+          "_id": {
+            "$oid": "642ace07a6910808aedb5e90"
+          },
+          "scheduleId": "642ace07a6910808aedb5e8f",
+          "medicalCenterId": "64281f746db4bcf6d51baa81",
+          "doctorId": "642accdda6910808aedb5e86",
+          "timeslot": "morning",
+          "monday": true,
+          "tuesday": true,
+          "wednesday": true,
+          "thursday": true,
+          "friday": false,
+          "saturday": true,
+          "sunday": true,
+          "price": 25,
+          "startDate": "2023-04-05",
+          "endDate": "2025-02-03",
+          "isActive": true
+        },
+        "userId": "642ac80e48bbdbec89360b88"
+    }
+]

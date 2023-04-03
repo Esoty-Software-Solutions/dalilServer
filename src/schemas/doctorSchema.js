@@ -32,6 +32,14 @@ const doctorSchema = mongoose.Schema({
     type: String,
     required: [true, `please enter valid birthdate`],
   },
+  commentCount: {
+    type: String,
+    default: 0
+  },
+  starRating: {
+    type: Number,
+    default: 0,
+  },
   fieldNames: {type: Array},
   originalNames: {type: Array},
   created: {

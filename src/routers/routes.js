@@ -14,6 +14,7 @@ const notificationRouter = require("./notification.routes");
 
 const medicalFileRouter = require("./midcalFiles.routes");
 const smsRouter = require("./sms.routes");
+const reviewRouter = require("./review.routes");
 
 const API_VERSION = "/v1";
 
@@ -30,5 +31,5 @@ router.use(API_VERSION + "/notifications", notificationRouter);
 router.use(API_VERSION + "/sms", smsRouter);
 router.use(API_VERSION + "/medicalFiles", medicalFileRouter);
 // router.use("/claims", claimsRouter);
-
+router.use(API_VERSION + "/review",reviewRouter)
 module.exports = router;
