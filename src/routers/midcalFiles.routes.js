@@ -10,8 +10,8 @@ var router = express.Router();
 
 router.post("/:beneficiaryId", authentication, createMedicalFile);
 router.get("/", authentication, getMedicalFiles);
-router.post(
-  "/update/:id",
+router.patch(
+  "/:id",
   uploader.singleFileUpload.any({ name: "medicalFile" }),
   updateMedicalFile
 );
