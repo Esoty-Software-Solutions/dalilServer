@@ -214,6 +214,7 @@ const SendNotification = async (req, res) => {
   let user;
   try {
     user = await UserServices.getUser({ _id: req.userId });
+    console.log("this is the user " , user);
     if (!user) {
       return notFoundResponse(res, messageUtil.notFound);
     }
