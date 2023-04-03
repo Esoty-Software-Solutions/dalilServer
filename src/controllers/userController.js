@@ -9,6 +9,7 @@ const {
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
 const checkFeilds = require("../utilities/checkFields");
+// const { default: mongoose } = require("mongoose");
 
 const createUser = async (req, res) => {
   try {
@@ -76,7 +77,13 @@ const getUsers = async (req, res) => {
 };
 
 const getUserById = async (req, res) => {
+  //checking if the provided id is valid mongoose id
+  // if (!mongoose.Types.ObjectId.isValid(req.params.userId)) {
+  //   return notFoundResponse(res, "Invalid id");
+  // }
+
   let user = await UserServices.getUser({ _id: req.params.id });
+
   if (!user) {
     return notFoundResponse(res, messageUtil.notFound);
   }
