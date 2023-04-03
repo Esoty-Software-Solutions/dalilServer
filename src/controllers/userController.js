@@ -9,10 +9,10 @@ const {
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
 const checkFeilds = require("../utilities/checkFields");
+// const { default: mongoose } = require("mongoose");
 
 const createUser = async (req, res) => {
   try {
-    console.log("getUsers");
     const myPlaintextPassword = req.body.password;
 
     // hashing user password
@@ -27,9 +27,7 @@ const createUser = async (req, res) => {
       // sd: idNumber + 1,
     };
     const document = await UserServices.createUser(newBody);
-    console.log("document: ", document);
     const { userId, username, password } = document;
-    console.log("userid: ", userId);
     // siginig/authenticating user with jwt token for authorization
     const token = jwt.sign(
       { userId, username, password },
@@ -50,7 +48,6 @@ const createUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    console.log("getUsers");
     let limitQP = Number(req.query.limit) ?? 100;
     if (limitQP > 100) limitQP = 100;
     if (limitQP < 1) limitQP = 1;
@@ -79,6 +76,20 @@ const getUsers = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  //checking if the provided id is valid mongoose id
+  // if (!mongoose.Types.ObjectId.isValid(req.params.userId)) {
+  //   return notFoundResponse(res, "Invalid id");
+  // }
+
+  let user = await UserServices.getUser({ _id: req.params.id });
+
+  if (!user) {
+    return notFoundResponse(res, messageUtil.notFound);
+  }
+  return successResponse(res, messageUtil.success, user);
+};
+
 const updateUser = async (req, res) => {
   try {
     if (!req.files[0].location) {
@@ -103,7 +114,6 @@ const updateUser = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    console.log("login");
     const { username, password } = req.body;
     const doc = await UserServices.getUser({
       username,
@@ -126,6 +136,16 @@ const login = async (req, res) => {
         `Either username or password is invalid`
       );
     }
+
+    const updateUser = await UserServices.updateUser(
+      {
+        username,
+      },
+      {
+        deviceToken: req.body.deviceToken,
+        deviceType: req.body.deviceType,
+      }
+    );
     const token = jwt.sign(
       { userId: userId, username, role },
       process.env.jwtSecret,
@@ -277,6 +297,32 @@ const ChangePassword = async (req, res) => {
     serverErrorResponse(res, err);
   }
 };
+
+const UpdateDeviceToken = async (req, res) => {
+  const { deviceToken, deviceType } = req.body;
+  //checking the required fields
+  const isError = checkFeilds(
+    {
+      deviceToken,
+      deviceType,
+    },
+    res
+  );
+  //returning if required filed is missing
+  if (isError) return;
+
+  let user = await UserServices.updateUser(
+    { _id: req.params.userId },
+    {
+      deviceToken,
+      deviceType,
+    }
+  );
+  if (!user) {
+    return notFoundResponse(res, messageUtil.notFound);
+  }
+  return successResponse(res, messageUtil.success);
+};
 module.exports = {
   createUser,
   getUsers,
@@ -288,4 +334,6 @@ module.exports = {
   SendNotification,
   SendNotificationToUsers,
   ChangePassword,
+  getUserById,
+  UpdateDeviceToken,
 };
