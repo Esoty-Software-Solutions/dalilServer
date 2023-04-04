@@ -12,8 +12,16 @@ exports.updateBeneficiaries = async (query, data) => {
   return await beneficiaries.findByIdAndUpdate(query, data);
 };
 
+exports.getBeneficiary = async (query, data) => {
+  return await beneficiaries.findOne(query);
+};
+
+exports.updateBeneficiary = async (query, data) => {
+  return await beneficiaries.findOneAndUpdate(query, data, { new: true });
+};
+
 exports.updateSubscriber = async (query, data) => {
-  return await subscribers.findOneAndUpdate(query, data);
+  return await subscribers.findOneAndUpdate(query, data, { new: true });
 };
 
 exports.deleteSubscriber = async (query) => {
@@ -21,15 +29,7 @@ exports.deleteSubscriber = async (query) => {
 };
 
 exports.getSubscribers = async (filter, sort, skip, limit) => {
-  documentsCount = await subscribers.find(filter).populate({
-    path: "beneficiaries",
-    populate: [
-      {
-        path: "medicalFiles",
-        model: "medicalFiles",
-      },
-    ],
-  });
+  documentsCount = await subscribers.find(filter).count();
 
   documents = await subscribers
     .find(filter)
@@ -37,13 +37,25 @@ exports.getSubscribers = async (filter, sort, skip, limit) => {
     .skip(skip)
     .limit(limit)
     .select("-__v")
-    .lean();
+    .lean()
+    .populate({
+      path: "beneficiaries",
+      populate: [
+        {
+          path: "medicalFiles",
+          model: "medicalFiles",
+        },
+      ],
+    });
 
   return [documents, documentsCount];
 };
 
 exports.getSubscriber = async (query) => {
-  return await subscribers.findOne(query).select("-__v");
+  return await subscribers
+    .findOne(query)
+    .populate("beneficiaries")
+    .select("-__v");
 };
 
 exports.updateSubscriberById = async (query, data) => {
