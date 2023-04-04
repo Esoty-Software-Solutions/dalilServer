@@ -8,3 +8,9 @@ exports.clinicalVisitValidator = joi.object({
     notes : joi.string().required(),
     files : joi.string().allow("" , null)
 });
+
+exports.getClinicalVisitValidator = joi.object({
+    limit : joi.number().optional().allow(""),
+    searchQuery : joi.string().optional().allow(""),
+    skip : joi.number().optional().allow("" , 0)
+})

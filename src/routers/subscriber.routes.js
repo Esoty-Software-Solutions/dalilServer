@@ -11,7 +11,7 @@ const {
 const { customValidation } = require("../middlewares/payloadValidation");
 const { authentication } = require("../utilities/auth");
 const uploader = require("../utilities/uploader");
-const { clinicalVisitValidator } = require("../validators/medicalFiles.validator");
+const { clinicalVisitValidator, getClinicalVisitValidator } = require("../validators/medicalFiles.validator");
 var router = express.Router();
 const {createClinicalVisitsController, getClinicalVisitsController} = initMedicalFilesController();
 router.post(
@@ -35,7 +35,7 @@ router.delete("/:subscriberId", authentication, deleteSubscriber);
 // ---------------------------------------- medical files routes ----------------------------------------------- 
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/clinicalVisits`)
-  .get(authentication , getClinicalVisitsController )
+  .get(customValidation(getClinicalVisitValidator , "query")  , getClinicalVisitsController )
   .post(customValidation(clinicalVisitValidator, "body") , createClinicalVisitsController )
 // router
 //   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/allergies`)
