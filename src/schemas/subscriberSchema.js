@@ -40,18 +40,22 @@ const medicalFileSchema = mongoose.Schema({
 
 // beneficiary schema or structure
 const beneficiarySchema = mongoose.Schema({
-  // beneficiaryId: {
-  //   type: String,
-  //   required: [true, `please provide valid beneficiaryId`],
-  //   unique: true,
-  // },
+  beneficiaryId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: [true, `please provide valid beneficiaryId`],
+    default: new mongoose.Types.ObjectId(),
+    unique: true,
+  },
   firstName: {
     type: String,
     required: [true, `please provide valid firstName`],
   },
-  middleName: {
+  secondName: {
     type: String,
-    required: [true, `please provide valid middleName`],
+    required: [true, `please provide valid secondName`],
+  },
+  thirdName: {
+    type: String,
   },
   lastName: {
     type: String,
@@ -75,24 +79,24 @@ const beneficiarySchema = mongoose.Schema({
     // type: medicalFileSchema,
     type: mongoose.Schema.Types.ObjectId,
     ref: "medicalFiles",
-    required: false,
+    default: null,
   },
 });
 
 // subscriber schema or structure
 const subscriberSchema = mongoose.Schema({
-  // subscriberId: {
-  //   type: String,
-  //   required: [true, `please provide valid userId`],
-  //   unique: true,
-  // },
+  subscriberId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: [true, `please provide valid subscriberId`],
+    unique: true,
+  },
   firstName: {
     type: String,
     required: [true, `please provide valid firstName`],
   },
-  middleName: {
+  secondName: {
     type: String,
-    required: [true, `please provide valid middleName`],
+    required: [true, `please provide valid secondName`],
   },
   thirdName: {
     type: String,
@@ -129,14 +133,14 @@ const subscriberSchema = mongoose.Schema({
   employeeId: {
     type: String,
     unique: [true, `employee ID has to be unique`],
-    required: [false, `please provide valid employee ID`],
+    // required: [false, `please provide valid employee ID`],
   },
   doctorId: {
     type: String,
     unique: [true, `employee ID has to be unique`],
-    required: [false, `please provide valid employee ID`],
+    // required: [false, `please provide valid employee ID`],
   },
-  residentCity: String,
+  city: String,
   residentDistrict: String,
   userId: {
     type: mongoose.Schema.Types.ObjectId,
