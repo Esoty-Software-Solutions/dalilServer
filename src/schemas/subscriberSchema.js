@@ -1,9 +1,9 @@
 // importing mongoose dependency for subscriber schema and model creation
 const mongoose = require(`mongoose`);
-const audit = require(`./auditSchema`);
+// const audit = require(`./auditSchema`);
 
 // medicalFile schema or structure
-const medicalFileSchema = mongoose.Schema({
+const medicalFileSchema = new mongoose.Schema({
   bloodType: {
     type: String,
   },
@@ -12,22 +12,6 @@ const medicalFileSchema = mongoose.Schema({
   },
   weight: {
     type: Number,
-  },
-  allergies: {
-    type: Array,
-    required: [false, `specify allergies`],
-  },
-  chronicDiseases: {
-    type: Array,
-    required: [false, `specify chronic diseases`],
-  },
-  surgeryHistory: {
-    type: Array,
-    required: [false, `specify surgery history`],
-  },
-  clinicalVisits: {
-    type: Array,
-    required: [false, `specify clinical visits`],
   },
   medicalTests: {
     type: Array,
@@ -39,7 +23,7 @@ const medicalFileSchema = mongoose.Schema({
 });
 
 // beneficiary schema or structure
-const beneficiarySchema = mongoose.Schema({
+const beneficiarySchema = new mongoose.Schema({
   // beneficiaryId: {
   //   type: String,
   //   required: [true, `please provide valid beneficiaryId`],
@@ -80,7 +64,7 @@ const beneficiarySchema = mongoose.Schema({
 });
 
 // subscriber schema or structure
-const subscriberSchema = mongoose.Schema({
+const subscriberSchema = new mongoose.Schema({
   // subscriberId: {
   //   type: String,
   //   required: [true, `please provide valid userId`],
