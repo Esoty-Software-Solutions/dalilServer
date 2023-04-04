@@ -69,7 +69,10 @@ const getUsers = async (req, res) => {
     let message = "good";
     if (docArray.length === 0) message = "list is empty change your query";
 
-    return successResponse(res, message, docArray, docCount);
+    return successResponse(res, message, {
+      objectCount: docCount,
+      objectArray: docArray,
+    });
   } catch (error) {
     console.log(error);
     return serverErrorResponse(res, error.message);
@@ -214,7 +217,7 @@ const SendNotification = async (req, res) => {
   let user;
   try {
     user = await UserServices.getUser({ _id: req.userId });
-    console.log("this is the user " , user);
+    console.log("this is the user ", user);
     if (!user) {
       return notFoundResponse(res, messageUtil.notFound);
     }
