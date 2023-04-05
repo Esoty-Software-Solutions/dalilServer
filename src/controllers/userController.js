@@ -16,13 +16,13 @@ const createUser = async (req, res) => {
     const myPlaintextPassword = req.body.password;
 
     // hashing user password
-    const hash = bcrypt.hashSync(myPlaintextPassword, 10);
+    // const hash = bcrypt.hashSync(myPlaintextPassword, 10);
 
     // const lastUser = users[0].userId;
     // const idNumber = Number(lastUser.split(`-`)[1]);
     const newBody = {
       ...req.body,
-      password: hash,
+      // password: hash,
       // userId: `SSD-${idNumber + 1}`,
       // sd: idNumber + 1,
     };
