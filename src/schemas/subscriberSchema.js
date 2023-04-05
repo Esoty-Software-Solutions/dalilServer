@@ -40,12 +40,6 @@ const medicalFileSchema = mongoose.Schema({
 
 // beneficiary schema or structure
 const beneficiarySchema = mongoose.Schema({
-  beneficiaryId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: [true, `please provide valid beneficiaryId`],
-    default: new mongoose.Types.ObjectId(),
-    unique: true,
-  },
   firstName: {
     type: String,
     required: [true, `please provide valid firstName`],
@@ -85,11 +79,6 @@ const beneficiarySchema = mongoose.Schema({
 
 // subscriber schema or structure
 const subscriberSchema = mongoose.Schema({
-  subscriberId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: [true, `please provide valid subscriberId`],
-    unique: true,
-  },
   firstName: {
     type: String,
     required: [true, `please provide valid firstName`],
