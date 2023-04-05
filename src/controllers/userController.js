@@ -118,6 +118,8 @@ const updateUser = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
+    console.log("username", "password");
+    console.log(username, password);
     const doc = await UserServices.getUser({
       username,
     });
