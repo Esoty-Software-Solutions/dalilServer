@@ -11,7 +11,6 @@ const path = require("path");
 const fs = require("fs");
 // const { beneficiaries } = require("../schemas/subscriberSchema");
 const checkFeilds = require("../utilities/checkFields");
-const { default: mongoose } = require("mongoose");
 
 const createSubscriber = async (req, res) => {
   try {
@@ -50,7 +49,6 @@ const createSubscriber = async (req, res) => {
     }
     //create subscriber
     const doc = await SubscriberServices.createSubscriber({
-      subscriberId: new mongoose.Types.ObjectId(),
       ...req.body,
     });
     return successResponse(res, messageUtil.resourceCreated, doc);
