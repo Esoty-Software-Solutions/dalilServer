@@ -13,13 +13,14 @@ const allergySchema = new mongoose.Schema({
         type : String,
         default : null,
     },
+    // for now thumbnail link is hard coded, once s3 logic is completed
     thumbnailLink: {
         type : String,
-        default : null,
+        default : "https://www.allergy.org.au/images/pcc/Clinical_History_Form.jpg",
     },
     fileLink: {
         type : String,
-        default : null,
+        default : "https://www.allergy.org.au/images/pcc/Clinical_History_Form.jpg",
     },
 });
 

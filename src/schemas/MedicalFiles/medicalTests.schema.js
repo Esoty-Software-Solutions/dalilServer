@@ -21,13 +21,14 @@ const medicalTestSchema = new mongoose.Schema({
         type : String,
         default : null,
     },
+    // hard coded for now
     thumbnailLink: {
         type : String,
-        default : null,
+        default : "https://www.allergy.org.au/images/pcc/Clinical_History_Form.jpg",
     },
     fileLink: {
         type : String,
-        default : null,
+        default : "https://www.allergy.org.au/images/pcc/Clinical_History_Form.jpg",
     }
 });
 

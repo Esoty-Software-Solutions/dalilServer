@@ -1,12 +1,7 @@
-const clinicalVisit = require("../schemas/MedicalFiles/clinicalVisit.schema")
 
-
-exports.findClinicalDocuments = async (findQuery, skip, limit) => {
-    console.log({
-        findQuery, skip, limit
-    })
+exports.findDocuments = async (schema ,findQuery, skip, limit) => {
     return new Promise((resolve, reject) => {
-        clinicalVisit.aggregate([
+        schema.aggregate([
             {
                 "$match" : findQuery
             }, 

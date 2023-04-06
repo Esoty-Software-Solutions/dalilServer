@@ -21,7 +21,6 @@ const medicalFileSchema = new mongoose.Schema({
   //   type: String,
   // },
 });
-
 // beneficiary schema or structure
 const beneficiarySchema = new mongoose.Schema({
   // beneficiaryId: {
@@ -55,11 +54,21 @@ const beneficiarySchema = new mongoose.Schema({
     enum: ["self", "father", "mother", "wife", "husband", "daughter", "son"],
     required: [true, `please specify relationship to the main subscriber `],
   },
+
   medicalFiles: {
     // type: medicalFileSchema,
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "medicalFiles",
-    required: false,
+    // type: mongoose.Schema.Types.ObjectId,
+    // ref: "medicalFiles",
+    // required: false,
+    bloodType: {
+      type: String,
+    },
+    height: {
+      type: Number,
+    },
+    weight: {
+      type: Number,
+    },
   },
 });
 
