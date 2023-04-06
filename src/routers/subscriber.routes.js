@@ -4,9 +4,12 @@ const {
   createSubscriber,
   updateSubscriber,
   getSubscriber,
-  deleteSubscriber,
   getSubscribers,
   createSubscribersCSV,
+  getBeneficiaries,
+  createBeneficiaryForSubscriber,
+  getBeneficiary,
+  updateBeneficiary,
 } = require("../controllers/subscriberController");
 const { customValidation } = require("../middlewares/payloadValidation");
 const { authentication } = require("../utilities/auth");
@@ -22,14 +25,15 @@ router.post(
 router.get("", authentication, getSubscribers);
 router.post("", authentication, createSubscriber);
 router.get("/:subscriberId", authentication, getSubscriber);
+router.get("/:subscriberId/beneficiaries", authentication, getBeneficiaries);
+router.get("/:subscriberId/beneficiaries/:beneficiaryId", getBeneficiary);
+router.patch("/:subscriberId/beneficiaries/:beneficiaryId", updateBeneficiary);
 router.post(
-  "/:subscriberId",
+  "/:subscriberId/beneficiaries",
   authentication,
-  // uploader.singleFileUpload.any({ name: "medicalFile" }),
-  updateSubscriber
+  createBeneficiaryForSubscriber
 );
 router.patch("/:subscriberId", authentication, updateSubscriber);
-router.delete("/:subscriberId", authentication, deleteSubscriber);
 
 
 // ---------------------------------------- medical files routes ----------------------------------------------- 

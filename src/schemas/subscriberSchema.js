@@ -33,9 +33,12 @@ const beneficiarySchema = new mongoose.Schema({
     type: String,
     required: [true, `please provide valid firstName`],
   },
-  middleName: {
+  secondName: {
     type: String,
-    required: [true, `please provide valid middleName`],
+    required: [true, `please provide valid secondName`],
+  },
+  thirdName: {
+    type: String,
   },
   lastName: {
     type: String,
@@ -59,7 +62,7 @@ const beneficiarySchema = new mongoose.Schema({
     // type: medicalFileSchema,
     type: mongoose.Schema.Types.ObjectId,
     ref: "medicalFiles",
-    required: false,
+    default: null,
   },
 });
 
@@ -74,9 +77,9 @@ const subscriberSchema = new mongoose.Schema({
     type: String,
     required: [true, `please provide valid firstName`],
   },
-  middleName: {
+  secondName: {
     type: String,
-    required: [true, `please provide valid middleName`],
+    required: [true, `please provide valid secondName`],
   },
   thirdName: {
     type: String,
@@ -113,14 +116,14 @@ const subscriberSchema = new mongoose.Schema({
   employeeId: {
     type: String,
     unique: [true, `employee ID has to be unique`],
-    required: [false, `please provide valid employee ID`],
+    // required: [false, `please provide valid employee ID`],
   },
   doctorId: {
     type: String,
     unique: [true, `employee ID has to be unique`],
-    required: [false, `please provide valid employee ID`],
+    // required: [false, `please provide valid employee ID`],
   },
-  residentCity: String,
+  city: String,
   residentDistrict: String,
   userId: {
     type: mongoose.Schema.Types.ObjectId,
