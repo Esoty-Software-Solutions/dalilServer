@@ -124,20 +124,20 @@ const getAllUsers = async () => {
 
     return axios.request(config)
         .then((response) => {
-            console.log("Create User", response.data);
+            // console.log("Create User", response.data.data);
             if (response.status === 200) {
                 let resData = {}
-                for (let key in response.data) {
-                    if(typeof response.data[key] === 'object'){
+                for (let key in response.data.data.objectArray) {
+                    if(typeof response.data.data.objectArray === 'object'){
                         let data = {}
-                        response.data[key].map(user =>{
+                        response.data.data.objectArray.map(user =>{
                             for(let k in user){
                                 data[k] = typeof user[k]
                             }
                         })
                         resData[key] = data;
                     }
-                    else resData[key] = typeof response.data[key];
+                    else resData[key] = typeof response.data.data.objectArray;
                 }
                 return JSON.stringify(resData)
             }

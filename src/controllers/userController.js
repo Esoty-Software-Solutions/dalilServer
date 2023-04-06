@@ -117,10 +117,6 @@ const updateUser = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-<<<<<<< HEAD
-    console.log(req);
-=======
->>>>>>> dev
     const { username, password } = req.body;
     console.log("req.body");
     console.log(req.body);

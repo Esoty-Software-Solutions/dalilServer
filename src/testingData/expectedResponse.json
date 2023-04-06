@@ -42,21 +42,26 @@
     "getUsers": {
         "statusCode": "string",
         "message": "string",
-        "token": "string",
         "data": {
-            "_id": "string",
-            "username": "string",
-            "firstName": "string",
-            "secondName": "string",
-            "thirdName": "string",
-            "lastName": "string",
-            "phoneNumber": "string",
-            "email": "user@example.com",
-            "phoneAuthenticated": true,
-            "resetPassword": true,
-            "subscriberId": "string",
-            "doctorId": "string",
-            "institutionId": "string"
+            "objectCount": 0,
+            "objectArray": [
+                {
+                    "_id": "string",
+                    "username": "string",
+                    "firstName": "string",
+                    "secondName": "string",
+                    "thirdName": "string",
+                    "lastName": "string",
+                    "phoneNumber": "string",
+                    "email": "user@example.com",
+                    "phoneAuthenticated": true,
+                    "resetPassword": true,
+                    "subscriberId": "string",
+                    "doctorId": "string",
+                    "institutionId": "string",
+                    "auxiliaryCenterId": "string"
+                }
+            ]
         }
     },
     "getSpecificUser": {
@@ -83,7 +88,7 @@
         "statusCode": "string",
         "message": "string"
     },
-    "changePaggword": {
+    "changePassword": {
         "statusCode": "string",
         "message": "string"
     }
