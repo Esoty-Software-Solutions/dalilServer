@@ -2,7 +2,6 @@ const UserRoleServices = require("../services/userRoleServices");
 
 const CreateUserRole = async (req, res) => {
   try {
-    
     const document = await UserRoleServices.createUserRole({
       ...req.body,
       createdBy: req.userId,
