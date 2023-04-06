@@ -2,25 +2,25 @@
 const mongoose = require(`mongoose`);
 // const audit = require(`./auditSchema`);
 
-// medicalFile schema or structure
-const medicalFileSchema = new mongoose.Schema({
-  bloodType: {
-    type: String,
-  },
-  height: {
-    type: Number,
-  },
-  weight: {
-    type: Number,
-  },
-  medicalTests: {
-    type: Array,
-    required: [false, `specify medical tests`],
-  },
-  // file: {
-  //   type: String,
-  // },
-});
+// // medicalFile schema or structure
+// const medicalFileSchema = new mongoose.Schema({
+//   bloodType: {
+//     type: String,
+//   },
+//   height: {
+//     type: Number,
+//   },
+//   weight: {
+//     type: Number,
+//   },
+//   medicalTests: {
+//     type: Array,
+//     required: [false, `specify medical tests`],
+//   },
+//   // file: {
+//   //   type: String,
+//   // },
+// });
 // beneficiary schema or structure
 const beneficiarySchema = new mongoose.Schema({
   // beneficiaryId: {
@@ -139,6 +139,6 @@ const subscriberSchema = new mongoose.Schema({
 
 const subscribers = mongoose.model(`subscribers`, subscriberSchema);
 const beneficiaries = mongoose.model(`beneficiaries`, beneficiarySchema);
-const medicalFiles = mongoose.model(`medicalFiles`, medicalFileSchema);
+// const medicalFiles = mongoose.model(`medicalFiles`, medicalFileSchema);
 
-module.exports = { subscribers, beneficiaries, medicalFiles };
+module.exports = { subscribers, beneficiaries};
