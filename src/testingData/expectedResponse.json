@@ -1,0 +1,90 @@
+{
+    "login": {
+        "statusCode": "string",
+        "message": "string",
+        "token": "string",
+        "data": {
+            "_id": "string",
+            "username": "string",
+            "firstName": "string",
+            "secondName": "string",
+            "thirdName": "string",
+            "lastName": "string",
+            "phoneNumber": "string",
+            "email": "user@example.com",
+            "phoneAuthenticated": true,
+            "resetPassword": true,
+            "subscriberId": "string",
+            "doctorId": "string",
+            "institutionId": "string"
+        }
+    },
+    "craeteUser": {
+        "statusCode": "string",
+        "message": "string",
+        "token": "string",
+        "data": {
+            "_id": "string",
+            "username": "string",
+            "firstName": "string",
+            "secondName": "string",
+            "thirdName": "string",
+            "lastName": "string",
+            "phoneNumber": "string",
+            "email": "user@example.com",
+            "phoneAuthenticated": true,
+            "resetPassword": true,
+            "subscriberId": "string",
+            "doctorId": "string",
+            "institutionId": "string"
+        }
+    },
+    "getUsers": {
+        "statusCode": "string",
+        "message": "string",
+        "token": "string",
+        "data": {
+            "_id": "string",
+            "username": "string",
+            "firstName": "string",
+            "secondName": "string",
+            "thirdName": "string",
+            "lastName": "string",
+            "phoneNumber": "string",
+            "email": "user@example.com",
+            "phoneAuthenticated": true,
+            "resetPassword": true,
+            "subscriberId": "string",
+            "doctorId": "string",
+            "institutionId": "string"
+        }
+    },
+    "getSpecificUser": {
+        "statusCode": "string",
+        "message": "string",
+        "token": "string",
+        "data": {
+            "_id": "string",
+            "username": "string",
+            "firstName": "string",
+            "secondName": "string",
+            "thirdName": "string",
+            "lastName": "string",
+            "phoneNumber": "string",
+            "email": "user@example.com",
+            "phoneAuthenticated": true,
+            "resetPassword": true,
+            "subscriberId": "string",
+            "doctorId": "string",
+            "institutionId": "string"
+        }
+    },
+    "logout": {
+        "statusCode": "string",
+        "message": "string"
+    },
+    "changePaggword": {
+        "statusCode": "string",
+        "message": "string"
+    }
+}

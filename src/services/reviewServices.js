@@ -1,4 +1,4 @@
-const ReviewSchema = require("../schemas/ reviewSchema");
+const ReviewSchema = require("../schemas/reviewSchema");
 
 exports.addReview = async (query) => {
   return await ReviewSchema.create(query);
