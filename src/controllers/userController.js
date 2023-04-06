@@ -16,13 +16,13 @@ const createUser = async (req, res) => {
     const myPlaintextPassword = req.body.password;
 
     // hashing user password
-    const hash = bcrypt.hashSync(myPlaintextPassword, 10);
+    // const hash = bcrypt.hashSync(myPlaintextPassword, 10);
 
     // const lastUser = users[0].userId;
     // const idNumber = Number(lastUser.split(`-`)[1]);
     const newBody = {
       ...req.body,
-      password: hash,
+      // password: hash,
       // userId: `SSD-${idNumber + 1}`,
       // sd: idNumber + 1,
     };
@@ -69,7 +69,10 @@ const getUsers = async (req, res) => {
     let message = "good";
     if (docArray.length === 0) message = "list is empty change your query";
 
-    return successResponse(res, message, docArray, docCount);
+    return successResponse(res, message, {
+      objectCount: docCount,
+      objectArray: docArray,
+    });
   } catch (error) {
     console.log(error);
     return serverErrorResponse(res, error.message);
@@ -115,6 +118,10 @@ const updateUser = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
+    console.log("req.body");
+    console.log(req.body);
+    console.log("username", "password");
+    console.log(username, password);
     const doc = await UserServices.getUser({
       username,
     });
@@ -214,7 +221,7 @@ const SendNotification = async (req, res) => {
   let user;
   try {
     user = await UserServices.getUser({ _id: req.userId });
-    console.log("this is the user " , user);
+    console.log("this is the user ", user);
     if (!user) {
       return notFoundResponse(res, messageUtil.notFound);
     }
