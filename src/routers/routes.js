@@ -11,6 +11,7 @@ const institutesRouter = require("./institution.routes");
 const medicalCentersRouter = require("./medicalCenter.routes");
 const schedulesRouter = require("./schedule.routes");
 const notificationRouter = require("./notification.routes");
+const relationshipToBeneficiaryRoutes = require('./relationshipToBeneficiary.routes')
 
 const medicalFileRouter = require("./midcalFiles.routes");
 const smsRouter = require("./sms.routes");
@@ -30,6 +31,7 @@ router.use(API_VERSION + "/schedules", schedulesRouter);
 router.use(API_VERSION + "/notifications", notificationRouter);
 router.use(API_VERSION + "/sms", smsRouter);
 router.use(API_VERSION + "/medicalFiles", medicalFileRouter);
+router.use(API_VERSION + "/medicalFiles", medicalFileRouter);
 // router.use("/claims", claimsRouter);
-router.use(API_VERSION + "/review",reviewRouter)
+router.use(API_VERSION + "/misc/relationshipToBeneficiaryEnum", relationshipToBeneficiaryRoutes)
 module.exports = router;
