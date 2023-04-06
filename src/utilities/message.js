@@ -18,6 +18,7 @@ messageUtil = {
   found: "Users found successful",
   invalidCurrentPassword: "Current password is not correct",
   methodUnderDev: "method under development",
+  resourceNotCreated : "Resource not created"
 };
 
 module.exports = { messageUtil };

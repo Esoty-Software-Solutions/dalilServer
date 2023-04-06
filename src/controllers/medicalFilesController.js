@@ -62,6 +62,8 @@ const getMedicalFiles = async (req, res) => {
     return serverErrorResponse(res, error.message);
   }
 };
+
+
 module.exports = {
   createMedicalFile,
   updateMedicalFile,
