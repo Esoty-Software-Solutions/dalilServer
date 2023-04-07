@@ -1,70 +1,118 @@
 const ScheduleServices = require("../services/scheduleServices");
-const doctor = require("../schemas/doctorSchema");
+const DoctorServices = require("../services/doctorServices");
+const MedicalCenterServices = require("../services/medicalCenterServices");
+const { messageUtil } = require("../utilities/message");
+const {
+  successResponse,
+  serverErrorResponse,
+  badRequestErrorResponse,
+  notFoundResponse,
+} = require("../utilities/response");
+
+const dateRegex = /^([0-9]{4})-(?:[0-9]{2})-([0-9]{2})$/;
 
 const CreateSchedule = async (req, res) => {
   try {
+    //checking that one of the days must have true value
+    if (
+      !req.body.monday &&
+      !req.body.tuesday &&
+      !req.body.wednesday &&
+      !req.body.thursday &&
+      !req.body.friday &&
+      !req.body.saturday &&
+      !req.body.sunday
+    ) {
+      return badRequestErrorResponse(
+        res,
+        "At least one of the boolean fields must be set to true"
+      );
+    }
+    //checking data formate
+    if (
+      !dateRegex.test(req.body.startDate) &&
+      !dateRegex.test(req.body.endDate)
+    ) {
+      return badRequestErrorResponse(res, "Invalid date format");
+    }
+    //checking if doctor id is valid
+    let doctor = DoctorServices.getDoctorDetails({ _id: req.body.doctorId });
+    if (!doctor) {
+      return notFoundResponse(res, "Please provide valid doctor id");
+    }
+    //checking if medical center id is valid
+    let medicalCenter = MedicalCenterServices.getMedicalCenterDetails({
+      _id: req.body.medicalCenterId,
+    });
+    if (!medicalCenter) {
+      return notFoundResponse(res, "Please provide valid medical center id");
+    }
+
     const document = await ScheduleServices.createSchedule({
       ...req.body,
-
-      createdBy: req.userId,
-
-      isActive: true,
     });
 
-    const responseBody = {
-      codeStatus: "201",
-      message: "document created",
-      data: document,
-    };
-    return res.status(201).json({ ...responseBody });
+    return successResponse(res, messageUtil.resourceCreated, document);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    return serverErrorResponse(res, error);
   }
 };
 
 const UpdateSchedule = async (req, res) => {
   try {
+    //checking if doctor id is valid
+    if (req.body.doctorId) {
+      let doctor = DoctorServices.getDoctorDetails({ _id: req.body.doctorId });
+      if (!doctor) {
+        return notFoundResponse(res, "Please provide valid doctor id");
+      }
+    }
+    //checking if medical center id is valid
+    if (req.body.medicalCenterId) {
+      let medicalCenter = MedicalCenterServices.getMedicalCenterDetails({
+        _id: req.body.medicalCenterId,
+      });
+      if (!medicalCenter) {
+        return notFoundResponse(res, "Please provide valid medical center id");
+      }
+    }
+
     const document = await ScheduleServices.updateSchedule(
-      req.params.id,
+      { _id: req.params.scheduleId },
       {
         ...req.body,
-        updatedBy: req.userId,
-      },
-      { new: true }
+      }
     );
-    if (!document) {
-      return res.status(404).json({ message: `schedule not found` });
-    }
-    res.status(200).json(document);
+
+    return successResponse(res, messageUtil.resourceUpdated, document);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    return serverErrorResponse(res, error);
   }
 };
 
 const SpecificSchedule = async (req, res) => {
   try {
-    const document = await ScheduleServices.getScheduleDetails(req.params.id);
+    const document = await ScheduleServices.getScheduleDetails({
+      _id: req.params.scheduleId,
+    });
     if (!document) {
-      return res.status(404).json({ message: `schedule not found` });
+      return notFoundResponse(res, messageUtil.resourceNotFound);
     }
-    res.status(200).json(document);
+    return successResponse(res, messageUtil.success, document);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    return serverErrorResponse(res, error);
   }
 };
 
 const DeleteSchedule = async (req, res) => {
   try {
-    const document = await ScheduleServices.deleteSchedule(
-      req.params.id
-    ).lean();
+    const document = await ScheduleServices.deleteSchedule({
+      _id: req.params.scheduleId,
+    });
     if (!document) {
-      return res.status(404).json({ message: `schedule not found` });
+      return notFoundResponse(res, messageUtil.resourceNotFound);
     }
-    res.status(200).json({ message: `successfully deleted` });
+    return successResponse(res, messageUtil.resourceDeleted);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
