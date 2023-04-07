@@ -9,12 +9,13 @@ const scheduleSchema = new mongoose.Schema(
     },
     doctorId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
+      ref: "doctors",
       required: [true, `please provide valid doctor id`],
     },
     timeslot: {
       type: String,
       required: [true, `please provide valid timeslot`],
+      enum: ["morning", "afternoon", "evening"],
     },
     monday: {
       type: Boolean,
@@ -59,10 +60,8 @@ const scheduleSchema = new mongoose.Schema(
     },
     isActive: {
       type: Boolean,
+      default: true,
     },
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
-
-    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   },
   { timestamps: true }
 );
