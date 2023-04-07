@@ -23,29 +23,33 @@ const CreateSchedule = async (req, res) => {
       !req.body.saturday &&
       !req.body.sunday
     ) {
-      return badRequestErrorResponse(
-        res,
-        "At least one of the boolean fields must be set to true"
-      );
+      return badRequestErrorResponse(res, messageUtil.selectDay);
     }
     //checking data formate
     if (
       !dateRegex.test(req.body.startDate) &&
       !dateRegex.test(req.body.endDate)
     ) {
-      return badRequestErrorResponse(res, "Invalid date format");
+      return badRequestErrorResponse(res, messageUtil.invalidDate);
+    }
+    const start = new Date(req.body.startDate);
+    const end = new Date(req.body.endDate);
+
+    // Check if the start date is less than or equal to the end date
+    if (start > end) {
+      return badRequestErrorResponse(res, messageUtil.invalidStartDate);
     }
     //checking if doctor id is valid
     let doctor = DoctorServices.getDoctorDetails({ _id: req.body.doctorId });
     if (!doctor) {
-      return notFoundResponse(res, "Please provide valid doctor id");
+      return notFoundResponse(res, messageUtil.invalidDoctorId);
     }
     //checking if medical center id is valid
     let medicalCenter = MedicalCenterServices.getMedicalCenterDetails({
       _id: req.body.medicalCenterId,
     });
     if (!medicalCenter) {
-      return notFoundResponse(res, "Please provide valid medical center id");
+      return notFoundResponse(res, messageUtil.invalidMedicalCenterId);
     }
 
     const document = await ScheduleServices.createSchedule({
@@ -131,6 +135,7 @@ const AllSchedule = async (req, res) => {
       limitQP = 30;
     }
     let documents = ScheduleServices.getAllSchedules({}, limitQP);
+    let message = "success";
     if (documents.length === 0) {
       message = "list is empty change your query";
     }
