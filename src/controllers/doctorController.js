@@ -79,60 +79,43 @@ const DeleteDoctor = async (req, res) => {
 };
 
 const AllDoctors = async (req, res) => {
-  //   try {
-  //     let limitQP = req.query.limit;
-  //     if (limitQP) {
-  //       limitQP = Number(limitQP);
-  //       if (limitQP > 100 || limitQP < 1) {
-  //         limitQP = 30;
-  //       }
-  //     } else {
-  //       limitQP = 30;
-  //     }
-  //     if (req.query.doctorId) {
-  //       let medicalCenters = [];
-  //       //finding schedules for doctor
-  //       let schedules = await ScheduleServices.getAllSchedules({
-  //         doctorId: req.query.doctorId,
-  //       });
-  //       if (schedules.length < 1) {
-  //         return notFoundResponse(res, messageUtil.resourceNotFound);
-  //       }
-  //       for (let i = 0; i < schedules.length; i++) {
-  //         //finding medical centers
-  //         let medicalCenter = await MedicalCenterServices.getMedicalCenterDetails(
-  //           { _id: schedules[i].medicalCenterId }
-  //         );
-  //         //pushing medical centers
-  //         medicalCenters.push(medicalCenter);
-  //       }
-  //       if (medicalCenters.length < 1) {
-  //         return notFoundResponse(res, messageUtil.resourceNotFound);
-  //       }
-  //       return successResponse(res, messageUtil.success, {
-  //         objectCount: medicalCenters.length,
-  //         objectArray: medicalCenters,
-  //       });
-  //     } else {
-  //       let query = {};
-  //       if (req.query.medicalCenterId) {
-  //         query._id = req.query.medicalCenterId;
-  //       }
-  //       if (req.query.speciality) {
-  //         query.speciality = req.query.speciality;
-  //       }
-  //       const documents = await MedicalCenterServices.getAllMedicalCenters(
-  //         query,
-  //         limitQP
-  //       );
-  //       return successResponse(res, messageUtil.success, {
-  //         objectCount: documents.length,
-  //         objectArray: documents,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     return serverErrorResponse(res, error);
-  //   }
+  try {
+    let limitQP = req.query.limit;
+    let skipOP = req.query.skip;
+    if (limitQP) {
+      limitQP = Number(limitQP);
+      if (limitQP > 100 || limitQP < 1) {
+        limitQP = 30;
+      }
+    } else {
+      limitQP = 30;
+    }
+    if (skipOP) {
+      skipOP = Number(skipOP);
+      if (skipOP > 100 || skipOP < 1) {
+        limitQP = 0;
+      }
+    } else {
+      skipOP = 0;
+    }
+    let query = {};
+    if (req.query.doctorId) {
+      query._id = req.query.doctorId;
+    }
+    if (req.query.specialty) {
+      query.specialty = req.query.specialty;
+    }
+    const documents = await DoctorServices.getDoctors(query, limitQP, skipOP);
+    if (documents.length < 1) {
+      return notFoundResponse(res, messageUtil.resourceNotFound);
+    }
+    return successResponse(res, messageUtil.success, {
+      objectCount: documents.length,
+      objectArray: documents,
+    });
+  } catch (error) {
+    return serverErrorResponse(res, error);
+  }
 };
 module.exports = {
   CreateDoctor,
