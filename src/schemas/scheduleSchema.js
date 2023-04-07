@@ -9,40 +9,34 @@ const scheduleSchema = new mongoose.Schema(
     },
     doctorId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
+      ref: "doctors",
       required: [true, `please provide valid doctor id`],
     },
     timeslot: {
       type: String,
       required: [true, `please provide valid timeslot`],
+      enum: ["morning", "afternoon", "evening"],
     },
     monday: {
       type: Boolean,
-      required: [true, `please provide valid date`],
     },
     tuesday: {
       type: Boolean,
-      required: [true, `please provide valid date`],
     },
     wednesday: {
       type: Boolean,
-      required: [true, `please provide valid date`],
     },
     thursday: {
       type: Boolean,
-      required: [true, `please provide valid date`],
     },
     friday: {
       type: Boolean,
-      required: [true, `please provide valid date`],
     },
     saturday: {
       type: Boolean,
-      required: [true, `please provide valid date`],
     },
     sunday: {
       type: Boolean,
-      required: [true, `please provide valid date`],
     },
 
     price: {
@@ -59,10 +53,8 @@ const scheduleSchema = new mongoose.Schema(
     },
     isActive: {
       type: Boolean,
+      default: true,
     },
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
-
-    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   },
   { timestamps: true }
 );
