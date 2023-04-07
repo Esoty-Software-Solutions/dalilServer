@@ -4,7 +4,6 @@ const mongoose = require(`mongoose`);
 // doctor schema setup
 const doctorSchema = mongoose.Schema(
   {
-    doctorId: { type: mongoose.ObjectId, unique: true },
     firstName: {
       type: String,
       required: [true, `please enter valid first name`],
