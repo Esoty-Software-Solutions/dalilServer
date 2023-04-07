@@ -82,6 +82,7 @@ const DeleteMedicalCenter = async (req, res) => {
 const AllMedicalCenter = async (req, res) => {
   try {
     let limitQP = req.query.limit;
+    let skipOP = req.query.skip;
     if (limitQP) {
       limitQP = Number(limitQP);
       if (limitQP > 100 || limitQP < 1) {
@@ -90,17 +91,26 @@ const AllMedicalCenter = async (req, res) => {
     } else {
       limitQP = 30;
     }
+    if (skipOP) {
+      skipOP = Number(skipOP);
+      if (skipOP > 100 || skipOP < 1) {
+        limitQP = 0;
+      }
+    } else {
+      skipOP = 0;
+    }
     if (req.query.doctorId) {
       let medicalCenters = [];
       //finding schedules for doctor
       let schedules = await ScheduleServices.getAllSchedules({
         doctorId: req.query.doctorId,
       });
-
+      //returning if schedules not found
       if (schedules.length < 1) {
         return notFoundResponse(res, messageUtil.resourceNotFound);
       }
 
+      //iterating all schdules to find medical center through medicalCenterId
       for (let i = 0; i < schedules.length; i++) {
         //finding medical centers
         let medicalCenter = await MedicalCenterServices.getMedicalCenterDetails(
@@ -110,6 +120,7 @@ const AllMedicalCenter = async (req, res) => {
         medicalCenters.push(medicalCenter);
       }
 
+      //returning if no medical center found
       if (medicalCenters.length < 1) {
         return notFoundResponse(res, messageUtil.resourceNotFound);
       }
@@ -123,15 +134,18 @@ const AllMedicalCenter = async (req, res) => {
       if (req.query.medicalCenterId) {
         query._id = req.query.medicalCenterId;
       }
-      if (req.query.speciality) {
-        query.speciality = req.query.speciality;
+      if (req.query.city) {
+        query.city = req.query.city;
       }
 
       const documents = await MedicalCenterServices.getAllMedicalCenters(
         query,
-        limitQP
+        limitQP,
+        skipOP
       );
-
+      if (documents.length < 1) {
+        return notFoundResponse(res, messageUtil.resourceNotFound);
+      }
       return successResponse(res, messageUtil.success, {
         objectCount: documents.length,
         objectArray: documents,
