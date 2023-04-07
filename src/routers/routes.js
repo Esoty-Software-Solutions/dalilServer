@@ -14,7 +14,7 @@ const notificationRouter = require("./notification.routes");
 const doctorRouter = require("./doctor.routes");
 const medicalFileRouter = require("./midcalFiles.routes");
 const smsRouter = require("./sms.routes");
-
+const appointmentStatusEnums = require('./appointmentStatusEnums.routes');
 const API_VERSION = "/v1";
 
 router.use(API_VERSION + "/login", loginRouter);
@@ -30,6 +30,7 @@ router.use(API_VERSION + "/notifications", notificationRouter);
 router.use(API_VERSION + "/sms", smsRouter);
 router.use(API_VERSION + "/medicalFiles", medicalFileRouter);
 router.use(API_VERSION + "/doctors", doctorRouter);
+router.use(API_VERSION + "/misc/appointmentstatusenum", appointmentStatusEnums);
 // router.use("/claims", claimsRouter);
 
 module.exports = router;
