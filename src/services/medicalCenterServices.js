@@ -16,8 +16,8 @@ exports.deleteMedicalCenter = async (query) => {
 
 exports.getAllMedicalCenters = async (query, limit, skip) => {
   return await MedicalCenterSchema.find(query)
-    .limit(limit)
     .skip(skip)
+    .limit(limit)
     .select("-__v ");
 };
 
