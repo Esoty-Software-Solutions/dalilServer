@@ -26,6 +26,7 @@ const appointmentStatusEnums = {
     getAppointmentStatusEnums: async (req, res) => {
         try {
             let data = await appointmentStatusEnumsServices.getAppointmentStatusEnums({ _id: req.params.id });
+            if(!data) return successResponse(res, "No Record Found", {})
 
             return successResponse(res, "Success", data)
         } catch (err) {
