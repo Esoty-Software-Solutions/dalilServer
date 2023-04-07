@@ -19,31 +19,24 @@ const scheduleSchema = new mongoose.Schema(
     },
     monday: {
       type: Boolean,
-      required: [true, `please provide valid date`],
     },
     tuesday: {
       type: Boolean,
-      required: [true, `please provide valid date`],
     },
     wednesday: {
       type: Boolean,
-      required: [true, `please provide valid date`],
     },
     thursday: {
       type: Boolean,
-      required: [true, `please provide valid date`],
     },
     friday: {
       type: Boolean,
-      required: [true, `please provide valid date`],
     },
     saturday: {
       type: Boolean,
-      required: [true, `please provide valid date`],
     },
     sunday: {
       type: Boolean,
-      required: [true, `please provide valid date`],
     },
 
     price: {
