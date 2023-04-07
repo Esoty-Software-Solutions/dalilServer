@@ -6,11 +6,16 @@ const relationshipToBeneficiaryEnumSchema = mongoose.Schema(
   {
     backendName: {
       type: String,
-      required: [true, `please enter valid  name`],
-      default: null
+      required: [true, `Please enter valid  BackendName`]
     },
-    arabicName: String,
-    englishName: String,
+    arabicName: {
+      type: String,
+      required: [true, `Please enter valid  ArabicName`]
+    },
+    englishName: {
+      type: String,
+      required: [true, `Please enter valid  EnglishName`]
+    },
   }
 );
 

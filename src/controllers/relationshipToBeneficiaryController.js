@@ -1,4 +1,7 @@
 const relationshipToBeneficiaryServices = require('../services/relationshipToBeneficiaryEnumServices');
+const {successResponse, badRequestErrorResponse, notFoundResponse, serverErrorResponse} = require('../utilities/response');
+
+
 
 const relationshipToBeneficiary = {
 
@@ -10,13 +13,10 @@ const relationshipToBeneficiary = {
                 ...req.body,
             };
             let data = await relationshipToBeneficiaryServices.addRelationshipToBeneficiaryEnum(query);
-            res.status(200).json({
-                statusCode: "200",
-                message: "Relation to Beneficiary Added successfully",
-                data
-            });
+
+            return successResponse(res, "Relation to Beneficiary Added successfully", data)
         } catch (err) {
-            res.status(500).json({ message: err.message });
+            return serverErrorResponse(res, err);
         }
     },
 
@@ -26,13 +26,10 @@ const relationshipToBeneficiary = {
     getRelationshipToBeneficiaryEnum: async (req, res) => {
         try {
             let data = await relationshipToBeneficiaryServices.getRelationshipToBeneficiaryEnum({ _id: req.params.id });
-            res.status(200).json({
-                statusCode: "200",
-                message: "Success",
-                data
-            });
+
+            return successResponse(res, "Success", data)
         } catch (err) {
-            res.status(500).json({ message: err.message });
+            return serverErrorResponse(res, err);
         }
     },
 
@@ -46,16 +43,10 @@ const relationshipToBeneficiary = {
                 skip: req.query.skip
             }
             let objectArray = await relationshipToBeneficiaryServices.getAllRelationshipToBeneficiaryEnum(query);
-            res.status(200).json({
-                statusCode: "200",
-                message: "Success",
-                data: {
-                    objectCount: objectArray.length,
-                    objectArray
-                }
-            })
+
+            return successResponse(res, "Success", objectArray, objectArray.length);
         } catch (err) {
-            res.status(500).json({ message: err.message });
+            return serverErrorResponse(res, err);
         }
     },
 
@@ -69,15 +60,12 @@ const relationshipToBeneficiary = {
             );
 
             if (!data) {
-                return res.status(404).json({ error: "Record Not Found" });
+                return badRequestErrorResponse(res, "Record Not Found")
               }
-              res.status(200).json({
-                statusCode: "200",
-                message: "RelationToBeneficiaryEnum updated successfully",
-                data
-              });
+
+              return successResponse(res, "RelationToBeneficiaryEnum updated successfully", data)
         } catch (err) {
-            res.status(500).json({ message: err.message });
+            return serverErrorResponse(res, err);
         }
     }
 }

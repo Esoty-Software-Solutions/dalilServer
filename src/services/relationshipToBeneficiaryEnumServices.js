@@ -1,5 +1,6 @@
 const RelationshipToBeneficiaryEnum = require("../schemas/relationshipToBeneficiaryEnumSchema");
 
+
 exports.addRelationshipToBeneficiaryEnum = async (query) => {
   return await RelationshipToBeneficiaryEnum.create(query);
 };
@@ -12,7 +13,7 @@ exports.updateRelationshipToBeneficiaryEnum = async (query, data) => {
 
 
 exports.getAllRelationshipToBeneficiaryEnum = async ({limit, skip}) => {
-  return await RelationshipToBeneficiaryEnum.find().limit(limit).skip(skip);
+  return await RelationshipToBeneficiaryEnum.find().skip(skip).limit(limit);
 };
 
 exports.getRelationshipToBeneficiaryEnum = async (query) => {
