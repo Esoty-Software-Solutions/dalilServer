@@ -7,7 +7,9 @@ exports.createSchedule = async (query) => {
 exports.updateSchedule = async (query, data) => {
   return await ScheduleSchema.findOneAndUpdate(query, data, {
     new: true,
-  });
+  })
+    .populate("doctorId")
+    .populate("medicalCenterId");
 };
 
 exports.deleteSchedule = async (query) => {
@@ -23,7 +25,8 @@ exports.getAllSchedules = async (query, limit) => {
 };
 
 exports.getScheduleDetails = async (query) => {
-  return await ScheduleSchema.findOne(query).select(
-    "-__v -createdAt -updatedAt"
-  );
+  return await ScheduleSchema.findOne(query)
+    .populate("doctorId")
+    .populate("medicalCenterId")
+    .select("-__v -createdAt -updatedAt");
 };
