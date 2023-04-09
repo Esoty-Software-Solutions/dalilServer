@@ -16,6 +16,10 @@ const medicalFileRouter = require("./midcalFiles.routes");
 const smsRouter = require("./sms.routes");
 const relationshipToBeneficiary = require('./relationshipToBeneficiary.routes');
 const appointmentStatusEnums = require('./appointmentStatusEnums.routes');
+const medicalSpecialties = require('./medicalSpecialties.routes');
+const medicalServices = require('./medicalServices.routes');
+const timeSlotEnumRouter = require('./timeSlotEnum.routes');
+const accountStatusEnumRouter = require('./accountStatusEnum.routes');
 
 const API_VERSION = "/v1";
 
@@ -32,8 +36,16 @@ router.use(API_VERSION + "/notifications", notificationRouter);
 router.use(API_VERSION + "/sms", smsRouter);
 router.use(API_VERSION + "/medicalFiles", medicalFileRouter);
 router.use(API_VERSION + "/doctors", doctorRouter);
+// router.use("/claims", claimsRouter);
+
+
+// Miscellaneous APIs
 router.use(API_VERSION + "/misc/relationshipToBeneficiaryEnum", relationshipToBeneficiary);
 router.use(API_VERSION + "/misc/appointmentstatusenum", appointmentStatusEnums);
-// router.use("/claims", claimsRouter);
+router.use(API_VERSION + "/misc/medicalSpecialties", medicalSpecialties);
+router.use(API_VERSION + "/misc/medicalServices", medicalServices);
+router.use(API_VERSION + "/misc/timeSlotEnum", timeSlotEnumRouter);
+router.use(API_VERSION + "/misc/accountStatusEnum", accountStatusEnumRouter);
+
 
 module.exports = router;

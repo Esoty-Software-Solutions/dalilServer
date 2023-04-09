@@ -26,7 +26,7 @@ const relationshipToBeneficiary = {
     getRelationshipToBeneficiaryEnum: async (req, res) => {
         try {
             let data = await relationshipToBeneficiaryServices.getRelationshipToBeneficiaryEnum({ _id: req.params.id });
-
+            if(!data) return notFoundResponse(res, "No Record Found")
             return successResponse(res, "Success", data)
         } catch (err) {
             return serverErrorResponse(res, err);
