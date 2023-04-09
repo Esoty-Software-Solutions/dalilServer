@@ -3,9 +3,9 @@ var router = express.Router();
 
 const relationshipToBeneficiaryController = require('../controllers/relationshipToBeneficiaryController');
 
-router.get("/", relationshipToBeneficiaryController.getAllRelationshipToBeneficiaryEnum);
-router.get("/:id", relationshipToBeneficiaryController.getRelationshipToBeneficiaryEnum);
-router.post("/", relationshipToBeneficiaryController.addRelationshipToBeneficiaryEnum);
-router.patch("/:id", relationshipToBeneficiaryController.updateRelationshipToBeneficiaryEnum);
+router.get("/", relationshipToBeneficiaryController.getAllrelationshipToSubscriberEnum);
+router.get("/:id", relationshipToBeneficiaryController.getrelationshipToSubscriberEnum);
+router.post("/", relationshipToBeneficiaryController.addrelationshipToSubscriberEnum);
+router.patch("/:id", relationshipToBeneficiaryController.updaterelationshipToSubscriberEnum);
 
 module.exports = router;

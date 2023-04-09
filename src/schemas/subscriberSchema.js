@@ -118,12 +118,12 @@ const subscriberSchema = new mongoose.Schema({
   },
   employeeId: {
     type: String,
-    unique: [true, `employee ID has to be unique`],
+    // unique: [true, `employee ID has to be unique`],
     // required: [false, `please provide valid employee ID`],
   },
   doctorId: {
     type: String,
-    unique: [true, `employee ID has to be unique`],
+    // unique: [true, `employee ID has to be unique`],
     // required: [false, `please provide valid employee ID`],
   },
   city: String,

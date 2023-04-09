@@ -1,4 +1,4 @@
-const relationshipToBeneficiaryServices = require('../services/relationshipToBeneficiaryEnumServices');
+const relationshipToBeneficiaryServices = require('../services/relationshipToSubscriberEnumServices');
 const {successResponse, badRequestErrorResponse, notFoundResponse, serverErrorResponse} = require('../utilities/response');
 
 
@@ -7,12 +7,12 @@ const relationshipToBeneficiary = {
 
     // Add Relationship to beneficiary Enum
 
-    addRelationshipToBeneficiaryEnum: async (req, res) => {
+    addrelationshipToSubscriberEnum: async (req, res) => {
         try {
             let query = {
                 ...req.body,
             };
-            let data = await relationshipToBeneficiaryServices.addRelationshipToBeneficiaryEnum(query);
+            let data = await relationshipToBeneficiaryServices.addrelationshipToSubscriberEnum(query);
 
             return successResponse(res, "Relation to Beneficiary Added successfully", data)
         } catch (err) {
@@ -21,9 +21,9 @@ const relationshipToBeneficiary = {
     },
 
 
-    // Get RelationshipToBeneficiaryEnum By Id
+    // Get relationshipToSubscriberEnum By Id
 
-    getRelationshipToBeneficiaryEnum: async (req, res) => {
+    getrelationshipToSubscriberEnum: async (req, res) => {
         try {
             let data = await relationshipToBeneficiaryServices.getRelationshipToBeneficiaryEnum({ _id: req.params.id });
             if(!data) return notFoundResponse(res, "No Record Found")
@@ -34,15 +34,15 @@ const relationshipToBeneficiary = {
     },
 
 
-    // Get list of relationshipToBeneficiaryEnum
+    // Get list of relationshipToSubscriberEnum
 
-    getAllRelationshipToBeneficiaryEnum: async (req, res) => {
+    getAllrelationshipToSubscriberEnum: async (req, res) => {
         try {
             let query = {
                 limit: req.query.limit,
                 skip: req.query.skip
             }
-            let objectArray = await relationshipToBeneficiaryServices.getAllRelationshipToBeneficiaryEnum(query);
+            let objectArray = await relationshipToBeneficiaryServices.getAllrelationshipToSubscriberEnum(query);
 
             return successResponse(res, "Success", objectArray, objectArray.length);
         } catch (err) {
@@ -50,11 +50,11 @@ const relationshipToBeneficiary = {
         }
     },
 
-    // Update RelationshipToBeneficiaryEnum by Id
+    // Update relationshipToSubscriberEnum by Id
 
-    updateRelationshipToBeneficiaryEnum: async (req, res) => {
+    updaterelationshipToSubscriberEnum: async (req, res) => {
         try {
-            let data = await relationshipToBeneficiaryServices.updateRelationshipToBeneficiaryEnum(
+            let data = await relationshipToBeneficiaryServices.updaterelationshipToSubscriberEnum(
                 { _id: req.params.id },
                 {...req.body}
             );
