@@ -12,8 +12,8 @@ const medicalCenterSchema = mongoose.Schema(
     city: {
       type: mongoose.Schema.Types.ObjectId,
       set: (v) => mongoose.Types.ObjectId(v),
-      ref: "cities",
-      required: [true, `please enter valid city`],     
+      ref: "city",
+      required: [true, `please enter valid city`],
     },
     district: {
       type: String,
