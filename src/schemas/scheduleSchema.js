@@ -13,10 +13,12 @@ const scheduleSchema = new mongoose.Schema(
       required: [true, `please provide valid doctor id`],
     },
     timeslot: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      set: (v) => mongoose.Types.ObjectId(v),
+      ref: "timeSlotEnum",
       required: [true, `please provide valid timeslot`],
-      enum: ["morning", "afternoon", "evening"],
     },
+
     monday: {
       type: Boolean,
     },
