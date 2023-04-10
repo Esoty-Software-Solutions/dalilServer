@@ -32,6 +32,8 @@ const doctorSchema = mongoose.Schema(
       type: String,
       required: [true, `please enter valid birthdate`],
     },
+    starRating: { type: Number, default: 0 },
+    commentCount: { type: Number, default: 0 },
   },
   { collection: "doctors" }
 );

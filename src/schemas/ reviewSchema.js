@@ -22,7 +22,7 @@ const reviewSchema = mongoose.Schema(
     },
     starRating: {
       type: Number,
-      default: 0,
+      default: null,
     },
   },
   { timestamps: true }

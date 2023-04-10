@@ -1,8 +1,7 @@
 [
     {
         "firstName": "ahmad",
-        "middleName": "mohammed",
-        "thirdName":"",
+        "secondName": "mohammed",
         "lastName": "salem",
         "phoneNumber":9876543210,
         "employeeId":"",

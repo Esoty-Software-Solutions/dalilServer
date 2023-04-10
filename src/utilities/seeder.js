@@ -80,7 +80,7 @@ const removeData = async () => {
     await createDoctorData();
     await createAppointmentsData();
     await createSubscriberData();
-    
+
     process.exit();
   } catch (err) {
     console.error(err);
