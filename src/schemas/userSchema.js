@@ -1,5 +1,6 @@
 // importing mongoose dependency for user schema and model creation
 const mongoose = require(`mongoose`);
+const bcrypt = require("bcrypt");
 
 const userSchema = mongoose.Schema({
   username: {
@@ -31,17 +32,31 @@ const userSchema = mongoose.Schema({
     type: String,
     required: [true, `please enter valid first name`],
   },
-  middleName: { type: String },
+  secondName: { type: String },
+  thirdName: { type: String },
   lastName: {
     type: String,
     required: [true, `please enter valid last name`],
   },
+  email: { type: String },
+  deviceToken: { type: String },
+  deviceType: { type: String, enum: ["android", "ios", "browser"] },
   subscriberId: {
     type: mongoose.Schema.Types.ObjectId,
-    set: (v) => mongoose.Types.ObjectId(v),
-    unique: [true, "employee ID has to be unique"],
     ref: "subscribers",
+    default: null,
   },
+  doctorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "doctors",
+    default: null,
+  },
+  instituionId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "institutions",
+    default: null,
+  },
+  resetPassword: { type: Boolean, default: false },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   createdTimeStamp: {
     type: Date,
@@ -64,7 +79,25 @@ const userSchema = mongoose.Schema({
     ref: "userRoles",
   },
 });
+userSchema.pre("save", function (next) {
+  var user = this;
 
+  // only hash the password if it has been modified (or is new)
+  if (!user.isModified("password")) return next();
+
+  // generate a salt
+  bcrypt.genSalt(10, function (err, salt) {
+    if (err) return next(err);
+
+    // hash the password using our new salt
+    bcrypt.hash(user.password, salt, function (err, hash) {
+      if (err) return next(err);
+      // override the cleartext password with the hashed one
+      user.password = hash;
+      next();
+    });
+  });
+});
 const user = mongoose.model(`users`, userSchema);
 
 /// exporting user model to usermiddleware for querying user collection

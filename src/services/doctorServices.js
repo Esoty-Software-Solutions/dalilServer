@@ -14,12 +14,10 @@ exports.deleteDoctor = async (query) => {
   return await DoctorSchema.findOneAndDelete(query);
 };
 
-exports.getDoctors = async (query, limit) => {
-  return await DoctorSchema.find(query)
-  .select("-__v");
+exports.getDoctors = async (query, limit, skip) => {
+  return await DoctorSchema.find(query).skip(skip).limit(limit).select("-__v");
 };
 
 exports.getDoctorDetails = async (query) => {
-  return await DoctorSchema.findOne(query)
-  .select("-__v -createdAt -updatedAt");
+  return await DoctorSchema.findOne(query).select("-__v -createdAt -updatedAt");
 };

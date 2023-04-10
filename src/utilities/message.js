@@ -16,7 +16,14 @@ messageUtil = {
   notFound: "User not found",
   tokenRegistered: "User app token registered",
   found: "Users found successful",
+  invalidCurrentPassword: "Current password is not correct",
   methodUnderDev: "method under development",
+  resourceNotCreated: "Resource not created",
+  invalidDate: "Invalid date formate",
+  invalidDoctorId: "Please provide valid doctor id",
+  invalidMedicalCenterId: "Please privide valid medical center id",
+  selectDay: "Please select atleast one day",
+  invalidStartDate: "Start date must be lesser or euqal to end date",
 };
 
 module.exports = { messageUtil };

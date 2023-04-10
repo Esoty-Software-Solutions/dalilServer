@@ -6,12 +6,12 @@ const {
   DeleteSchedule,
   AllSchedule,
 } = require("../controllers/scheduleController");
-const { checkToken } = require("../utilities/tokenAuth");
+const { authentication } = require("../utilities/auth");
 var router = express.Router();
 
-router.post("", checkToken, CreateSchedule);
-router.patch("/:id", checkToken, UpdateSchedule);
+router.post("", CreateSchedule);
+router.patch("/:scheduleId", UpdateSchedule);
 router.get("", AllSchedule);
-router.get("/:id", checkToken, SpecificSchedule);
-router.delete("/:id", checkToken, DeleteSchedule);
+router.get("/:scheduleId", SpecificSchedule);
+router.delete("/:scheduleId", DeleteSchedule);
 module.exports = router;

@@ -1,55 +1,50 @@
 const MedicalCenterServices = require("../services/medicalCenterServices");
+const { messageUtil } = require("../utilities/message");
+const ScheduleServices = require("../services/scheduleServices");
+const {
+  successResponse,
+  serverErrorResponse,
+  badRequestErrorResponse,
+  notFoundResponse,
+} = require("../utilities/response");
 
 const CreateMedicalCenter = async (req, res) => {
   try {
     const fieldNamesList = [];
-    const originalNamesList = [];
 
-    // console.log("files in req");
-    // console.log("files" in req);
     // check if files are submitted
     if ("files" in req) {
       req.files.forEach((file) => {
-        fieldNamesList.push(file.fieldname);
-        originalNamesList.push(file.originalname);
+        fieldNamesList.push(file.location);
       });
     }
 
     const document = await MedicalCenterServices.createMedicalCenter({
       ...req.body,
-      createdBy: req.userId,
-
       isActive: true,
-      fieldNames: fieldNamesList,
-      originalNames: originalNamesList,
+      fileLink: fieldNamesList,
     });
-    const responseBody = {
-      codeStatus: "201",
-      message: "document created",
-      data: document,
-    };
-    return res.status(201).json({ ...responseBody });
+
+    return successResponse(res, messageUtil.resourceCreated, document);
   } catch (error) {
     //   checking for server errors
-    console.log(error);
-    return res.status(500).json({ message: error.message });
+    return serverErrorResponse(res, error);
   }
 };
 
 const SingleMedicalCenter = async (req, res) => {
   try {
-    const document = await MedicalCenterServices.getMedicalCenterDetails(
-      req.params.id
-    );
-    if (document.length === 0) {
-      return res.status(404).json({ message: `document not found` });
+    const document = await MedicalCenterServices.getMedicalCenterDetails({
+      _id: req.params.medicalCenterId,
+    });
+    if (!document) {
+      return notFoundResponse(res, messageUtil.resourceNotFound);
     }
 
-    res.status(200).json(document);
+    return successResponse(res, messageUtil.success, document);
   } catch (error) {
     //   checking for server errors
-    console.log(error);
-    res.status(200).json({ message: error.message });
+    return serverErrorResponse(res, error);
   }
 };
 
@@ -57,40 +52,37 @@ const UpdateMedicalCenter = async (req, res) => {
   try {
     const document = await MedicalCenterServices.updateMedicalCenter(
       { _id: req.params.medicalCenterId },
-      { ...req.body, updatedBy: req.userId }
+      { ...req.body }
     );
 
     if (!document) {
-      return res.status(404).json({ message: `document not found` });
+      return notFoundResponse(res, messageUtil.resourceNotFound);
     }
 
-    res.status(200).json(document);
+    return successResponse(res, messageUtil.resourceUpdated, document);
   } catch (error) {
-    //   checking for server errors
-    console.log(error);
-    res.status(200).json({ message: error.message });
+    return serverErrorResponse(res, error);
   }
 };
 
 const DeleteMedicalCenter = async (req, res) => {
   try {
-    const document = await MedicalCenterServices.deleteMedicalCenter(
-      req.params.medicalCenterId
-    );
+    const document = await MedicalCenterServices.deleteMedicalCenter({
+      _id: req.params.medicalCenterId,
+    });
     if (!document) {
-      return res.status(404).json({ message: `document not found` });
+      return notFoundResponse(res, messageUtil.resourceDeleted);
     }
-    res.status(200).json({ message: `successfully Deleted` });
+    return successResponse(res, messageUtil.resourceUpdated);
   } catch (error) {
-    //   checking for server errors
-    console.log(error);
-    res.status(200).json({ message: error.message });
+    return serverErrorResponse(res, error);
   }
 };
 
 const AllMedicalCenter = async (req, res) => {
   try {
     let limitQP = req.query.limit;
+    let skipOP = req.query.skip;
     if (limitQP) {
       limitQP = Number(limitQP);
       if (limitQP > 100 || limitQP < 1) {
@@ -99,24 +91,68 @@ const AllMedicalCenter = async (req, res) => {
     } else {
       limitQP = 30;
     }
-    const documents = await MedicalCenterServices.getAllMedicalCenters(
-      {},
-      limitQP
-    );
-    const responseBody = {
-      codeStatus: "200",
-      message: "good",
-      data: {
+    if (skipOP) {
+      skipOP = Number(skipOP);
+      if (skipOP > 100 || skipOP < 1) {
+        limitQP = 0;
+      }
+    } else {
+      skipOP = 0;
+    }
+    if (req.query.doctorId) {
+      let medicalCenters = [];
+      //finding schedules for doctor
+      let schedules = await ScheduleServices.getAllSchedules({
+        doctorId: req.query.doctorId,
+      });
+      //returning if schedules not found
+      if (schedules.length < 1) {
+        return notFoundResponse(res, messageUtil.resourceNotFound);
+      }
+
+      //iterating all schdules to find medical center through medicalCenterId
+      for (let i = 0; i < schedules.length; i++) {
+        //finding medical centers
+        let medicalCenter = await MedicalCenterServices.getMedicalCenterDetails(
+          { _id: schedules[i].medicalCenterId }
+        );
+        //pushing medical centers
+        medicalCenters.push(medicalCenter);
+      }
+
+      //returning if no medical center found
+      if (medicalCenters.length < 1) {
+        return notFoundResponse(res, messageUtil.resourceNotFound);
+      }
+
+      return successResponse(res, messageUtil.success, {
+        objectCount: medicalCenters.length,
+        objectArray: medicalCenters,
+      });
+    } else {
+      let query = {};
+      if (req.query.medicalCenterId) {
+        query._id = req.query.medicalCenterId;
+      }
+      if (req.query.city) {
+        query.city = req.query.city;
+      }
+
+      const documents = await MedicalCenterServices.getAllMedicalCenters(
+        query,
+        limitQP,
+        skipOP
+      );
+      if (documents.length < 1) {
+        return notFoundResponse(res, messageUtil.resourceNotFound);
+      }
+      return successResponse(res, messageUtil.success, {
         objectCount: documents.length,
         objectArray: documents,
-      },
-    };
-
-    res.status(200).json({ ...responseBody });
+      });
+    }
   } catch (error) {
-    //   checking for server errors
-    console.log(error);
-    res.status(200).json({ message: error.message });
+    return serverErrorResponse(res, error);
   }
 };
 module.exports = {

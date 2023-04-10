@@ -4,30 +4,30 @@ const jwt = require(`jsonwebtoken`);
 const {
   successResponse,
   serverErrorResponse,
-  badRequestErrorResponse
+  badRequestErrorResponse,
+  notFoundResponse,
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
+const checkFeilds = require("../utilities/checkFields");
+// const { default: mongoose } = require("mongoose");
 
 const createUser = async (req, res) => {
   try {
-    console.log("getUsers");
     const myPlaintextPassword = req.body.password;
 
     // hashing user password
-    const hash = bcrypt.hashSync(myPlaintextPassword, 10);
+    // const hash = bcrypt.hashSync(myPlaintextPassword, 10);
 
     // const lastUser = users[0].userId;
     // const idNumber = Number(lastUser.split(`-`)[1]);
     const newBody = {
       ...req.body,
-      password: hash,
+      // password: hash,
       // userId: `SSD-${idNumber + 1}`,
       // sd: idNumber + 1,
     };
     const document = await UserServices.createUser(newBody);
-    console.log("document: ", document);
     const { userId, username, password } = document;
-    console.log("userid: ", userId);
     // siginig/authenticating user with jwt token for authorization
     const token = jwt.sign(
       { userId, username, password },
@@ -48,7 +48,6 @@ const createUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    console.log("getUsers");
     let limitQP = Number(req.query.limit) ?? 100;
     if (limitQP > 100) limitQP = 100;
     if (limitQP < 1) limitQP = 1;
@@ -70,11 +69,28 @@ const getUsers = async (req, res) => {
     let message = "good";
     if (docArray.length === 0) message = "list is empty change your query";
 
-    return successResponse(res, message, docArray, docCount);
+    return successResponse(res, message, {
+      objectCount: docCount,
+      objectArray: docArray,
+    });
   } catch (error) {
     console.log(error);
     return serverErrorResponse(res, error.message);
   }
+};
+
+const getUserById = async (req, res) => {
+  //checking if the provided id is valid mongoose id
+  // if (!mongoose.Types.ObjectId.isValid(req.params.userId)) {
+  //   return notFoundResponse(res, "Invalid id");
+  // }
+
+  let user = await UserServices.getUser({ _id: req.params.id });
+
+  if (!user) {
+    return notFoundResponse(res, messageUtil.notFound);
+  }
+  return successResponse(res, messageUtil.success, user);
 };
 
 const updateUser = async (req, res) => {
@@ -101,8 +117,11 @@ const updateUser = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    console.log("login");
     const { username, password } = req.body;
+    console.log("req.body");
+    console.log(req.body);
+    console.log("username", "password");
+    console.log(username, password);
     const doc = await UserServices.getUser({
       username,
     });
@@ -124,6 +143,16 @@ const login = async (req, res) => {
         `Either username or password is invalid`
       );
     }
+
+    const updateUser = await UserServices.updateUser(
+      {
+        username,
+      },
+      {
+        deviceToken: req.body.deviceToken,
+        deviceType: req.body.deviceType,
+      }
+    );
     const token = jwt.sign(
       { userId: userId, username, role },
       process.env.jwtSecret,
@@ -192,6 +221,7 @@ const SendNotification = async (req, res) => {
   let user;
   try {
     user = await UserServices.getUser({ _id: req.userId });
+    console.log("this is the user ", user);
     if (!user) {
       return notFoundResponse(res, messageUtil.notFound);
     }
@@ -235,6 +265,72 @@ const logout = async (req, res) => {
     serverErrorResponse(res, err);
   }
 };
+
+const ChangePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    //checking the required fields
+    const isError = checkFeilds(
+      {
+        currentPassword,
+        newPassword,
+      },
+      res
+    );
+    //returning if required filed is missing
+    if (isError) return;
+
+    //getting user by id
+    let user = await UserServices.getUser({ _id: req.params.userId });
+    if (!user) {
+      return notFoundResponse(res, messageUtil.notFound);
+    }
+
+    //verifying the old password
+    const hash = await bcrypt.compare(currentPassword, user.password);
+    if (!hash) {
+      return badRequestErrorResponse(res, messageUtil.invalidCurrentPassword);
+    }
+
+    //creating new hash password after verifying old password
+    const newHash = bcrypt.hashSync(newPassword, 10);
+
+    //updating user
+    const updatedUser = await UserServices.updateUser(
+      { _id: req.params.userId },
+      { password: newHash }
+    );
+    return successResponse(res, messageUtil.resourceUpdated, updatedUser);
+  } catch (err) {
+    serverErrorResponse(res, err);
+  }
+};
+
+const UpdateDeviceToken = async (req, res) => {
+  const { deviceToken, deviceType } = req.body;
+  //checking the required fields
+  const isError = checkFeilds(
+    {
+      deviceToken,
+      deviceType,
+    },
+    res
+  );
+  //returning if required filed is missing
+  if (isError) return;
+
+  let user = await UserServices.updateUser(
+    { _id: req.params.userId },
+    {
+      deviceToken,
+      deviceType,
+    }
+  );
+  if (!user) {
+    return notFoundResponse(res, messageUtil.notFound);
+  }
+  return successResponse(res, messageUtil.success);
+};
 module.exports = {
   createUser,
   getUsers,
@@ -245,4 +341,7 @@ module.exports = {
   RegisterAppToken,
   SendNotification,
   SendNotificationToUsers,
+  ChangePassword,
+  getUserById,
+  UpdateDeviceToken,
 };

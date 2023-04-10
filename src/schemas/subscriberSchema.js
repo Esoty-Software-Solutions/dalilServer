@@ -1,45 +1,28 @@
 // importing mongoose dependency for subscriber schema and model creation
 const mongoose = require(`mongoose`);
-const audit = require(`./auditSchema`);
+// const audit = require(`./auditSchema`);
 
-// medicalFile schema or structure
-const medicalFileSchema = mongoose.Schema({
-  bloodType: {
-    type: String,
-  },
-  height: {
-    type: Number,
-  },
-  weight: {
-    type: Number,
-  },
-  allergies: {
-    type: Array,
-    required: [false, `specify allergies`],
-  },
-  chronicDiseases: {
-    type: Array,
-    required: [false, `specify chronic diseases`],
-  },
-  surgeryHistory: {
-    type: Array,
-    required: [false, `specify surgery history`],
-  },
-  clinicalVisits: {
-    type: Array,
-    required: [false, `specify clinical visits`],
-  },
-  medicalTests: {
-    type: Array,
-    required: [false, `specify medical tests`],
-  },
-  // file: {
-  //   type: String,
-  // },
-});
-
+// // medicalFile schema or structure
+// const medicalFileSchema = new mongoose.Schema({
+//   bloodType: {
+//     type: String,
+//   },
+//   height: {
+//     type: Number,
+//   },
+//   weight: {
+//     type: Number,
+//   },
+//   medicalTests: {
+//     type: Array,
+//     required: [false, `specify medical tests`],
+//   },
+//   // file: {
+//   //   type: String,
+//   // },
+// });
 // beneficiary schema or structure
-const beneficiarySchema = mongoose.Schema({
+const beneficiarySchema = new mongoose.Schema({
   // beneficiaryId: {
   //   type: String,
   //   required: [true, `please provide valid beneficiaryId`],
@@ -49,9 +32,12 @@ const beneficiarySchema = mongoose.Schema({
     type: String,
     required: [true, `please provide valid firstName`],
   },
-  middleName: {
+  secondName: {
     type: String,
-    required: [true, `please provide valid middleName`],
+    required: [true, `please provide valid secondName`],
+  },
+  thirdName: {
+    type: String,
   },
   lastName: {
     type: String,
@@ -71,16 +57,20 @@ const beneficiarySchema = mongoose.Schema({
     enum: ["self", "father", "mother", "wife", "husband", "daughter", "son"],
     required: [true, `please specify relationship to the main subscriber `],
   },
+
   medicalFiles: {
     // type: medicalFileSchema,
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "medicalFiles",
-    required: false,
+    // type: mongoose.Schema.Types.ObjectId,
+    // ref: "medicalFiles",
+    // required: false,
+    bloodType : String,
+    height: Number,
+    weight: Number,
   },
 });
 
 // subscriber schema or structure
-const subscriberSchema = mongoose.Schema({
+const subscriberSchema = new mongoose.Schema({
   // subscriberId: {
   //   type: String,
   //   required: [true, `please provide valid userId`],
@@ -90,9 +80,9 @@ const subscriberSchema = mongoose.Schema({
     type: String,
     required: [true, `please provide valid firstName`],
   },
-  middleName: {
+  secondName: {
     type: String,
-    required: [true, `please provide valid middleName`],
+    required: [true, `please provide valid secondName`],
   },
   thirdName: {
     type: String,
@@ -129,14 +119,14 @@ const subscriberSchema = mongoose.Schema({
   employeeId: {
     type: String,
     unique: [true, `employee ID has to be unique`],
-    required: [false, `please provide valid employee ID`],
+    // required: [false, `please provide valid employee ID`],
   },
   doctorId: {
     type: String,
     unique: [true, `employee ID has to be unique`],
-    required: [false, `please provide valid employee ID`],
+    // required: [false, `please provide valid employee ID`],
   },
-  residentCity: String,
+  city: String,
   residentDistrict: String,
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -149,6 +139,6 @@ const subscriberSchema = mongoose.Schema({
 
 const subscribers = mongoose.model(`subscribers`, subscriberSchema);
 const beneficiaries = mongoose.model(`beneficiaries`, beneficiarySchema);
-const medicalFiles = mongoose.model(`medicalFiles`, medicalFileSchema);
+// const medicalFiles = mongoose.model(`medicalFiles`, medicalFileSchema);
 
-module.exports = { subscribers, beneficiaries, medicalFiles };
+module.exports = { subscribers, beneficiaries};

@@ -11,16 +11,16 @@ const medicalCenterSchema = mongoose.Schema(
     },
     city: {
       type: String,
-      required: [true, `please enter valid city`],
+      default: null,
     },
     district: {
       type: String,
-      required: [true, `please enter valid district`],
+      default: null,
     },
-    description: String,
+    description: { type: String, default: null },
     address: {
       type: String,
-      required: [true, `please enter valid address`],
+      default: null,
     },
     phoneNumber: {
       type: Array,
@@ -28,30 +28,21 @@ const medicalCenterSchema = mongoose.Schema(
     },
     email: {
       type: String,
-      // unique: true,
+      default: null,
     },
-    facebookLink: { type: String },
-    googleMapLink: { type: String },
+    facebookLink: { type: String, default: null },
+    googleMapLink: { type: String, default: null },
     website: {
       type: String,
-      // required: [true, `please enter valid website`],
+      default: null,
     },
-    // creation: {
-    //   createdBy: {type: String},
-    //   dateCreated: {type: Date},
-    // },
+    thumbnailLink: {
+      type: String,
+      default: null,
+    },
 
-    fieldNames: { type: Array },
-    originalNames: { type: Array },
+    fileLink: { type: Array, default: null },
     isActive: { type: Boolean },
-    // created: {
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
-    //   dateCreated: { type: Date},
-    // },
-    // updated: {
-    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
-    //   dateUpdated: { type: Date},
-    // }
   },
   { timestamps: true }
   // { collection: 'medicalCenters' }
