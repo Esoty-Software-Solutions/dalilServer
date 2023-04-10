@@ -1,23 +1,23 @@
-const RelationshipToBeneficiaryEnum = require("../schemas/relationshipToBeneficiaryEnumSchema");
+const relationshipToSubscriberEnum = require("../schemas/relationshipToSubscriberEnumSchema");
 
 
-exports.addRelationshipToBeneficiaryEnum = async (query) => {
-  return await RelationshipToBeneficiaryEnum.create(query);
+exports.addrelationshipToSubscriberEnum = async (query) => {
+  return await relationshipToSubscriberEnum.create(query);
 };
 
-exports.updateRelationshipToBeneficiaryEnum = async (query, data) => {
-  return await RelationshipToBeneficiaryEnum.findOneAndUpdate(query, data, {
+exports.updaterelationshipToSubscriberEnum = async (query, data) => {
+  return await relationshipToSubscriberEnum.findOneAndUpdate(query, data, {
     new: true,
   });
 };
 
 
-exports.getAllRelationshipToBeneficiaryEnum = async ({limit, skip}) => {
-  return await RelationshipToBeneficiaryEnum.find().skip(skip).limit(limit);
+exports.getAllrelationshipToSubscriberEnum = async ({limit, skip}) => {
+  return await relationshipToSubscriberEnum.find().skip(skip).limit(limit);
 };
 
-exports.getRelationshipToBeneficiaryEnum = async (query) => {
-  return await RelationshipToBeneficiaryEnum.findOne(query)
+exports.getrelationshipToSubscriberEnum = async (query) => {
+  return await relationshipToSubscriberEnum.findOne(query)
 //   .select(
 //     "-__v -createdAt -updatedAt"
 //   );

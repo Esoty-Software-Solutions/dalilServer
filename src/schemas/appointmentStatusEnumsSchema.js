@@ -19,6 +19,6 @@ const appointmentStatusEnumsSchema = new mongoose.Schema(
   }
 );
 
-const AppointmentStatusEnums  = mongoose.model(`appointmentStatusEnums`, appointmentStatusEnumsSchema);
+const appointmentStatusEnums  = mongoose.model(`appointmentStatusEnums`, appointmentStatusEnumsSchema);
 
-module.exports = AppointmentStatusEnums ;
+module.exports = appointmentStatusEnums ;

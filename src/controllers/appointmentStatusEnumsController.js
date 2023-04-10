@@ -7,12 +7,12 @@ const appointmentStatusEnums = {
 
     // Add Appointment Status Enum
 
-    addAppointmentStatusEnums: async (req, res) => {
+    addappointmentStatusEnums: async (req, res) => {
         try {
             let query = {
                 ...req.body,
             };
-            let data = await appointmentStatusEnumsServices.addAppointmentStatusEnums(query);
+            let data = await appointmentStatusEnumsServices.addappointmentStatusEnums(query);
 
             return successResponse(res, "Appointment Status Added successfully", data)
         } catch (err) {
@@ -21,11 +21,11 @@ const appointmentStatusEnums = {
     },
 
 
-    // Get AppointmentStatusEnums By Id
+    // Get appointmentStatusEnums By Id
 
-    getAppointmentStatusEnums: async (req, res) => {
+    getappointmentStatusEnums: async (req, res) => {
         try {
-            let data = await appointmentStatusEnumsServices.getAppointmentStatusEnums({ _id: req.params.id });
+            let data = await appointmentStatusEnumsServices.getappointmentStatusEnums({ _id: req.params.id });
             if(!data) return successResponse(res, "No Record Found", {})
 
             return successResponse(res, "Success", data)
@@ -35,15 +35,15 @@ const appointmentStatusEnums = {
     },
 
 
-    // Get list of AppointmentStatusEnums
+    // Get list of appointmentStatusEnums
 
-    getAllAppointmentStatusEnums: async (req, res) => {
+    getAllappointmentStatusEnums: async (req, res) => {
         try {
             let query = {
                 limit: req.query.limit,
                 skip: req.query.skip
             }
-            let objectArray = await appointmentStatusEnumsServices.getAllAppointmentStatusEnums(query);
+            let objectArray = await appointmentStatusEnumsServices.getAllappointmentStatusEnums(query);
 
             return successResponse(res, "Success", objectArray, objectArray.length);
         } catch (err) {
@@ -51,11 +51,11 @@ const appointmentStatusEnums = {
         }
     },
 
-    // Update AppointmentStatusEnums by Id
+    // Update appointmentStatusEnums by Id
 
-    updateAppointmentStatusEnums: async (req, res) => {
+    updateappointmentStatusEnums: async (req, res) => {
         try {
-            let data = await appointmentStatusEnumsServices.updateAppointmentStatusEnums(
+            let data = await appointmentStatusEnumsServices.updateappointmentStatusEnums(
                 { _id: req.params.id },
                 {...req.body}
             );
