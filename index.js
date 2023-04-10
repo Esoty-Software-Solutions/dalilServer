@@ -1,5 +1,6 @@
 const express = require("express");
 var cors = require("cors");
+const bodyParser = require('body-parser');
 const app = express();
 const bodyParser = require("body-parser");
 const routes = require("./src/routers/routes");
@@ -8,6 +9,7 @@ const config = require("./src/config/config");
 // app.use(express.json({ urlencoded: true }));
 
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.json({ limit: "150mb" }));
 app.use(express.urlencoded({ limit: "150mb" }));

@@ -1,12 +1,21 @@
-const { serverErrorResponse, successResponse, badRequestErrorResponse, notFoundResponse } = require("../utilities/response");
+const {
+    serverErrorResponse,
+    successResponse,
+    badRequestErrorResponse,
+    notFoundResponse
+} = require("../utilities/response");
 const _ = require("lodash");
 const clinicalVisit = require("../schemas/MedicalFiles/clinicalVisit.schema");
-const { messageUtil } = require("../utilities/message");
+const {
+    messageUtil
+} = require("../utilities/message");
 const allergy = require("../schemas/MedicalFiles/allergy.schema");
 const surgeryHistory = require("../schemas/MedicalFiles/surgeryHistory.schema");
 const chronicDiseases = require("../schemas/MedicalFiles/chronicDisease.schema");
 const medicalTests = require("../schemas/MedicalFiles/medicalTests.schema");
-const medicalFilesServices = require("../services/medicalFilesServices"); 
+const medicalFilesServices = require("../services/medicalFilesServices");
+
+
 /*
 
 when we are creating a document in the model then we will extend the services created in medicalFiles services
@@ -35,18 +44,58 @@ when creating a single document
             data : array with length 
         }
 */
+// --------------------------------------------------------------------------------------- MULTER FILE STRUCTURING ===================
+
+ /*
+            it returns an object with the below details
+            req.file
+                    {
+                    fieldname: 'myFile',
+                    originalname: 'Clinical_History_Form.jpg',
+                    encoding: '7bit',
+                    mimetype: 'image/jpeg',
+                    destination: 'uploads/',
+                    filename: '80f2e7b5850e92e3df01136eb96af7a2',
+                    path: 'uploads\\80f2e7b5850e92e3df01136eb96af7a2',
+                    size: 87462
+                    }
+
+
+                    and once the file is uploaded to the s3 bucket in that case the the returned object will be 
+                            {
+                            fieldname: 'myFile',
+                            originalname: 'Clinical_History_Form.jpg',
+                            encoding: '7bit',
+                            mimetype: 'image/jpeg',
+                            size: 87462,
+                            bucket: 'medical-files-esoty',
+                            key: '1680855647000-Clinical_History_Form.jpg',
+                            acl: 'private',
+                            contentType: 'application/octet-stream',
+                            contentDisposition: null,
+                            storageClass: 'STANDARD',
+                            serverSideEncryption: null,
+                            metadata: { fieldName: 'myFile' },
+                            location: 'https://medical-files-esoty.s3.amazonaws.com/1680855647000-Clinical_History_Form.jpg',
+                            etag: '"7deed582215caa47cf0a4f2f4f5fe9ff"',
+                            versionId: undefined
+                            }
+        
+                    
+                    */
+// --------------------------------------------------------------------------------------- MULTER FILE STRUCTURING ===================
 
 const initMedicalFilesController = () => {
     const getClinicalVisitsController = async (req, res) => {
         try {
             const queryPayload = req.query;
-            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload , clinicalVisit);
-            if(createResponse?.success) {
+            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload, clinicalVisit);
+            if (createResponse?.success) {
                 return successResponse(res, messageUtil.resourceUpdated, createResponse.data);
-            }else {
-                return notFoundResponse(res , messageUtil.resourceNotFound)
+            } else {
+                return notFoundResponse(res, messageUtil.resourceNotFound)
             }
-            
+
         } catch (error) {
             console.log(error);
             return serverErrorResponse(res, error.message);
@@ -54,12 +103,13 @@ const initMedicalFilesController = () => {
     }
     const createClinicalVisitsController = async (req, res) => {
         try {
-            const createResponse = await medicalFilesServices.createMedicalFiles(req.body, req.params, clinicalVisit);
-            if(createResponse?.success) {
+            console.log(req.file);
+            const createResponse = await medicalFilesServices.createMedicalFiles(req.body, req.params, clinicalVisit, req.file);
+            if (createResponse?.success) {
                 return successResponse(res, messageUtil.resourceUpdated, createResponse.data);
 
-            }else {
-                return badRequestErrorResponse(res , messageUtil.resourceNotCreated);
+            } else {
+                return badRequestErrorResponse(res, messageUtil.resourceNotCreated);
             }
         } catch (error) {
             console.log(error);
@@ -72,10 +122,10 @@ const initMedicalFilesController = () => {
             const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload, allergy);
             if(createResponse?.success) {
                 return successResponse(res, messageUtil.resourceUpdated, createResponse.data);
-            }else {
-                return notFoundResponse(res , messageUtil.resourceNotFound)
+            } else {
+                return notFoundResponse(res, messageUtil.resourceNotFound)
             }
-            
+
         } catch (error) {
             console.log(error);
             return serverErrorResponse(res, error.message);
@@ -83,12 +133,12 @@ const initMedicalFilesController = () => {
     }
     const createAllergiesController = async (req, res) => {
         try {
-            const createResponse = await medicalFilesServices.createMedicalFiles(req.body, req.params, allergy);
+            const createResponse = await medicalFilesServices.createMedicalFiles(req.body, req.params, allergy, req.file);
             if(createResponse?.success) {
                 return successResponse(res, messageUtil.resourceUpdated, createResponse.data);
 
-            }else {
-                return badRequestErrorResponse(res , messageUtil.resourceNotCreated);
+            } else {
+                return badRequestErrorResponse(res, messageUtil.resourceNotCreated);
             }
         } catch (error) {
             console.log(error);
@@ -98,13 +148,13 @@ const initMedicalFilesController = () => {
     const getSurgeryHistoriesController = async (req, res) => {
         try {
             const queryPayload = req.query;
-            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload , surgeryHistory);
-            if(createResponse?.success) {
+            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload, surgeryHistory);
+            if (createResponse?.success) {
                 return successResponse(res, messageUtil.resourceUpdated, createResponse.data);
-            }else {
-                return notFoundResponse(res , messageUtil.resourceNotFound)
+            } else {
+                return notFoundResponse(res, messageUtil.resourceNotFound)
             }
-            
+
         } catch (error) {
             console.log(error);
             return serverErrorResponse(res, error.message);
@@ -112,12 +162,12 @@ const initMedicalFilesController = () => {
     }
     const createSurgeryHistoriesController = async (req, res) => {
         try {
-            const createResponse = await medicalFilesServices.createMedicalFiles(req.body, req.params, surgeryHistory);
+            const createResponse = await medicalFilesServices.createMedicalFiles(req.body, req.params, surgeryHistory, req.file);
             if(createResponse?.success) {
                 return successResponse(res, messageUtil.resourceUpdated, createResponse.data);
 
-            }else {
-                return badRequestErrorResponse(res , messageUtil.resourceNotCreated);
+            } else {
+                return badRequestErrorResponse(res, messageUtil.resourceNotCreated);
             }
         } catch (error) {
             console.log(error);
@@ -127,13 +177,13 @@ const initMedicalFilesController = () => {
     const getChronicDiseasesController = async (req, res) => {
         try {
             const queryPayload = req.query;
-            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload , chronicDiseases);
-            if(createResponse?.success) {
+            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload, chronicDiseases);
+            if (createResponse?.success) {
                 return successResponse(res, messageUtil.resourceUpdated, createResponse.data);
-            }else {
-                return notFoundResponse(res , messageUtil.resourceNotFound)
+            } else {
+                return notFoundResponse(res, messageUtil.resourceNotFound)
             }
-            
+
         } catch (error) {
             console.log(error);
             return serverErrorResponse(res, error.message);
@@ -141,18 +191,19 @@ const initMedicalFilesController = () => {
     }
     const createChronicDiseasesController = async (req, res) => {
         try {
-            const createResponse = await medicalFilesServices.createMedicalFiles(req.body, req.params, chronicDiseases);
+            const createResponse = await medicalFilesServices.createMedicalFiles(req.body, req.params, chronicDiseases, req.file);
             if(createResponse?.success) {
                 return successResponse(res, messageUtil.resourceUpdated, createResponse.data);
 
-            }else {
-                return badRequestErrorResponse(res , messageUtil.resourceNotCreated);
+            } else {
+                return badRequestErrorResponse(res, messageUtil.resourceNotCreated);
             }
         } catch (error) {
             console.log(error);
             return serverErrorResponse(res, error.message);
         }
     }
+    
     const getMedicalTestsController = async (req, res) => {
         try {
             const queryPayload = req.query;
@@ -170,12 +221,12 @@ const initMedicalFilesController = () => {
     }
     const createMedicalTestsController = async (req, res) => {
         try {
-            const createResponse = await medicalFilesServices.createMedicalFiles(req.body, req.params, medicalTests);
+            const createResponse = await medicalFilesServices.createMedicalFiles(req.body, req.params, medicalTests , req.file);
             if(createResponse?.success) {
                 return successResponse(res, messageUtil.resourceUpdated, createResponse.data);
 
-            }else {
-                return badRequestErrorResponse(res , messageUtil.resourceNotCreated);
+            } else {
+                return badRequestErrorResponse(res, messageUtil.resourceNotCreated);
             }
         } catch (error) {
             console.log(error);
@@ -193,7 +244,7 @@ const initMedicalFilesController = () => {
         getChronicDiseasesController,
         createChronicDiseasesController,
         getMedicalTestsController,
-        createMedicalTestsController
+        createMedicalTestsController,
     }
 }
 

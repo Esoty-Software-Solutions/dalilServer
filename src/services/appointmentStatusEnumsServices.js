@@ -1,21 +1,21 @@
-const AppointmentStatusEnums = require("../schemas/appointmentStatusEnumsSchema");
+const appointmentStatusEnums = require("../schemas/appointmentStatusEnumsSchema");
 
 
-exports.addAppointmentStatusEnums = async (query) => {
-  return await AppointmentStatusEnums.create(query);
+exports.addappointmentStatusEnums = async (query) => {
+  return await appointmentStatusEnums.create(query);
 };
 
-exports.updateAppointmentStatusEnums = async (query, data) => {
-  return await AppointmentStatusEnums.findOneAndUpdate(query, data, {
+exports.updateappointmentStatusEnums = async (query, data) => {
+  return await appointmentStatusEnums.findOneAndUpdate(query, data, {
     new: true,
   });
 };
 
 
-exports.getAllAppointmentStatusEnums = async ({limit, skip}) => {
-  return await AppointmentStatusEnums.find().skip(skip).limit(limit);
+exports.getAllappointmentStatusEnums = async ({limit, skip}) => {
+  return await appointmentStatusEnums.find().skip(skip).limit(limit);
 };
 
-exports.getAppointmentStatusEnums = async (query) => {
-  return await AppointmentStatusEnums.findOne(query)
+exports.getappointmentStatusEnums = async (query) => {
+  return await appointmentStatusEnums.findOne(query)
 };

@@ -2,6 +2,7 @@ const LIMIT = 30;
 const SKIP = 0;
 const findQueryCommonUtil = require("../utilities/findQueryUtil");
 const _ = require("lodash");
+const uploader = require("../utilities/uploader");
 // exports.createMedicalFile = async (query) => {
 //   return await medicalFiles.create(query);
 // };
@@ -16,16 +17,22 @@ const _ = require("lodash");
 
 exports.getMedicalFilesAggregator = async (schema , query, skip, limit) => {
   let documentsCount = await schema.find(query).count();
-
   let documents = await schema
     .find(query)
     .skip(skip)
     .limit(limit)
     .select("-__v")
-    .lean()
-    
+    .lean();
 
-  return {documents, documentsCount};
+    // iterating over the array to replace public url to presigned url.. 
+    const newDocuments = await Promise.all(documents.map(async (data)=>{
+      if(data?.fileLink) {
+        const presignedUrl = await uploader.getPresignedUrl(data.fileLink);
+        data.fileLink = presignedUrl;
+      }
+      return data;
+    }));
+  return {newDocuments, documentsCount};
 };
 
 exports.getDataMedicalFiles = async (queryPayload , schema) => {
@@ -37,9 +44,9 @@ exports.getDataMedicalFiles = async (queryPayload , schema) => {
       findQuery = findQueryCommonUtil(searchQuery , findQuery);
     }
   
-
     const allData = await this.getMedicalFilesAggregator(schema, findQuery, skip ? skip : SKIP , limit ? limit : LIMIT)
-  
+    // parsing the url in the get file to return the presigned url with expiry time instead of public url
+
     return {
       success : true, 
       data : allData
@@ -54,10 +61,14 @@ exports.getDataMedicalFiles = async (queryPayload , schema) => {
   
 }
 
-exports.createMedicalFiles = async (body, params, schema) => {
+exports.createMedicalFiles = async (body, params, schema, fileData) => {
+  const {location : fileLink} = fileData;
   const createdPayload = _.merge(body, params);
+  const fileLinkAddedPayload = _.assign(createdPayload , {fileLink : fileLink});
   try {
-    const createDocument = await schema.create(createdPayload);
+    const createDocument = await schema.create(fileLinkAddedPayload);
+    const presignedUrl = await uploader.getPresignedUrl(createDocument.fileLink);
+    createDocument.fileLink = presignedUrl;
     if(!createDocument) {
         return {
           success : false, 
@@ -70,9 +81,11 @@ exports.createMedicalFiles = async (body, params, schema) => {
         }
     }
   } catch (error) {
+    console.log(error);
     return {
       success : false, 
       data : error
     } 
   }
 }
+

@@ -3,9 +3,9 @@ var router = express.Router();
 
 const appointmentStatusEnumsController = require('../controllers/appointmentStatusEnumsController');
 
-router.get("/", appointmentStatusEnumsController.getAllAppointmentStatusEnums);
-router.get("/:id", appointmentStatusEnumsController.getAppointmentStatusEnums);
-router.post("/", appointmentStatusEnumsController.addAppointmentStatusEnums);
-router.patch("/:id", appointmentStatusEnumsController.updateAppointmentStatusEnums);
+router.get("/", appointmentStatusEnumsController.getAllappointmentStatusEnums);
+router.get("/:id", appointmentStatusEnumsController.getappointmentStatusEnums);
+router.post("/", appointmentStatusEnumsController.addappointmentStatusEnums);
+router.patch("/:id", appointmentStatusEnumsController.updateappointmentStatusEnums);
 
 module.exports = router;
