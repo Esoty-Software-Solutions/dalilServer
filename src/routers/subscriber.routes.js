@@ -19,11 +19,11 @@ var router = express.Router();
 const {createClinicalVisitsController, getClinicalVisitsController, getAllergiesController, createAllergiesController , createSurgeryHistoriesController , getSurgeryHistoriesController , 
 getChronicDiseasesController,createChronicDiseasesController , getMedicalTestsController
 ,createMedicalTestsController} = initMedicalFilesController();
-router.post(
-  "/uploadCSV",
-  uploader.uploads.any({ name: "file" }),
-  createSubscribersCSV
-);
+// router.post(
+//   "/uploadCSV",
+//   uploader.uploads.any({ name: "file" }),
+//   createSubscribersCSV
+// );
 router.get("", authentication, getSubscribers);
 router.post("", authentication, createSubscriber);
 router.get("/:subscriberId", authentication, getSubscriber);
@@ -42,23 +42,23 @@ router.patch("/:subscriberId", authentication, updateSubscriber);
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/clinicalVisits`)
   .get(customValidation(getMedicalFilesValidator , "query"),authentication, getClinicalVisitsController )
-  .post(customValidation(clinicalVisitValidator, "body"),authentication, createClinicalVisitsController )
+  .post(uploader.uploadFileS3.single("file"),customValidation(clinicalVisitValidator, "body"), createClinicalVisitsController )
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/allergies`)
   .get(customValidation(getMedicalFilesValidator , "query"),authentication,  getAllergiesController )
-  .post(customValidation(createMedicalFilesValidator, "body"),authentication, createAllergiesController )
+  .post(uploader.uploadFileS3.single("file"),customValidation(createMedicalFilesValidator, "body"),authentication, createAllergiesController )
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/surgeryHistories`)
   .get(customValidation(getMedicalFilesValidator , "query"),authentication, getSurgeryHistoriesController )
-  .post(customValidation(createSurgeryHistoryFilesValidator , "body"),authentication, createSurgeryHistoriesController )
+  .post(uploader.uploadFileS3.single("file"),customValidation(createSurgeryHistoryFilesValidator , "body"),authentication, createSurgeryHistoriesController )
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/chronicDiseases`)
   .get(customValidation(getMedicalFilesValidator , "query"),authentication, getChronicDiseasesController )
-  .post(customValidation(createChronicDiseasesFilesValidator , "body"),authentication, createChronicDiseasesController )
+  .post(uploader.uploadFileS3.single("file"),customValidation(createChronicDiseasesFilesValidator , "body"),authentication, createChronicDiseasesController )
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/medicalTests`)
-  .get(customValidation(getMedicalFilesValidator , "query"),authentication, getMedicalTestsController )
-  .post(customValidation(createMedicalTestsValidator , "body"),authentication, createMedicalTestsController )
+  .get(customValidation(getMedicalFilesValidator , "query"), getMedicalTestsController )
+  .post(uploader.uploadFileS3.single("file"),customValidation(createMedicalTestsValidator , "body"), createMedicalTestsController )
 
 
 // ---------------------------------------- Medical files routes -----------------------------------------------
