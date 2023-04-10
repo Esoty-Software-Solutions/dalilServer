@@ -19,14 +19,16 @@ const doctorSchema = mongoose.Schema(
     specialty: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "medicalSpecialties",
-      required: [true, `please provide valid doctor id`],
+      required: [true, `please provide valid specialty id`],
     },
     level: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "level",
       required: [true, `please enter valid level`],
     },
     gender: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "gender",
       required: [true, `please enter valid gender`],
     },
     birthdate: {
