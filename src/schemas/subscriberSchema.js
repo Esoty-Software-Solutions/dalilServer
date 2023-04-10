@@ -121,7 +121,6 @@ const subscriberSchema = new mongoose.Schema({
     // unique: [true, `employee ID has to be unique`],
     // required: [false, `please provide valid employee ID`],
   },
-  // city: String,
   city: {
     type: mongoose.Schema.Types.ObjectId,
     set: (v) => mongoose.Types.ObjectId(v),
