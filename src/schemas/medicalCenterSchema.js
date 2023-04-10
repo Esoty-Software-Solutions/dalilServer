@@ -10,8 +10,10 @@ const medicalCenterSchema = mongoose.Schema(
       required: [true, `please enter valid  name`],
     },
     city: {
-      type: String,
-      default: null,
+      type: mongoose.Schema.Types.ObjectId,
+      set: (v) => mongoose.Types.ObjectId(v),
+      ref: "cities",
+      required: [true, `please enter valid city`],     
     },
     district: {
       type: String,

@@ -53,16 +53,12 @@ const beneficiarySchema = new mongoose.Schema({
     required: [true, `please provide valid gender`],
   },
   relationshipToSubscriber: {
-    type: String,
-    enum: ["self", "father", "mother", "wife", "husband", "daughter", "son"],
-    required: [true, `please specify relationship to the main subscriber `],
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "relationshipToSubscriberEnum",    
+    required: [true, `please provide valid doctor id`],
   },
 
   medicalFiles: {
-    // type: medicalFileSchema,
-    // type: mongoose.Schema.Types.ObjectId,
-    // ref: "medicalFiles",
-    // required: false,
     bloodType : String,
     height: Number,
     weight: Number,
@@ -71,11 +67,6 @@ const beneficiarySchema = new mongoose.Schema({
 
 // subscriber schema or structure
 const subscriberSchema = new mongoose.Schema({
-  // subscriberId: {
-  //   type: String,
-  //   required: [true, `please provide valid userId`],
-  //   unique: true,
-  // },
   firstName: {
     type: String,
     required: [true, `please provide valid firstName`],
@@ -107,6 +98,7 @@ const subscriberSchema = new mongoose.Schema({
   beneficiaries: {
     // type: [beneficiarySchema],
     type: [mongoose.Schema.Types.ObjectId],
+    set: (v) => mongoose.Types.ObjectId(v),
     ref: "beneficiaries",
     required: [false, `please provide valid beneficiary ID `],
   },
@@ -122,7 +114,10 @@ const subscriberSchema = new mongoose.Schema({
     // required: [false, `please provide valid employee ID`],
   },
   doctorId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    set: (v) => mongoose.Types.ObjectId(v),
+    ref: "doctors",     
+    
     // unique: [true, `employee ID has to be unique`],
     // required: [false, `please provide valid employee ID`],
   },
