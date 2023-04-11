@@ -8,14 +8,19 @@ const successResponse = (res, message, data, dataCount, token) => {
     message,
   };
   if (token) response.token = token;
-  if (dataCount){
-    response.data.objectCount = dataCount;
-    response.data.objectArray = data;
-  } elseif(data)
-  {
+  if (dataCount) {
+    let objData = {
+      objectCount: dataCount,
+      objectArray: data,
+    };
+    response.data = objData;
+
+    // response.data.objectCount = dataCount;
+    // response.data.objectArray = data;
+  } else if (data) {
     response.data = data;
   }
-  res.status(StatusCodes.OK).send(response);
+  return res.status(StatusCodes.OK).send(response);
 };
 
 const serverErrorResponse = (res, error) => {
