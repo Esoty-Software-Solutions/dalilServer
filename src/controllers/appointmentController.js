@@ -1,4 +1,5 @@
 const AppointmentServices = require("../services/appointmentServices");
+const SubscriberServices = require("../services/subscriberServices");
 const checkFeilds = require("../utilities/checkFields");
 const SmsServices = require("../services/smsServices");
 const dateRegex = /^([0-9]{4})-(?:[0-9]{2})-([0-9]{2})$/;
@@ -137,9 +138,55 @@ const getAppointments = async (req, res) => {
     let documents = await AppointmentServices.getAppointments(query, limitQP);
     let count = documents.length;
 
-    let message = "good";
-    if (documents.length === 0) {
-      message = "list is empty change your query";
+    if (documents.length < 1) {
+      return notFoundResponse(res, messageUtil.resourceNotFound);
+    }
+    const data = {
+      objectCount: count,
+      objectArray: documents,
+    };
+
+    return successResponse(res, messageUtil.success, data);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getUserAppointments = async (req, res) => {
+  try {
+    let subscriber = await SubscriberServices.getSubscriber({
+      _id: req.params.subscriberId,
+    });
+
+    if (!subscriber) {
+      return notFoundResponse(res, messageUtil.resourceNotFound);
+    }
+    if (subscriber.beneficiaries.length < 1) {
+      return notFoundResponse(res, messageUtil.resourceNotFound);
+    }
+    let query = { beneficiaryId: { $in: subscriber.beneficiaries } };
+
+    if (req.query.appointmentStatus) {
+      let arr = JSON.parse(req.query.appointmentStatus);
+      query.appointmentStatus = {
+        $in: arr,
+      };
+    }
+    if (req.query.dateRange) {
+      let arr = JSON.parse(req.query.dateRange);
+      const startDate = new Date(arr[0]);
+      const endDate = new Date(arr[1]);
+      query.appointmentDate = {
+        $gte: startDate,
+        $lte: endDate,
+      };
+    }
+    let documents = await AppointmentServices.getAppointments(query);
+    let count = documents.length;
+
+    if (documents.length < 1) {
+      return notFoundResponse(res, messageUtil.resourceNotFound);
     }
     const data = {
       objectCount: count,
@@ -161,4 +208,5 @@ module.exports = {
   getAppointment,
   deleteAppointment,
   getAppointments,
+  getUserAppointments,
 };
