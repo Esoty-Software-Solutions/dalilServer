@@ -13,9 +13,9 @@ exports.updateMedicalSpecialty = async (query, data) => {
 
 
 exports.getAllMedicalSpecialties = async ({limit, skip}) => {
-  return await MedicalSpecialties.find().select("-arabicName").skip(skip).limit(limit);
+  return await MedicalSpecialties.find().skip(skip).limit(limit);
 };
 
 exports.getMedicalSpecialty = async (query) => {
-  return await MedicalSpecialties.findOne(query).select("-arabicName")
+  return await MedicalSpecialties.findOne(query)
 };

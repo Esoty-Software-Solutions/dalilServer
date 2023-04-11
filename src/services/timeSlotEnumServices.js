@@ -13,9 +13,9 @@ exports.updateTimeSlotEnum = async (query, data) => {
 
 
 exports.getAllTimeSlotEnum = async ({limit, skip}) => {
-  return await timeSlotEnum.find().select("-arabicName").skip(skip).limit(limit);
+  return await timeSlotEnum.find().skip(skip).limit(limit);
 };
 
 exports.getTimeSlotEnum = async (query) => {
-  return await timeSlotEnum.findOne(query).select("-arabicName")
+  return await timeSlotEnum.findOne(query)
 };
