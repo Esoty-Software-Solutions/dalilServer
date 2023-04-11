@@ -1,9 +1,15 @@
 const AppointmentServices = require("../services/appointmentServices");
-const MedicalCenterServices = require("../services/medicalCenterServices");
-const ScheduleServices = require("../services/scheduleServices");
-const DoctorServices = require("../services/doctorServices");
-const UserServices = require("../services/userServices");
+const SubscriberServices = require("../services/subscriberServices");
+const checkFeilds = require("../utilities/checkFields");
 const SmsServices = require("../services/smsServices");
+const dateRegex = /^([0-9]{4})-(?:[0-9]{2})-([0-9]{2})$/;
+const {
+  successResponse,
+  serverErrorResponse,
+  badRequestErrorResponse,
+  notFoundResponse,
+} = require("../utilities/response");
+const { messageUtil } = require("../utilities/message");
 
 const createMessage = async (
   doctor,
@@ -22,50 +28,35 @@ const createMessage = async (
 
 const createAppointment = async (req, res) => {
   try {
-    const doctorObject = await DoctorServices.getDoctorDetails({
-      _id: req.body.doctorId,
-    });
-    const medicalCenterObject =
-      await MedicalCenterServices.getMedicalCenterDetails({
-        _id: req.body.medicalCenterId,
-      });
-
-    const scheduleObject = await ScheduleServices.getScheduleDetails({
-      _id: req.body.scheduleId,
-    });
-    const userObject = await UserServices.getUser({
-      _id: req.body.userId,
-    });
-    const document = await AppointmentServices.createAppointment({
-      ...req.body,
-      doctor: doctorObject,
-      medicalCenter: medicalCenterObject,
-      schedule: scheduleObject,
-      user: userObject,
-      // userId: req.params.userId,
-      appointmentStatus: `pending`,
-      dateCreated: Date(),
-    });
-
-    const sms = await createMessage(
-      doctorObject?.firstName,
-      medicalCenterObject?.name,
-      document.appointmentDate,
-      document.appointmentStatus,
-      userObject?.phoneNumber
+    const {
+      beneficiaryId,
+      scheduleId,
+      appointmentDate,
+      appointmentStatus,
+      timeSlot,
+    } = req.body;
+    if (!dateRegex.test(appointmentDate)) {
+      return badRequestErrorResponse(res, "Invalid date format");
+    }
+    const isError = checkFeilds(
+      {
+        beneficiaryId,
+        scheduleId,
+        appointmentDate,
+        appointmentStatus,
+        timeSlot,
+      },
+      res
     );
 
-    let message = "good";
-    const responseBody = {
-      codeStatus: "200",
-      message: message,
-      data: document,
-    };
+    if (isError) return;
+    const document = await AppointmentServices.createAppointment({
+      ...req.body,
+    });
 
-    return res.status(200).json({ ...responseBody });
+    return successResponse(res, messageUtil.success, document);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    return serverErrorResponse(res, error);
   }
 };
 
@@ -77,32 +68,40 @@ const updateAppointment = async (req, res) => {
         // userId: req.userId,
       },
       {
-        ...req.body,
+        appointmentStatus: req.body.appointmentStatus,
       }
     );
 
     if (!document) {
-      return res.status(404).json({ message: `document not found` });
+      return notFoundResponse(res, messageUtil.resourceNotFound);
     }
 
-    const sms = await createMessage(
-      document.doctor?.firstName,
-      document.medicalCenter?.name,
-      document.appointmentDate,
-      document.appointmentStatus,
-      document.user?.phoneNumber
-    );
-
-    return res.status(200).json(document);
+    return successResponse(res, messageUtil.success, document);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    return serverErrorResponse(res, error);
+  }
+};
+
+const getAppointment = async (req, res) => {
+  try {
+    const document = await AppointmentServices.getAppointmentDetails({
+      _id: req.params.appointmentId,
+    });
+
+    if (!document) {
+      return notFoundResponse(res, messageUtil.resourceNotFound);
+    }
+
+    return successResponse(res, messageUtil.success, document);
+  } catch (error) {
+    return serverErrorResponse(res, error);
   }
 };
 
 const getAppointments = async (req, res) => {
   try {
     let limitQP = Number(req.query.limit) ?? 30;
+    let query = {};
 
     if (limitQP) {
       limitQP = Number(limitQP);
@@ -113,30 +112,94 @@ const getAppointments = async (req, res) => {
       limitQP = 30;
     }
 
-    let documents = AppointmentServices.getAppointments({}, limitQP);
+    if (req.query.medicalCenterId) {
+      query.medicalCenterId = req.query.medicalCenterId;
+    }
+    if (req.query.doctorId) {
+      query.doctorId = req.query.doctorId;
+    }
+
+    if (req.query.appointmentStatus) {
+      let arr = JSON.parse(req.query.appointmentStatus);
+      query.appointmentStatus = {
+        $in: arr,
+      };
+    }
+    if (req.query.dateRange) {
+      let arr = JSON.parse(req.query.dateRange);
+      const startDate = new Date(arr[0]);
+      const endDate = new Date(arr[1]);
+      query.appointmentDate = {
+        $gte: startDate,
+        $lte: endDate,
+      };
+    }
+    console.log("query: ", query);
+    let documents = await AppointmentServices.getAppointments(query, limitQP);
     let count = documents.length;
 
-    let message = "good";
-    if (documents.length === 0) {
-      message = "list is empty change your query";
+    if (documents.length < 1) {
+      return notFoundResponse(res, messageUtil.resourceNotFound);
     }
-    const responseBody = {
-      codeStatus: "200",
-      message: message,
-      data: {
-        objectCount: count,
-        objectArray: documents,
-      },
+    const data = {
+      objectCount: count,
+      objectArray: documents,
     };
 
-    res.status(200).json({ ...responseBody });
+    return successResponse(res, messageUtil.success, data);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
 
-const getAppointment = async (req, res) => {};
+const getUserAppointments = async (req, res) => {
+  try {
+    let subscriber = await SubscriberServices.getSubscriber({
+      _id: req.params.subscriberId,
+    });
+
+    if (!subscriber) {
+      return notFoundResponse(res, messageUtil.resourceNotFound);
+    }
+    if (subscriber.beneficiaries.length < 1) {
+      return notFoundResponse(res, messageUtil.resourceNotFound);
+    }
+    let query = { beneficiaryId: { $in: subscriber.beneficiaries } };
+
+    if (req.query.appointmentStatus) {
+      let arr = JSON.parse(req.query.appointmentStatus);
+      query.appointmentStatus = {
+        $in: arr,
+      };
+    }
+    if (req.query.dateRange) {
+      let arr = JSON.parse(req.query.dateRange);
+      const startDate = new Date(arr[0]);
+      const endDate = new Date(arr[1]);
+      query.appointmentDate = {
+        $gte: startDate,
+        $lte: endDate,
+      };
+    }
+    let documents = await AppointmentServices.getAppointments(query);
+    let count = documents.length;
+
+    if (documents.length < 1) {
+      return notFoundResponse(res, messageUtil.resourceNotFound);
+    }
+    const data = {
+      objectCount: count,
+      objectArray: documents,
+    };
+
+    return successResponse(res, messageUtil.success, data);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const deleteAppointment = async (req, res) => {};
 
 module.exports = {
@@ -145,4 +208,5 @@ module.exports = {
   getAppointment,
   deleteAppointment,
   getAppointments,
+  getUserAppointments,
 };
