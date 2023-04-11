@@ -13,9 +13,9 @@ exports.updateAccountStatusEnum = async (query, data) => {
 
 
 exports.getAllAccountStatusEnum = async ({limit, skip}) => {
-  return await AccountStatusEnum.find().select("-arabicName").skip(skip).limit(limit);
+  return await AccountStatusEnum.find().skip(skip).limit(limit);
 };
 
 exports.getAccountStatusEnum = async (query) => {
-  return await AccountStatusEnum.findOne(query).select("-arabicName")
+  return await AccountStatusEnum.findOne(query)
 };
