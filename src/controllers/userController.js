@@ -13,7 +13,10 @@ const checkFeilds = require("../utilities/checkFields");
 
 const createUser = async (req, res) => {
   try {
-    const myPlaintextPassword = req.body.password;
+    let myPlaintextPassword = "123";
+    if (req.body.password) {
+      myPlaintextPassword = req.body.password;
+    }
 
     // hashing user password
     // const hash = bcrypt.hashSync(myPlaintextPassword, 10);
@@ -22,7 +25,7 @@ const createUser = async (req, res) => {
     // const idNumber = Number(lastUser.split(`-`)[1]);
     const newBody = {
       ...req.body,
-      // password: hash,
+      password: myPlaintextPassword,
       // userId: `SSD-${idNumber + 1}`,
       // sd: idNumber + 1,
     };
@@ -118,10 +121,6 @@ const updateUser = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
-    console.log("req.body");
-    console.log(req.body);
-    console.log("username", "password");
-    console.log(username, password);
     const doc = await UserServices.getUser({
       username,
     });
