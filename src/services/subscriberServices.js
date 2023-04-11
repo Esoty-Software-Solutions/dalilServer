@@ -52,10 +52,7 @@ exports.getSubscribers = async (filter, sort, skip, limit) => {
 };
 
 exports.getSubscriber = async (query) => {
-  return await subscribers
-    .findOne(query)
-    .populate("beneficiaries")
-    .select("-__v");
+  return await subscribers.findOne(query).select("-__v");
 };
 
 exports.updateSubscriberById = async (query, data) => {
