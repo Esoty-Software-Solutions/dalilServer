@@ -33,7 +33,7 @@ router.use(API_VERSION + "/appointments", appointmentsRouter);
 router.use(API_VERSION + "/institutions", institutesRouter);
 router.use(API_VERSION + "/medicalCenters", medicalCentersRouter);
 router.use(API_VERSION + "/schedules", schedulesRouter);
-router.use(API_VERSION + "/notifications", notificationRouter);
+router.use(API_VERSION + "/TestNotification", notificationRouter);
 router.use(API_VERSION + "/sms", smsRouter);
 // router.use(API_VERSION + "/medicalFiles", medicalFileRouter);
 router.use(API_VERSION + "/doctors", doctorRouter);

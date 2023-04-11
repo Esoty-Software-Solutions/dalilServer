@@ -4,10 +4,6 @@ const multerS3 = require("multer-s3-v2");
 const path = require("path");
 const config = require("../config/config");
 const { aws_bucketName , aws_accessKeyID, aws_secretAccessKey} = config
-console.log("aws_bucketName");
-console.log(aws_bucketName);
-console.log("config.aws_bucketName");
-console.log(config.aws_bucketName);
 
 // const storage = multer.diskStorage({
 //   destination: (req, file, cb) => {
