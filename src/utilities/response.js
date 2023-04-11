@@ -9,9 +9,10 @@ const successResponse = (res, message, data, dataCount, token) => {
   };
   if (token) response.token = token;
   if (dataCount){
-    response.objectCount = dataCount;
-    response.objectArray = data;
-  } else{
+    response.data.objectCount = dataCount;
+    response.data.objectArray = data;
+  } elseif(data)
+  {
     response.data = data;
   }
   res.status(StatusCodes.OK).send(response);
