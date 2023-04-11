@@ -1,26 +1,28 @@
 const mongoose = require("mongoose");
 const ReviewServices = require("../services/reviewServices");
-const doctor = require("../schemas/doctorSchema");
-const { ObjectId } = require("mongodb");
+const AppointmentServices = require("../services/appointmentServices");
+const {successResponse, badRequestErrorResponse, notFoundResponse, serverErrorResponse} = require('../utilities/response');
 
 //----------Add Review------------------------------------------------\\
 const AddReview = async (req, res) => {
   try {
     let doctorId = req.params.doctorId;
-    const review = await ReviewServices.addReview({
-      ...req.body,
-      doctorId: doctorId,
-    });
-    await ReviewServices.updateRatings(review.doctorId);
-    const responseBody = {
-      codeStatus: "201",
-      message: "review added",
-      data: review,
-    };
-    return res.status(201).json({ ...responseBody });
+    let appointment = AppointmentServices.getAppointmentDetails({ _id: req.body.appointmentId});
+
+    if(appointment.status === 'completed') {
+      const review = await ReviewServices.addReview({
+        ...req.body,
+        doctorId: doctorId,
+      });
+      await ReviewServices.updateRatings(review.doctorId);
+      
+      return successResponse(res, "Review Added successfully", {});
+    } else {
+      return serverErrorResponse(res, 'Please complete appointment to add review');
+    }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: error.message });
+    return serverErrorResponse(res, error);
   }
 };
 
@@ -37,10 +39,11 @@ const AllDoctorReviews = async (req, res) => {
       data: documents,
     };
 
-    res.status(200).json({ ...responseBody });
+    return successResponse(res, "Reviews", responseBody);
+
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: error.message });
+    return serverErrorResponse(res, error);
   }
 };
 
