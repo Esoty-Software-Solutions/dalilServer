@@ -15,11 +15,7 @@ const AddReview = async (req, res) => {
         doctorId: doctorId,
       });
       await ReviewServices.updateRatings(review.doctorId);
-      const responseBody = {
-        codeStatus: "201",
-        message: "review added",
-        data: review,
-      };
+      
       return successResponse(res, "Review Added successfully", {});
     } else {
       return serverErrorResponse(res, 'Please complete appointment to add review');
