@@ -1,24 +1,15 @@
-const connectDB = require("../config/database");
-const mongoose = require("mongoose");
-const User = require("../schemas/userSchema");
-const Appointment = require("../schemas/appointmentSchema");
-// const Audit = require("../schemas/auditSchema");
-const Doctor = require("../schemas/doctorSchema");
-const GenericService = require("../schemas/genericServiceSchema");
-const Institution = require("../schemas/institutionSchema");
-const MedicalCenter = require("../schemas/medicalCenterSchema");
-const ScheduleSchema = require("../schemas/scheduleSchema");
-const SmsSchema = require("../schemas/smsSchema");
-const {
-  subscribers,
-  beneficiaries,
-  medicalFiles,
-} = require("../schemas/subscriberSchema");
-const UserRole = require("../schemas/userRoleSchema");
+const { connectDB, dropDB } = require("../config/database");
 const UserServices = require("../services/userServices");
+const DoctorServices = require("../services/doctorServices");
+const SubscriberServices = require("../services/subscriberServices");
+const AppointmentServices = require("../services/appointmentServices");
+
 const bcrypt = require("bcrypt");
 const jwt = require(`jsonwebtoken`);
 const UsersData = require("./users.json");
+const DoctorData = require("./doctors.json");
+const AppointmentsData = require("./appointments.json");
+const SubscriberData = require("./subscriber.json");
 
 const createData = async () => {
   try {
@@ -32,7 +23,48 @@ const createData = async () => {
       await UserServices.createUser(newBody);
       console.log("User created");
     }
-    process.exit();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const createDoctorData = async () => {
+  try {
+    for (let i = 0; i < DoctorData.length; i++) {
+      const newBody = {
+        ...DoctorData[i],
+      };
+      await DoctorServices.createDoctor(newBody);
+      console.log("Doctor created");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const createSubscriberData = async () => {
+  try {
+    for (let i = 0; i < SubscriberData.length; i++) {
+      const newBody = {
+        ...SubscriberData[i],
+      };
+      await SubscriberServices.createSubscriber(newBody);
+      console.log("Subscriber created");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const createAppointmentsData = async () => {
+  try {
+    for (let i = 0; i < AppointmentsData.length; i++) {
+      const newBody = {
+        ...AppointmentsData[i],
+      };
+      await AppointmentServices.createAppointment(newBody);
+      console.log("Appointment created");
+    }
   } catch (err) {
     console.error(err);
   }
@@ -40,24 +72,15 @@ const createData = async () => {
 
 const removeData = async () => {
   try {
-    //connecting database
-    await connectDB();
-    ///Removing data
-    await User.deleteMany();
-    await Appointment.deleteMany();
-    // await Audit.deleteMany();
-    await Doctor.deleteMany();
-    await GenericService.deleteMany();
-    await Institution.deleteMany();
-    await MedicalCenter.deleteMany();
-    await ScheduleSchema.deleteMany();
-    await SmsSchema.deleteMany();
-    await subscribers.deleteMany();
-    await beneficiaries.deleteMany();
-    await medicalFiles.deleteMany();
-    await UserRole.deleteMany();
-    //creating user
+    //drop databse
+    await dropDB();
+
+    //inserting data
     await createData();
+    await createDoctorData();
+    await createAppointmentsData();
+    await createSubscriberData();
+
     process.exit();
   } catch (err) {
     console.error(err);

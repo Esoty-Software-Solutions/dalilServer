@@ -2,6 +2,7 @@ const express = require("express");
 var cors = require("cors");
 const bodyParser = require('body-parser');
 const app = express();
+const bodyParser = require("body-parser");
 const routes = require("./src/routers/routes");
 const dotenv = require(`dotenv`).config();
 const config = require("./src/config/config");
@@ -12,7 +13,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.json({ limit: "150mb" }));
 app.use(express.urlencoded({ limit: "150mb" }));
-
 const PORT = config.PORT || 3000;
 
 /***Route binding*/
@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
   res.send("Hello from pirate studio Server, updated with github actions");
 });
 /*******MongoDB Connectivity */
-const connectDB = require("./src/config/database");
+const { connectDB } = require("./src/config/database");
 connectDB();
 
 app.listen(PORT, () => {

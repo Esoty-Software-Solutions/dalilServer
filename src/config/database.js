@@ -13,4 +13,17 @@ const connectDB = async () => {
     console.error(error.message);
   }
 };
-module.exports = connectDB;
+
+
+const dropDB = async () => {
+  try {
+    await connectDB();
+    console.log("serverConfig.mongouri", config.mongouri);
+    await mongoose.connection.db.dropDatabase();
+    console.log("Database is dropped", mongoose.connection.db.databaseName);
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
+module.exports = { connectDB, dropDB };

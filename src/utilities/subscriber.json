@@ -1,0 +1,13 @@
+[
+    {
+        "firstName": "ahmad",
+        "secondName": "mohammed",
+        "lastName": "salem",
+        "phoneNumber":9876543210,
+        "employeeId":"",
+        "doctorId":"",
+        "gender": "male",
+        "birthdate": "03-03-1997"
+    }
+  ]
+  
