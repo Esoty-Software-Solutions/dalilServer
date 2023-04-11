@@ -15,11 +15,11 @@ exports.deleteUser = async (query) => {
 };
 
 exports.getUsers = async (filter, sort, skip, limit) => {
-  documentsCount = await UserSchema.find(filter)
+  let documentsCount = await UserSchema.find(filter)
     .select("-__v -password")
     .count(sort);
 
-  documents = await UserSchema.find(filter)
+  let documents = await UserSchema.find(filter)
     .sort(sort)
     .skip(skip)
     .limit(limit)
