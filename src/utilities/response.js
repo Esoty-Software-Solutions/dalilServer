@@ -8,8 +8,13 @@ const successResponse = (res, message, data, dataCount, token) => {
     message,
   };
   if (token) response.token = token;
-  if (dataCount) response.dataCount = dataCount;
-  if (data) response.data = data;
+  if (dataCount){
+    response.data.objectCount = dataCount;
+    response.data.objectArray = data;
+  } elseif(data)
+  {
+    response.data = data;
+  }
   res.status(StatusCodes.OK).send(response);
 };
 
