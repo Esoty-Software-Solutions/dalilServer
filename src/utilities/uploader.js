@@ -2,6 +2,12 @@ const multer = require("multer");
 const aws = require("aws-sdk");
 const multerS3 = require("multer-s3-v2");
 const path = require("path");
+const config = require("../config/config");
+const { aws_bucketName , aws_accessKeyID, aws_secretAccessKey} = config
+console.log("aws_bucketName");
+console.log(aws_bucketName);
+console.log("config.aws_bucketName");
+console.log(config.aws_bucketName);
 
 // const storage = multer.diskStorage({
 //   destination: (req, file, cb) => {
@@ -34,8 +40,8 @@ const path = require("path");
 // };
 
 const s3 = new aws.S3({
-  accessKeyId: process.env.aws_accessKeyID,
-  secretAccessKey: process.env.aws_secretAccessKey,
+  accessKeyId: aws_accessKeyID,
+  secretAccessKey: aws_secretAccessKey,  
   region: 'us-east-1'
 });
 
@@ -82,7 +88,7 @@ beneficiaryId/
 const uploadFileS3 = multer({
   storage: multerS3({
     s3: s3,
-    bucket: process.env.aws_bucketName,
+    bucket: aws_bucketName,
     ACL: 'public-read',
     metadata: function (req, file, cb) {
       const headers = {

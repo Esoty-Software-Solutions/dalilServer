@@ -14,12 +14,12 @@ const notificationRouter = require("./notification.routes");
 const doctorRouter = require("./doctor.routes");
 const medicalFileRouter = require("./midcalFiles.routes");
 const smsRouter = require("./sms.routes");
-const relationshipToSubscriber = require('./relationshipToSubscriber.routes');
-const appointmentStatusEnums = require('./appointmentStatusEnums.routes');
-const medicalSpecialties = require('./medicalSpecialties.routes');
-const medicalServices = require('./medicalServices.routes');
-const timeSlotEnumRouter = require('./timeSlotEnum.routes');
-const accountStatusEnumRouter = require('./accountStatusEnum.routes');
+const relationshipToSubscriber = require("./relationshipToSubscriber.routes");
+const appointmentStatusEnums = require("./appointmentStatusEnums.routes");
+const medicalSpecialties = require("./medicalSpecialties.routes");
+const medicalServices = require("./medicalServices.routes");
+const timeSlotEnumRouter = require("./timeSlotEnum.routes");
+const accountStatusEnumRouter = require("./accountStatusEnum.routes");
 const cityRouter = require("./city.routes");
 const reviewRouter = require("./review.routes");
 const API_VERSION = "/v1";
@@ -35,18 +35,21 @@ router.use(API_VERSION + "/medicalCenters", medicalCentersRouter);
 router.use(API_VERSION + "/schedules", schedulesRouter);
 router.use(API_VERSION + "/notifications", notificationRouter);
 router.use(API_VERSION + "/sms", smsRouter);
-router.use(API_VERSION + "/medicalFiles", medicalFileRouter);
+// router.use(API_VERSION + "/medicalFiles", medicalFileRouter);
 router.use(API_VERSION + "/doctors", doctorRouter);
 router.use(API_VERSION + "/review", reviewRouter);
 // router.use("/claims", claimsRouter);
 
 // Miscellaneous APIs
 router.use(
-  API_VERSION + "/misc/relationshipToBeneficiaryEnum",
-  relationshipToBeneficiary
+  API_VERSION + "/misc/relationshipToSubscriberEnum",
+  relationshipToSubscriber
 );
-router.use(API_VERSION + "/misc/appointmentstatusenum", appointmentStatusEnums);
-router.use(API_VERSION + "/misc/relationshipToSubscriberEnum", relationshipToSubscriber);
+router.use(API_VERSION + "/misc/appointmentStatusEnum", appointmentStatusEnums);
+router.use(
+  API_VERSION + "/misc/relationshipToSubscriberEnum",
+  relationshipToSubscriber
+);
 router.use(API_VERSION + "/misc/appointmentStatusEnum", appointmentStatusEnums);
 router.use(API_VERSION + "/misc/medicalSpecialties", medicalSpecialties);
 router.use(API_VERSION + "/misc/medicalServices", medicalServices);

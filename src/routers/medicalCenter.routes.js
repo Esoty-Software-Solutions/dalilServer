@@ -12,7 +12,7 @@ var router = express.Router();
 
 router.post(
   "",
-  uploader.singleFileUpload.any({ name: "file" }),
+  // uploader.singleFileUpload.any({ name: "file" }),
   CreateMedicalCenter
 );
 router.patch("/:medicalCenterId", authentication, UpdateMedicalCenter);
