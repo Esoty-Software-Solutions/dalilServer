@@ -40,7 +40,7 @@ const medicalCenterSchema = mongoose.Schema(
     },
     thumbnailLink: {
       type: String,
-      default: null,
+      default : "https://cdn.iconscout.com/icon/free/png-512/document-957-452909.png?f=avif&w=256",
     },
 
     fileLink: { type: Array, default: null },

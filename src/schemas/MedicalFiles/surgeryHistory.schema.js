@@ -29,7 +29,7 @@ const surgeryHistorySchema = new mongoose.Schema({
     thumbnailLink: {
         type : String,
         // hardcoded for now
-        default : "https://www.allergy.org.au/images/pcc/Clinical_History_Form.jpg",
+        default : "https://cdn.iconscout.com/icon/free/png-512/document-957-452909.png?f=avif&w=256",
     },
     fileLink: {
         type : String,
