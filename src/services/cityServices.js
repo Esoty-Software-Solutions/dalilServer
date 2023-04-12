@@ -17,3 +17,7 @@ exports.getAllCity = async ({ limit, skip }) => {
 exports.getCity = async (query) => {
   return await City.findOne(query);
 };
+
+exports.fuzzySearch = async (query) => {
+  return await City.find(query);
+};
