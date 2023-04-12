@@ -30,19 +30,23 @@ const createUser = async (req, res) => {
       // sd: idNumber + 1,
     };
     const document = await UserServices.createUser(newBody);
-    const { userId, username, password } = document;
-    // siginig/authenticating user with jwt token for authorization
-    const token = jwt.sign(
-      { userId, username, password },
-      process.env.jwtSecret,
-      {
-        expiresIn: `30d`,
-      }
+    // const { userId, username, password } = document;
+    // // siginig/authenticating user with jwt token for authorization
+    // const token = jwt.sign(
+    //   { userId, username, password },
+    //   process.env.jwtSecret,
+    //   {
+    //     expiresIn: `30d`,
+    //   }
+    // );
+    // delete document._doc.password;
+    // // delete document._doc.sd;
+    // // server response
+    return successResponse(
+      res,
+      messageUtil.resourceCreated,
+      document._doc
     );
-    delete document._doc.password;
-    // delete document._doc.sd;
-    // server response
-    res.status(200).json({ ...document._doc, token: `Bearer ${token}` });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
@@ -109,10 +113,11 @@ const updateUser = async (req, res) => {
     if (!users) {
       return res.status(404).json({ error: "No user found" });
     }
-    res.status(200).json({
-      users,
-      message: "User updated successfully",
-    });
+    return successResponse(
+      res,
+      messageUtil.resourceCreated,
+      users
+    );
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
