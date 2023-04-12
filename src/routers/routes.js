@@ -23,7 +23,7 @@ const accountStatusEnumRouter = require("./accountStatusEnum.routes");
 const cityRouter = require("./city.routes");
 const reviewRouter = require("./review.routes");
 const API_VERSION = "/v1";
-
+const prescriptionsRouter = require("./prescriptions.routes");
 router.use(API_VERSION + "/login", loginRouter);
 router.use(API_VERSION + "/logout", logoutRouter);
 router.use(API_VERSION + "/users", usersRouter);
@@ -31,6 +31,7 @@ router.use(API_VERSION + "/userRoles", userRolesRouter);
 router.use(API_VERSION + "/subscribers", subscribersRouter);
 router.use(API_VERSION + "/appointments", appointmentsRouter);
 router.use(API_VERSION + "/institutions", institutesRouter);
+router.use(API_VERSION + "/prescriptions", prescriptionsRouter);
 router.use(API_VERSION + "/medicalCenters", medicalCentersRouter);
 router.use(API_VERSION + "/schedules", schedulesRouter);
 router.use(API_VERSION + "/TestNotification", notificationRouter);
@@ -56,5 +57,7 @@ router.use(API_VERSION + "/misc/medicalServices", medicalServices);
 router.use(API_VERSION + "/misc/timeSlotEnum", timeSlotEnumRouter);
 router.use(API_VERSION + "/misc/accountStatusEnum", accountStatusEnumRouter);
 router.use(API_VERSION + "/misc/cities", cityRouter);
+
+
 
 module.exports = router;

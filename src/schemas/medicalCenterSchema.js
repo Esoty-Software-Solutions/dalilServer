@@ -2,7 +2,7 @@
 const mongoose = require(`mongoose`);
 
 // medicalCenter schema setup
-const medicalCenterSchema = mongoose.Schema(
+const medicalCenterSchema = new mongoose.Schema(
   {
     // medicalCenterId: { type: mongoose.ObjectId, unique: true },
     name: {
@@ -43,7 +43,10 @@ const medicalCenterSchema = mongoose.Schema(
       default : "https://cdn.iconscout.com/icon/free/png-512/document-957-452909.png?f=avif&w=256",
     },
 
-    fileLink: { type: Array, default: null },
+    fileLink: { 
+      type: Array, 
+      default: null 
+    },
     isActive: { type: Boolean },
   },
   { timestamps: true }

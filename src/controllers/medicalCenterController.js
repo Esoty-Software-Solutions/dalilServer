@@ -11,14 +11,12 @@ const {
 const CreateMedicalCenter = async (req, res) => {
   try {
     const fieldNamesList = [];
-
     // check if files are submitted
     if ("files" in req) {
       req.files.forEach((file) => {
         fieldNamesList.push(file.location);
       });
     }
-
     const document = await MedicalCenterServices.createMedicalCenter({
       ...req.body,
       isActive: true,

@@ -3,6 +3,7 @@ const SKIP = 0;
 const findQueryCommonUtil = require("../utilities/findQueryUtil");
 const _ = require("lodash");
 const uploader = require("../utilities/uploader");
+const config = require("../config/config");
 // exports.createMedicalFile = async (query) => {
 //   return await medicalFiles.create(query);
 // };
@@ -27,7 +28,7 @@ exports.getMedicalFilesAggregator = async (schema , query, skip, limit) => {
     // iterating over the array to replace public url to presigned url.. 
     const newDocuments = await Promise.all(documents.map(async (data)=>{
       if(data?.fileLink) {
-        const presignedUrl = await uploader.getPresignedUrl(data.fileLink);
+        const presignedUrl = await uploader.getPresignedUrl(data.fileLink , config.aws_bucketName);
         data.fileLink = presignedUrl;
       }
       return data;
@@ -67,7 +68,7 @@ exports.createMedicalFiles = async (body, params, schema, fileData) => {
   const fileLinkAddedPayload = _.assign(createdPayload , {fileLink : fileLink});
   try {
     const createDocument = await schema.create(fileLinkAddedPayload);
-    const presignedUrl = await uploader.getPresignedUrl(createDocument.fileLink);
+    const presignedUrl = await uploader.getPresignedUrl(createDocument.fileLink , config.aws_bucketName);
     createDocument.fileLink = presignedUrl;
     if(!createDocument) {
         return {

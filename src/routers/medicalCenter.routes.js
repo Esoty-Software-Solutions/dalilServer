@@ -7,14 +7,10 @@ const {
   AllMedicalCenter,
 } = require("../controllers/medicalCenterController");
 const { authentication } = require("../utilities/auth");
-const uploader = require("../utilities/uploader");
 var router = express.Router();
-
-router.post(
-  "",
-  // uploader.singleFileUpload.any({ name: "file" }),
-  CreateMedicalCenter
-);
+const uploader = require("../utilities/uploader");
+const config = require("../config/config");
+router.route("").post(uploader.uploadFileS3("multiple" , config.dalilStorage_bucket), CreateMedicalCenter);
 router.patch("/:medicalCenterId", authentication, UpdateMedicalCenter);
 router.get("", AllMedicalCenter);
 router.get("/:medicalCenterId", SingleMedicalCenter);

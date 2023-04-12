@@ -5,7 +5,6 @@ require("dotenv").config();
 const s3 = new aws.S3({
   accessKeyId: process.env.aws_accessKeyID,
   secretAccessKey: process.env.aws_secretAccessKey,
-  // Bucket: process.env.aws_bucketName,
 });
 let S3_BUCKET_URL = "https://pistas-bucket.s3.amazonaws.com/";
 
@@ -21,8 +20,15 @@ const AddInstitution = async (req, res) => {
     let query = {
       ...req.body,
     };
+    const fieldNamesList = [];
+    // check if files are submitted
+    if ("files" in req) {
+      req.files.forEach((file) => {
+        fieldNamesList.push(file.location);
+      });
+    }
     if (req.files.length > 0) {
-      query.institute_image = req.files[0].location;
+      query.fileLink = fieldNamesList;
     }
     let institution = await InstitutionServices.createInstitution(query);
     res.status(200).json({
@@ -56,22 +62,22 @@ const AllInstitutions = async (req, res) => {
 const InstitutionById = async (req, res) => {
   //destructure queryObject
 
-  const { expiry_time, institution_id } = req.query;
+  const { institution_id } = req.params;
 
   if (!institution_id) {
     return res.status(404).json({ message: "Please insert institution id" });
   }
 
   //this function will be moved in utilities
-  const getSignedUrl = (image, expiry_time) => {
-    let bucket_params = {
-      Bucket: process.env.aws_bucketName,
-      Key: image.split(S3_BUCKET_URL)[1],
-      Expires: expiry_time ? Number(expiry_time) : 60,
-    };
-    //returning the signed url
-    return s3.getSignedUrl("getObject", bucket_params);
-  };
+  // const getSignedUrl = (image, expiry_time) => {
+  //   let bucket_params = {
+  //     Bucket: process.env.aws_bucketName,
+  //     Key: image.split(S3_BUCKET_URL)[1],
+  //     Expires: expiry_time ? Number(expiry_time) : 60,
+  //   };
+  //   //returning the signed url
+  //   return s3.getSignedUrl("getObject", bucket_params);
+  // };
 
   try {
     let findInstitution = await InstitutionServices.getInstitutionDetails({
@@ -80,12 +86,12 @@ const InstitutionById = async (req, res) => {
     if (!findInstitution) {
       return res.status(404).json({ message: "No institute found" });
     }
-    let signed_url;
-    if (findInstitution.institute_image) {
-      signed_url = getSignedUrl(findInstitution.institute_image, expiry_time);
-    }
+    // let signed_url;
+    // if (findInstitution.institute_image) {
+    //   signed_url = getSignedUrl(findInstitution.institute_image, expiry_time);
+    // }
     return res.status(200).json({
-      data: { findInstitution, signed_url },
+      data: { findInstitution },
       message: "Institution found.",
     });
   } catch (err) {

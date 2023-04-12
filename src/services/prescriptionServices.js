@@ -1,8 +1,8 @@
 const config = require("../config/config");
-const MedicalCenterSchema = require("../schemas/medicalCenterSchema");
+const PrescriptionSchema = require("../schemas/prescriptionSchema");
 const uploader = require("../utilities/uploader");
-exports.createMedicalCenter = async (query) => {
-  const createdDoc = await MedicalCenterSchema.create(query);
+exports.createPrescription = async (query) => {
+  const createdDoc = await PrescriptionSchema.create(query);
   if(createdDoc?.fileLink?.length) {
     const presignedUrlArray = await Promise.all(createdDoc?.fileLink?.map(link => uploader.getPresignedUrl(link, config.dalilStorage_bucket)));
     createdDoc.fileLink = presignedUrlArray;
@@ -10,18 +10,18 @@ exports.createMedicalCenter = async (query) => {
   return createdDoc;
 };
 
-exports.updateMedicalCenter = async (query, data) => {
-  return await MedicalCenterSchema.findOneAndUpdate(query, data, {
+exports.updatePrescription = async (query, data) => {
+  return await PrescriptionSchema.findOneAndUpdate(query, data, {
     new: true,
   });
 };
 
-exports.deleteMedicalCenter = async (query) => {
-  return await MedicalCenterSchema.findOneAndDelete(query);
+exports.deletePrescription = async (query) => {
+  return await PrescriptionSchema.findOneAndDelete(query);
 };
 
-exports.getAllMedicalCenters = async (query, limit, skip) => {
-  const medicalCenterDocuments = await MedicalCenterSchema.find(query)
+exports.getAllPrescriptions = async (query, limit, skip) => {
+  const medicalCenterDocuments = await PrescriptionSchema.find(query)
     .skip(skip)
     .limit(limit)
     .select("-__v ");
@@ -37,8 +37,8 @@ exports.getAllMedicalCenters = async (query, limit, skip) => {
   return newDocuments;
 };
 
-exports.getMedicalCenterDetails = async (query) => {
-  const singleDocument = await MedicalCenterSchema.findOne(query).select(
+exports.getPrescriptionDetails = async (query) => {
+  const singleDocument = await PrescriptionSchema.findOne(query).select(
     "-__v -createdAt -updatedAt"
   );
   if(singleDocument?.fileLink.length) {
