@@ -17,7 +17,7 @@ exports.customValidation = (joiValidator, payloadType) => {
     }catch(err) {
         return (req, res , next) => {
             console.log(err);
-            badRequestErrorResponse(res, "Payload Not Valid");
+            badRequestErrorResponse(res, "Request body Not Valid");
         }
     }
 }
