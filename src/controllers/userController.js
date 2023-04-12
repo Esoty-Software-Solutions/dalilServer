@@ -125,7 +125,7 @@ const updateUser = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password , deviceToken, deviceType } = req.body;
     const doc = await UserServices.getUser({
       username,
     });
@@ -147,7 +147,7 @@ const login = async (req, res) => {
         `Either username or password is invalid`
       );
     }
-
+// saving the token to user schema
     const updateUser = await UserServices.updateUser(
       {
         username,

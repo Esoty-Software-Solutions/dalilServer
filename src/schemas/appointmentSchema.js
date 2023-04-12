@@ -3,36 +3,19 @@ const mongoose = require(`mongoose`);
 const appointmentSchema = mongoose.Schema(
   {
     appointmentDate: { type: Date },
-    timeslot: { type: String },
+    timeSlot: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "timeSlotEnum",
+      required: [true, `please provide valid time slot id`],
+    },
     appointmentStatus: {
       type: String,
     },
-    patient: {
-      userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
-        required: [true, `please provide valid userId`],
-      },
-      patientType: {
-        type: String,
-        required: [true, `please provide valid patientType`],
-      },
-      patientRelationship: {
-        type: String,
-        required: [true, `please provide valid patientRelationship`],
-      },
-    },
-    schedule: {
-      type: Object,
-    },
-    doctor: {
-      type: Object,
-    },
-    medicalCenter: {
-      type: Object,
-    },
-    user: {
-      type: Object,
+
+    beneficiaryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "beneficiaries",
+      required: [true, `please provide valid beneficiary id`],
     },
     scheduleId: {
       type: mongoose.Schema.Types.ObjectId,

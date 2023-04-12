@@ -5,21 +5,16 @@ const singleNotification = async (
   title,
   body,
   registrationToken,
-  type,
-  booking_id
-) => {
-
+  data
+  ) => {
+   
   const payload = {
     notification: {
               title: title,
               body: body,
               // clickAction : "" // this is used when we have to click something and it routes us somewhere
             },
-    data: {
-        message: body,
-        type : type,
-        booking_id : booking_id,
-    }
+    data: data
 }
   var options = {
     priority: "high",

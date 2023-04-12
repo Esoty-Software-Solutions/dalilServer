@@ -134,7 +134,7 @@ const AllSchedule = async (req, res) => {
     } else {
       limitQP = 30;
     }
-    let documents = ScheduleServices.getAllSchedules({}, limitQP);
+    let documents = await ScheduleServices.getAllSchedules({}, limitQP);
     let message = "success";
     if (documents.length === 0) {
       message = "list is empty change your query";
@@ -143,7 +143,7 @@ const AllSchedule = async (req, res) => {
       codeStatus: "200",
       message: message,
       data: {
-        objectCount: count,
+        objectCount: documents.length,
         objectArray: documents,
       },
     };

@@ -1,4 +1,4 @@
-const ReviewSchema = require("../schemas/ reviewSchema");
+const ReviewSchema = require("../schemas/reviewSchema");
 const { ObjectId } = require("mongodb");
 const doctor = require("../schemas/doctorSchema");
 
