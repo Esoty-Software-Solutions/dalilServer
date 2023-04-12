@@ -1,0 +1,16 @@
+[
+  {
+    "_id": "6436523940bea126632a0a4a",
+    "username": "user",
+    "phoneNumber": "0912314455",
+    "phoneAuthenticated": false,
+    "firstName": "ahmad",
+    "secondName": "mohammed",
+    "lastName": "salem",
+    "email":"salem@yopmail.com",
+    "password": "234",
+    "subscriberId": "6436544ef2e262c4a1e97e77",
+    "doctorId":"643653a7225fa63a08a032d9",
+    "institutionId":"64365da4ae23aa4ccc3d2cf9"
+  }
+]

@@ -1,0 +1,17 @@
+[
+    {
+        "_id": "6436544ef2e262c4a1e97e77",
+        "firstName": "Mary",
+        "secondName": "Elizabeth",
+        "lastName": "Smith",
+        "phoneNumber":9876543210,
+        "institutionId":"",
+        "beneficiaries":"64365542990d4031d7c1ee31",
+        "doctorId":"643653a7225fa63a08a032d9",
+        "gender": "643656b0d753cac519ced0de",
+        "birthdate": "02-03-1996",
+        "city":"64365c41665912b98f5eab13",
+        "userId":"6436523940bea126632a0a4a"
+    }
+  ]
+    

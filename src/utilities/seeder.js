@@ -6,10 +6,10 @@ const AppointmentServices = require("../services/appointmentServices");
 
 const bcrypt = require("bcrypt");
 const jwt = require(`jsonwebtoken`);
-const UsersData = require("./users.json");
-const DoctorData = require("./doctors.json");
-const AppointmentsData = require("./appointments.json");
-const SubscriberData = require("./subscriber.json");
+const UsersData = require("./jsonFile/users.json");
+const DoctorData = require("./jsonFile/doctors.json");
+const AppointmentsData = require("./jsonFile/appointments.json");
+const SubscriberData = require("./jsonFile/subscriber.json");
 
 const createData = async () => {
   try {
@@ -21,6 +21,7 @@ const createData = async () => {
         password: hash,
       };
       await UserServices.createUser(newBody);
+
       console.log("User created");
     }
   } catch (err) {

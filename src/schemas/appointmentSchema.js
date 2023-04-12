@@ -7,21 +7,6 @@ const appointmentSchema = mongoose.Schema(
     appointmentStatus: {
       type: String,
     },
-    patient: {
-      userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
-        required: [true, `please provide valid userId`],
-      },
-      patientType: {
-        type: String,
-        required: [true, `please provide valid patientType`],
-      },
-      patientRelationship: {
-        type: String,
-        required: [true, `please provide valid patientRelationship`],
-      },
-    },
     schedule: {
       type: Object,
     },

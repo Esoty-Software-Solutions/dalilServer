@@ -1,0 +1,14 @@
+[
+    {
+        "_id": "64365a7c862b7622a820089b",
+        "backendName": "Active",
+        "arabicName": "نشيط",
+        "englishName": "Active"
+    },
+    {
+        "_id": "64365a86772cd0d2504eda23",
+        "backendName": "InActive",
+        "arabicName": "غير نشط",
+        "englishName": "In-Active"
+    }
+  ]
