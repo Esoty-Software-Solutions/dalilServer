@@ -96,4 +96,4 @@ const cookieVerification = (req, res, next) => {
   next();
 };
 
-module.exports = { authentication, cookieVerification, isAdmin, checkAccess };
+module.exports = {  cookieVerification, isAdmin, checkAccess };

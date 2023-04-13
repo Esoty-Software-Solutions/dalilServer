@@ -274,6 +274,9 @@ const logout = async (req, res) => {
 
 const ChangePassword = async (req, res) => {
   try {
+    console.log("change password")
+    console.log("req.params", req.params);
+    console.log("req.body", req.body);
     const { currentPassword, newPassword } = req.body;
     //checking the required fields
     const isError = checkFeilds(

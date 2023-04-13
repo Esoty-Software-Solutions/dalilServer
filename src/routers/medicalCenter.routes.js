@@ -15,7 +15,7 @@ router.post(
   // uploader.singleFileUpload.any({ name: "file" }),
   CreateMedicalCenter
 );
-router.patch("/:medicalCenterId", authentication, UpdateMedicalCenter);
+router.patch("/:medicalCenterId",  UpdateMedicalCenter);
 router.get("", AllMedicalCenter);
 router.get("/:medicalCenterId", SingleMedicalCenter);
 router.delete("/:medicalCenterId", DeleteMedicalCenter);

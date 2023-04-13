@@ -24,37 +24,37 @@ getChronicDiseasesController,createChronicDiseasesController , getMedicalTestsCo
 //   uploader.uploads.any({ name: "file" }),
 //   createSubscribersCSV
 // );
-router.get("", authentication, getSubscribers);
-router.post("", authentication, createSubscriber);
-router.get("/:subscriberId", authentication, getSubscriber);
-router.get("/:subscriberId/beneficiaries", authentication, getBeneficiaries);
+router.get("",  getSubscribers);
+router.post("",  createSubscriber);
+router.get("/:subscriberId",  getSubscriber);
+router.get("/:subscriberId/beneficiaries",  getBeneficiaries);
 router.get("/:subscriberId/beneficiaries/:beneficiaryId", getBeneficiary);
 router.patch("/:subscriberId/beneficiaries/:beneficiaryId", updateBeneficiary);
 router.post(
   "/:subscriberId/beneficiaries",
-  authentication,
+  
   createBeneficiaryForSubscriber
 );
-router.patch("/:subscriberId", authentication, updateSubscriber);
+router.patch("/:subscriberId",  updateSubscriber);
 
 
 // ---------------------------------------- medical files routes ----------------------------------------------- 
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/clinicalVisits`)
-  .get(customValidation(getMedicalFilesValidator , "query"),authentication, getClinicalVisitsController )
+  .get(customValidation(getMedicalFilesValidator , "query"), getClinicalVisitsController )
   .post(uploader.uploadFileS3.single("file"),customValidation(clinicalVisitValidator, "body"), createClinicalVisitsController )
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/allergies`)
-  .get(customValidation(getMedicalFilesValidator , "query"),authentication,  getAllergiesController )
-  .post(uploader.uploadFileS3.single("file"),customValidation(createMedicalFilesValidator, "body"),authentication, createAllergiesController )
+  .get(customValidation(getMedicalFilesValidator , "query"),  getAllergiesController )
+  .post(uploader.uploadFileS3.single("file"),customValidation(createMedicalFilesValidator, "body"), createAllergiesController )
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/surgeryHistories`)
-  .get(customValidation(getMedicalFilesValidator , "query"),authentication, getSurgeryHistoriesController )
-  .post(uploader.uploadFileS3.single("file"),customValidation(createSurgeryHistoryFilesValidator , "body"),authentication, createSurgeryHistoriesController )
+  .get(customValidation(getMedicalFilesValidator , "query"), getSurgeryHistoriesController )
+  .post(uploader.uploadFileS3.single("file"),customValidation(createSurgeryHistoryFilesValidator , "body"), createSurgeryHistoriesController )
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/chronicDiseases`)
-  .get(customValidation(getMedicalFilesValidator , "query"),authentication, getChronicDiseasesController )
-  .post(uploader.uploadFileS3.single("file"),customValidation(createChronicDiseasesFilesValidator , "body"),authentication, createChronicDiseasesController )
+  .get(customValidation(getMedicalFilesValidator , "query"), getChronicDiseasesController )
+  .post(uploader.uploadFileS3.single("file"),customValidation(createChronicDiseasesFilesValidator , "body"), createChronicDiseasesController )
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/medicalTests`)
   .get(customValidation(getMedicalFilesValidator , "query"), getMedicalTestsController )
