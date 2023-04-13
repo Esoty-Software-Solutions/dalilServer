@@ -106,9 +106,7 @@ const AllDoctors = async (req, res) => {
       query.specialty = req.query.specialty;
     }
     const documents = await DoctorServices.getDoctors(query, limitQP, skipOP);
-    if (documents.length < 1) {
-      return notFoundResponse(res, messageUtil.resourceNotFound);
-    }
+
     return successResponse(res, messageUtil.success, {
       objectCount: documents.length,
       objectArray: documents,
