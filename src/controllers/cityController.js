@@ -6,7 +6,7 @@ const {
   serverErrorResponse,
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
-
+const searchQuery = require("../utilities/searchQuery");
 const city = {
   // Add Appointment Status Enum
 
@@ -46,8 +46,15 @@ const city = {
         limit: req.query.limit,
         skip: req.query.skip,
       };
-      let objectArray = await cityServices.getAllCity(query);
 
+      const searchFields = ["backendName", "englishName"];
+
+      // Define the search query
+      let searchquery;
+      if (req.query.searchQuery) {
+        searchquery = searchQuery(searchFields, req.query.searchQuery);
+      }
+      let objectArray = await cityServices.getAllCity(searchquery, query);
       return successResponse(
         res,
         messageUtil.success,
