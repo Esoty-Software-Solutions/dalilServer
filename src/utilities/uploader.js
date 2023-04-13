@@ -5,35 +5,6 @@ const path = require("path");
 const config = require("../config/config");
 const {aws_accessKeyID, aws_secretAccessKey} = config
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "./temp/");
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, file.originalname);
-//   },
-// });
-
-// const uploads = multer({
-//   storage: storage,
-//   fileFilter: function (_req, file, cb) {
-//     checkFileType(file, cb);
-//   },
-// });
-// const checkFileType = (file, cb) => {
-//   // Allowed ext
-//   const filetypes = /csv|CSV/;
-//   // Check ext
-//   // const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-//   // Check mime
-//   const mimetype = filetypes.test(file.mimetype);
-//   if (mimetype) {
-//     return cb(null, true);
-//   } else {
-//     return cb(false, false);
-//     // return cb('Error: CSV files Only!');
-//   }
-// };
 
 const s3 = new aws.S3({
   accessKeyId: aws_accessKeyID,
@@ -41,28 +12,6 @@ const s3 = new aws.S3({
   region: 'us-east-1'
 });
 
-// const singleFileUpload = multer({
-//   storage: multerS3({
-//     s3: s3,
-//     bucket: process.env.aws_bucketName,
-//     acl: "public-read",
-//     contentType: multerS3.AUTO_CONTENT_TYPE, // very important
-
-//     key: function (req, file, cb) {
-//       let folder = req.originalUrl.split("/v1/")[1];
-//       let fullPath =
-//         path.basename(file.originalname, path.extname(file.originalname)) +
-//         "-" +
-//         Date.now() +
-//         path.extname(file.originalname);
-//       cb(null, `${folder}/` + fullPath);
-//     },
-//   }),
-//   limits: { fileSize: 5242880 }, // In bytes: 5000000 bytes = 5 MB
-//   fileFilter: function (req, file, cb) {
-//     checkFileType(file, cb);
-//   },
-// });
 
 function checkFileType(file, cb) {
   // Allowed ext
@@ -189,9 +138,53 @@ const allDocumentsPresignedUrl = async (document) => {
   return newDocuments
 }
 
+function renameKey(document, newKey, oldKey) {
+  // check if the document has the old key
+  if (!document.hasOwnProperty(oldKey)) {
+    return document; // return the original document if oldKey is not found
+  }
+
+  // create a new object to hold the renamed keys
+  const newDocument = {};
+
+  // loop through the keys in the original document
+  for (const [key, value] of Object.entries(document)) {
+    // if the current key matches oldKey, use the new key instead
+    if (key === oldKey) {
+      newDocument[newKey] = value;
+    } else {
+      newDocument[key] = value;
+    }
+  }
+
+  // also rename any key that matches oldKey in subdocuments recursively
+  for (const [key, value] of Object.entries(newDocument)) {
+    if (typeof value === 'object' && value !== null) {
+      newDocument[key] = renameKey(value, newKey, oldKey);
+    }
+  }
+
+  return newDocument;
+}
+
+async function returnedSingleDoc (schema, query)  {
+  const singleDocument = await schema.findOne(query).select(
+    "-__v -createdAt -updatedAt"
+  ).lean();
+  if(!singleDocument) return;
+  
+  const updatedDocument = renameKey(singleDocument , "city" , "cityId");
+  if(updatedDocument?.fileLink.length) {
+    const presignedUrlArray = await Promise.all(updatedDocument.fileLink.map(async link => await getPresignedUrl(link , config.dalilStorage_bucket)));
+    updatedDocument.fileLink = presignedUrlArray;
+  }
+  return updatedDocument;
+}
 module.exports = {
   uploadFileS3,
   getPresignedUrl,
   assignedPresignedUrlSingle,
-  allDocumentsPresignedUrl
+  allDocumentsPresignedUrl,
+  renameKey,
+  returnedSingleDoc
 };

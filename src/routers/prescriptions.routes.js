@@ -12,7 +12,7 @@ const uploader = require("../utilities/uploader");
 const config = require("../config/config");
 
 router.post("", uploader.uploadFileS3("multiple" , config.dalilStorage_bucket), AddPrescription);
-router.patch("/:prescriptionId", checkToken, UpdatePrescription);
+router.patch("/:prescriptionId", UpdatePrescription);
 router.get("", AllPrescriptions);
 router.get("/:prescriptionId", PrescriptionById);
 router.delete("/:prescriptionId", checkToken, DeletePrescription);

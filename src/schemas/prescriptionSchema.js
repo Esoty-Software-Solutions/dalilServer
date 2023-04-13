@@ -1,6 +1,43 @@
 // importing mongooose for prescriptionCenterSchema and collection setup
 const mongoose = require(`mongoose`);
 
+
+// Define the Quote schema
+const quoteSchema = new mongoose.Schema({
+    pharmacyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref : "pharmacy",
+      required: [true, 'Please enter pharmacy id'],
+    },
+    prescriptionId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref : "prescriptions",
+      default : null
+    },
+    notes: {
+      type: String,
+      default: null,
+    },
+    totalPrice: {
+      type: Number,
+    },
+    table: {
+      type: [
+        {
+          name: {
+            type: String,
+          },
+        },
+        {
+          price: {
+            type: Number,
+          },
+        },
+      ],
+    },
+});
+
+
 // prescriptionCenter schema setup
 const prescriptionCenterSchema = new mongoose.Schema(
   {
@@ -27,56 +64,16 @@ const prescriptionCenterSchema = new mongoose.Schema(
         default: null 
     },
     Quotes : {
-        type : [
-            {
-                pharmacyId : {
-                    // type : mongoose.Schema.Types.ObjectId,
-                    // ref : "pharmacy"
-                    type : String
-                }
-            },
-            {
-                prescriptionId : {
-                    type : String,
-                }
-            },
-            {
-                notes : {
-                    type : String,
-                    default : null,
-                }
-            },
-            {
-                totalPrice : {
-                    type : Number,
-                }
-            },
-            {
-            table : {
-                type : [
-                    {
-                        name : {
-                            type : String
-                        }
-                    } ,
-                    {
-                        price : {
-                            type : Number
-                        }
-                    }
-                ]
-            }
-            }
-        ],
+        type : [quoteSchema]
     },
     isActive: { 
         type: Boolean
      },
     },
   { timestamps: true }
-    
 );
 
-const prescriptionCenter = mongoose.model(`prescriptionCenters`, prescriptionCenterSchema);
+const quota = mongoose.model("quota" , quoteSchema);
+const prescriptionCenter = mongoose.model(`prescriptions`, prescriptionCenterSchema);
 
 module.exports = prescriptionCenter;

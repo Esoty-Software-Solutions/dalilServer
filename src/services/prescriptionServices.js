@@ -11,9 +11,13 @@ exports.createPrescription = async (query) => {
 };
 
 exports.updatePrescription = async (query, data) => {
-  return await PrescriptionSchema.findOneAndUpdate(query, data, {
-    new: true,
-  });
+  const updatedDocument = await PrescriptionSchema.findOneAndUpdate(query, data , {new : true});
+
+  if(updatedDocument?.fileLink.length) {
+    const presignedUrlArray = await Promise.all(updatedDocument.fileLink.map(async link => await uploader.getPresignedUrl(link , config.dalilStorage_bucket)));
+    updatedDocument.fileLink = presignedUrlArray;
+  }
+  return updatedDocument;
 };
 
 exports.deletePrescription = async (query) => {

@@ -11,12 +11,9 @@ const institutionSchema = new mongoose.Schema(
       required : [true, `please provide Phone Number`]
     },
     cityId: { 
-      type: String, 
-      required: [true, `please provide cityId`] 
-    },
-    city : {
-      type : String,
-      required : [true, "Please provide city"]
+      type: mongoose.Schema.Types.ObjectId,
+      ref : "cities", 
+      required: [true, `please provide cityid`] 
     },
     employeeCount: {
       type : String
@@ -104,6 +101,12 @@ const institutionSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+institutionSchema.pre(["find" , "findOne"] , function (next) {
+  this.populate('cityId' , '-_id -__v');
+  this.lean();
+  next();
+})
 
 const institution = mongoose.model(`institutions`, institutionSchema);
 

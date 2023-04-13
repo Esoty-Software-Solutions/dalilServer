@@ -1,9 +1,10 @@
+const config = require("../config/config");
 const InstitutionSchema = require("../schemas/institutionSchema");
 const uploader = require("../utilities/uploader");
 exports.createInstitution = async (query) => {
   const document = await InstitutionSchema.create(query);
-  const finalDocument = await uploader.assignedPresignedUrlSingle(document);
-  return finalDocument;
+  const doc = await uploader.returnedSingleDoc(InstitutionSchema , document._id);
+  return doc;
 };
 
 exports.updateInstitution = async (query, data) => {
@@ -17,15 +18,25 @@ exports.deleteInstitution = async (query) => {
 };
 
 exports.getAllInstitution = async () => {
-  const document = await InstitutionSchema.find().sort({ _id: -1 }).select("-__v");
-  const finalDocument = uploader.allDocumentsPresignedUrl(document);
-  return finalDocument;
+  const document = await InstitutionSchema
+  .find()
+  .sort({ _id: -1 })
+  .select("-__v");
+
+  const newDocuments = await Promise.all(document.map(async data => {
+    if(data?.fileLink.length) {
+      const presignedUrlArray = await Promise.all(data.fileLink.map(async link => await uploader.getPresignedUrl(link , config.dalilStorage_bucket)));
+      data.fileLink = presignedUrlArray;
+    }
+    const renamedData = uploader.renameKey(data , "city" , "cityId");
+    return renamedData; 
+  }))
+
+  // const finalDocument = uploader.allDocumentsPresignedUrl(document);
+  return newDocuments;
 };
 
 exports.getInstitutionDetails = async (query) => {
-  const document =  await InstitutionSchema.findOne(query).select(
-    "-__v -createdAt -updatedAt"
-  );
-  const finalDocument = await uploader.assignedPresignedUrlSingle(document);
-  return finalDocument;
+  const instDoc = await uploader.returnedSingleDoc(InstitutionSchema, query);
+  return instDoc;
 };

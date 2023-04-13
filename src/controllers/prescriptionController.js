@@ -1,15 +1,11 @@
 const PrescriptionServices = require("../services/prescriptionServices");
+const { messageUtil } = require("../utilities/message");
+const { successResponse, serverErrorResponse } = require("../utilities/response");
 require("dotenv").config();
 
 const AddPrescription = async (req, res) => {
   try {
-    const findPrescription = await PrescriptionServices.getPrescriptionDetails({
-      title: req.body.title,
-    });
-    if (findPrescription) {
-      return res.status(400).json({ error: "Prescription already exist" });
-    }
-    let query = {
+  let query = {
       ...req.body,
     };
     const fieldNamesList = [];
@@ -23,14 +19,11 @@ const AddPrescription = async (req, res) => {
       query.fileLink = fieldNamesList;
     }
     let prescription = await PrescriptionServices.createPrescription(query);
-    res.status(200).json({
-      prescription,
-      message: "Institute created successfully",
-    });
-    //   successResponse(res, messageUtil.ok, prescription);
+    return successResponse(res, messageUtil.resourceCreated, prescription);
+    
   } catch (err) {
-    //   serverErrorResponse(res, err);
-    res.status(500).json({ message: err.message });
+    return serverErrorResponse(res, err.message);
+    
   }
 };
 
@@ -42,12 +35,14 @@ const AllPrescriptions = async (req, res) => {
       return res.status(404).json({ message: "No prescription found" });
     }
 
-    return res.status(200).json({
+    return successResponse(res, messageUtil.success, {
       prescriptions,
       objectCount: prescriptions.length,
     });
+
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return serverErrorResponse(res, err.message);
+    
   }
 };
 
@@ -82,12 +77,11 @@ const PrescriptionById = async (req, res) => {
     // if (findPrescription.prescription_image) {
     //   signed_url = getSignedUrl(findPrescription.prescription_image, expiry_time);
     // }
-    return res.status(200).json({
-      data: { findPrescription },
-      message: "Prescription found.",
-    });
+
+    return successResponse(res, messageUtil.success, findPrescription);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return serverErrorResponse(res, err.message);
+    
   }
 };
 
@@ -99,12 +93,11 @@ const DeletePrescription = async (req, res) => {
     if (!prescription) {
       return res.status(404).json({ message: "No prescription found" });
     }
-    return res.status(200).json({
-      prescription,
-      message: "Prescription delted.",
-    });
+    return successResponse(res, messageUtil.resourceDeleted);
+
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return serverErrorResponse(res, err.message);
+    
   }
 };
 
@@ -120,12 +113,11 @@ const UpdatePrescription = async (req, res) => {
     if (!prescription) {
       return res.status(404).json({ message: "No prescription found" });
     }
-    return res.status(200).json({
-      prescription,
-      message: "Prescription updated successfully.",
-    });
+    return successResponse(res, messageUtil.resourceUpdated, prescription);
+
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return serverErrorResponse(res, err.message);
+    
   }
 };
 
