@@ -1,27 +1,25 @@
 const AppointmentSchema = require("../schemas/appointmentSchema");
+// import all schemas
 
-exports.createOne = async (schemaName, query, skip, limit, select) => {
-  return await AppointmentSchema.create(query);
-};
+const service = {
 
-exports.updateOne = async (query, data) => {
-  return await AppointmentSchema.findOneAndUpdate(query, data, {
-    new: true,
-  }).select("-__v -createdAt -updatedAt");
-};
+  createOne = async ({schemaName, body, query, skip, limit, select, populate}) => {
+  };
+  
+  updateOne = async ({schemaName, body, query, skip, limit, select, populate}) => {
+  };
+  
+  deleteOne = async ({schemaName, body, query, skip, limit, select, populate}) => {
 
-exports.deleteAppointment = async (query) => {
-  return await AppointmentSchema.findOneAndDelete(query);
-};
+  };
+  
+  getOne = async (query) => {
+  };
+  
+  getMany = async (query, limit) => {
+  };
+}
 
-exports.getAppointments = async (query, limit) => {
-  return await AppointmentSchema.find(query).limit(limit).select("-__v");
-};
+module.exports = service;
 
-exports.getAppointmentDetails = async (query) => {
-  return await AppointmentSchema.findOne(query)
-    .populate("beneficiaryId")
-    .populate("scheduleId")
-    .populate("doctorId")
-    .select("-__v -createdAt -updatedAt");
-};
+
