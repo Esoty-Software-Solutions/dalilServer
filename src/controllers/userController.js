@@ -9,6 +9,7 @@ const {
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
 const checkFeilds = require("../utilities/checkFields");
+const searchQuery = require("../utilities/searchQuery");
 // const { default: mongoose } = require("mongoose");
 
 const createUser = async (req, res) => {
@@ -18,7 +19,6 @@ const createUser = async (req, res) => {
     if (req.body.password) {
       myPlaintextPassword = req.body.password;
     }
-    
 
     // hashing user password
     // const hash = bcrypt.hashSync(myPlaintextPassword, 10);
@@ -44,11 +44,7 @@ const createUser = async (req, res) => {
     // delete document._doc.password;
     // // delete document._doc.sd;
     // // server response
-    return successResponse(
-      res,
-      messageUtil.resourceCreated,
-      document._doc
-    );
+    return successResponse(res, messageUtil.resourceCreated, document._doc);
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
@@ -57,6 +53,7 @@ const createUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
+    const searchFields = ["username", "firstName"];
     let limitQP = Number(req.query.limit) ?? 100;
     if (limitQP > 100) limitQP = 100;
     if (limitQP < 1) limitQP = 1;
@@ -66,10 +63,15 @@ const getUsers = async (req, res) => {
 
     let sortByQP = Number(req.query.sortBy) ?? { userId: 1 };
 
-    const filterQP = null; // temporary
+    // Define the search query
+    let searchquery;
+    if (req.query.searchQuery) {
+      searchquery = searchQuery(searchFields, req.query.searchQuery);
+    }
+    console.log("searchquery", searchquery);
 
     const [docArray, docCount] = await UserServices.getUsers(
-      filterQP,
+      searchquery,
       sortByQP,
       skipQP,
       limitQP
@@ -109,17 +111,13 @@ const updateUser = async (req, res) => {
     }
     const users = await UserServices.updateUser(
       { _id: req.params.id },
-      { },
+      {},
       { new: true }
     );
     if (!users) {
       return res.status(404).json({ error: "No user found" });
     }
-    return successResponse(
-      res,
-      messageUtil.resourceCreated,
-      users
-    );
+    return successResponse(res, messageUtil.resourceCreated, users);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -127,7 +125,7 @@ const updateUser = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { username, password , deviceToken, deviceType } = req.body;
+    const { username, password, deviceToken, deviceType } = req.body;
     const doc = await UserServices.getUser({
       username,
     });
@@ -149,7 +147,7 @@ const login = async (req, res) => {
         `Either username or password is invalid`
       );
     }
-// saving the token to user schema
+    // saving the token to user schema
     const updateUser = await UserServices.updateUser(
       {
         username,
