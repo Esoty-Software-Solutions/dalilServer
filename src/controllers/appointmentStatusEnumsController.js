@@ -44,7 +44,7 @@ const appointmentStatusEnums = {
                 skip: req.query.skip
             }
             let objectArray = await appointmentStatusEnumsServices.getAllappointmentStatusEnums(query);
-
+            console.log(objectArray)
             return successResponse(res, "Success", objectArray, objectArray.length);
         } catch (err) {
             return serverErrorResponse(res, err);

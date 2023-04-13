@@ -12,7 +12,7 @@ exports.updateappointmentStatusEnums = async (query, data) => {
 };
 
 
-exports.getAllappointmentStatusEnums = async ({limit, skip}) => {
+exports.getAllappointmentStatusEnums = async (query, limit, skip) => {
   return await appointmentStatusEnums.find().skip(skip).limit(limit);
 };
 

@@ -42,10 +42,9 @@ const genderEnum = {
 
   getAllgenderEnum: async (req, res) => {
     try {
-      let query = {
-        limit: req.query.limit,
-        skip: req.query.skip,
-      };
+
+      limit = req.query.limit ?? 100
+      skip =  req.query.skip ?? 0
 
       const searchFields = ["backendName", "englishName"];
 
@@ -54,7 +53,7 @@ const genderEnum = {
       if (req.query.searchQuery) {
         searchquery = searchQuery(searchFields, req.query.searchQuery);
       }
-      let objectArray = await genderEnumServices.getAllgenderEnum(searchquery, query);
+      let objectArray = await genderEnumServices.getAllgenderEnum(searchquery, limit, skip);
       return successResponse(
         res,
         messageUtil.success,

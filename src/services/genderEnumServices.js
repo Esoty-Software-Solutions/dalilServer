@@ -12,8 +12,9 @@ exports.updategenderEnum = async (query, data) => {
 };
 
 
-exports.getAllgenderEnum = async ({limit, skip}) => {
-  return await genderEnum.find().skip(skip).limit(limit);
+exports.getAllgenderEnum = async (query, limit, skip) => {
+  
+  return await genderEnum.find(query).skip(skip).limit(limit);
 };
 
 exports.getgenderEnum = async (query) => {

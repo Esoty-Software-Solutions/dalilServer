@@ -12,7 +12,7 @@ exports.updateTimeSlotEnum = async (query, data) => {
 };
 
 
-exports.getAllTimeSlotEnum = async ({limit, skip}) => {
+exports.getAllTimeSlotEnum = async (query, limit, skip) => {
   return await timeSlotEnum.find().skip(skip).limit(limit);
 };
 

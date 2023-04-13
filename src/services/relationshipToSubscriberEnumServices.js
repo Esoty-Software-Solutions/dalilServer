@@ -12,7 +12,7 @@ exports.updaterelationshipToSubscriberEnum = async (query, data) => {
 };
 
 
-exports.getAllrelationshipToSubscriberEnum = async ({limit, skip}) => {
+exports.getAllrelationshipToSubscriberEnum = async (query, limit, skip) => {
   return await relationshipToSubscriberEnum.find().skip(skip).limit(limit);
 };
 

@@ -12,7 +12,7 @@ exports.updateAccountStatusEnum = async (query, data) => {
 };
 
 
-exports.getAllAccountStatusEnum = async ({limit, skip}) => {
+exports.getAllAccountStatusEnum = async (query, limit, skip) => {
   return await AccountStatusEnum.find().skip(skip).limit(limit);
 };
 

@@ -24,6 +24,7 @@ const successResponse = (res, message, data, dataCount, token) => {
 };
 
 const serverErrorResponse = (res, error) => {
+  console.log(error);
   res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
     statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
     success: false,
@@ -41,6 +42,7 @@ const validationErrorResponse = (res, errors) => {
 };
 
 const badRequestErrorResponse = (res, message) => {
+  console.log(error);
   res.status(StatusCodes.BAD_REQUEST).send({
     statusCode: StatusCodes.BAD_REQUEST,
     success: false,
