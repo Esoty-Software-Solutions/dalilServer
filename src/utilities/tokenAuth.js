@@ -2,6 +2,7 @@
 const jwtHelper = require("./jwt");
 
 let checkToken = (req, res, next) => {
+  console.log("checkToken");
   let token = req.header("Authorization"); // in header token will be send in "x-auth-token" variable/// changed to "Authorization" header
   console.log("🚀 ~ file: tokenAuth.js:6 ~ checkToken ~ token:", token);
   if (token) {

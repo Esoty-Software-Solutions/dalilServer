@@ -13,10 +13,12 @@ const checkFeilds = require("../utilities/checkFields");
 
 const createUser = async (req, res) => {
   try {
+    console.log("createUser");
     let myPlaintextPassword = "123";
     if (req.body.password) {
       myPlaintextPassword = req.body.password;
     }
+    
 
     // hashing user password
     // const hash = bcrypt.hashSync(myPlaintextPassword, 10);
@@ -107,7 +109,7 @@ const updateUser = async (req, res) => {
     }
     const users = await UserServices.updateUser(
       { _id: req.params.id },
-      { userFile: req.files[0].location },
+      { },
       { new: true }
     );
     if (!users) {

@@ -9,9 +9,9 @@ const {
 const { checkToken } = require("../utilities/tokenAuth");
 var router = express.Router();
 
-router.post("", checkToken, AddInstitution);
-router.patch("/:institutionId", checkToken, UpdateInstitution);
+router.post("", AddInstitution);
+router.patch("/:institutionId", UpdateInstitution);
 router.get("", AllInstitutions);
-router.get("/:id", checkToken, InstitutionById);
-router.delete("/:id", checkToken, DeleteInstitution);
+router.get("/:id", InstitutionById);
+router.delete("/:id", DeleteInstitution);
 module.exports = router;
