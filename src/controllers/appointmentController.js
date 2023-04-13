@@ -138,9 +138,6 @@ const getAppointments = async (req, res) => {
     let documents = await AppointmentServices.getAppointments(query, limitQP);
     let count = documents.length;
 
-    if (documents.length < 1) {
-      return notFoundResponse(res, messageUtil.resourceNotFound);
-    }
     const data = {
       objectCount: count,
       objectArray: documents,
@@ -160,9 +157,6 @@ const getUserAppointments = async (req, res) => {
     });
 
     if (!subscriber) {
-      return notFoundResponse(res, messageUtil.resourceNotFound);
-    }
-    if (subscriber.beneficiaries.length < 1) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
     }
     let query = { beneficiaryId: { $in: subscriber.beneficiaries } };
@@ -185,9 +179,7 @@ const getUserAppointments = async (req, res) => {
     let documents = await AppointmentServices.getAppointments(query);
     let count = documents.length;
 
-    if (documents.length < 1) {
-      return notFoundResponse(res, messageUtil.resourceNotFound);
-    }
+
     const data = {
       objectCount: count,
       objectArray: documents,

@@ -25,18 +25,18 @@ getChronicDiseasesController,createChronicDiseasesController , getMedicalTestsCo
 //   uploader.uploads.any({ name: "file" }),
 //   createSubscribersCSV
 // );
-router.get("", authentication, getSubscribers);
-router.post("", authentication, createSubscriber);
-router.get("/:subscriberId", authentication, getSubscriber);
-router.get("/:subscriberId/beneficiaries", authentication, getBeneficiaries);
+router.get("",  getSubscribers);
+router.post("",  createSubscriber);
+router.get("/:subscriberId",  getSubscriber);
+router.get("/:subscriberId/beneficiaries",  getBeneficiaries);
 router.get("/:subscriberId/beneficiaries/:beneficiaryId", getBeneficiary);
 router.patch("/:subscriberId/beneficiaries/:beneficiaryId", updateBeneficiary);
 router.post(
   "/:subscriberId/beneficiaries",
-  authentication,
+  
   createBeneficiaryForSubscriber
 );
-router.patch("/:subscriberId", authentication, updateSubscriber);
+router.patch("/:subscriberId",  updateSubscriber);
 
 
 // ---------------------------------------- medical files routes ----------------------------------------------- 

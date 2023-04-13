@@ -103,10 +103,7 @@ const AllMedicalCenter = async (req, res) => {
       let schedules = await ScheduleServices.getAllSchedules({
         doctorId: req.query.doctorId,
       });
-      //returning if schedules not found
-      if (schedules.length < 1) {
-        return notFoundResponse(res, messageUtil.resourceNotFound);
-      }
+
 
       //iterating all schdules to find medical center through medicalCenterId
       for (let i = 0; i < schedules.length; i++) {
@@ -118,10 +115,6 @@ const AllMedicalCenter = async (req, res) => {
         medicalCenters.push(medicalCenter);
       }
 
-      //returning if no medical center found
-      if (medicalCenters.length < 1) {
-        return notFoundResponse(res, messageUtil.resourceNotFound);
-      }
 
       return successResponse(res, messageUtil.success, {
         objectCount: medicalCenters.length,
@@ -141,9 +134,7 @@ const AllMedicalCenter = async (req, res) => {
         limitQP,
         skipOP
       );
-      if (documents.length < 1) {
-        return notFoundResponse(res, messageUtil.resourceNotFound);
-      }
+
       return successResponse(res, messageUtil.success, {
         objectCount: documents.length,
         objectArray: documents,

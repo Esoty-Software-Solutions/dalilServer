@@ -7,8 +7,8 @@ const {
 const { authentication } = require("../utilities/auth");
 var router = express.Router();
 
-router.post("", authentication, CreateSms);
-router.post("/processSMS/:id", authentication, UpdateSms);
+router.post("",  CreateSms);
+router.post("/processSMS/:id",  UpdateSms);
 router.get("/getSMSqueue", AllSms);
 
 module.exports = router;

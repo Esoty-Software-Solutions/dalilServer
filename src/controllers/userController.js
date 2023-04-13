@@ -13,10 +13,12 @@ const checkFeilds = require("../utilities/checkFields");
 
 const createUser = async (req, res) => {
   try {
+    console.log("createUser");
     let myPlaintextPassword = "123";
     if (req.body.password) {
       myPlaintextPassword = req.body.password;
     }
+    
 
     // hashing user password
     // const hash = bcrypt.hashSync(myPlaintextPassword, 10);
@@ -107,7 +109,7 @@ const updateUser = async (req, res) => {
     }
     const users = await UserServices.updateUser(
       { _id: req.params.id },
-      { userFile: req.files[0].location },
+      { },
       { new: true }
     );
     if (!users) {
@@ -272,6 +274,9 @@ const logout = async (req, res) => {
 
 const ChangePassword = async (req, res) => {
   try {
+    console.log("change password")
+    console.log("req.params", req.params);
+    console.log("req.body", req.body);
     const { currentPassword, newPassword } = req.body;
     //checking the required fields
     const isError = checkFeilds(

@@ -1,4 +1,4 @@
-const cityServices = require("../services/cityServices");
+const genderEnumServices = require("../services/genderEnumServices");
 const {
   successResponse,
   badRequestErrorResponse,
@@ -7,16 +7,15 @@ const {
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
 const searchQuery = require("../utilities/searchQuery");
-const city = {
+const genderEnum = {
   // Add Appointment Status Enum
 
-  addCity: async (req, res) => {
-    console.log("in the add city controller");
+  addgenderEnum: async (req, res) => {
     try {
       let query = {
         ...req.body,
       };
-      let data = await cityServices.addCity(query);
+      let data = await genderEnumServices.addgenderEnum(query);
 
       return successResponse(res, messageUtil.resourceCreated, data);
     } catch (err) {
@@ -24,11 +23,11 @@ const city = {
     }
   },
 
-  // Get City By Id
+  // Get genderEnum By Id
 
-  getCity: async (req, res) => {
+  getgenderEnum: async (req, res) => {
     try {
-      let data = await cityServices.getCity({
+      let data = await genderEnumServices.getgenderEnum({
         _id: req.params.id,
       });
       if (!data) return successResponse(res, messageUtil.resourceNotFound, {});
@@ -39,9 +38,9 @@ const city = {
     }
   },
 
-  // Get list of City
+  // Get list of genderEnum
 
-  getAllCity: async (req, res) => {
+  getAllgenderEnum: async (req, res) => {
     try {
       let query = {
         limit: req.query.limit,
@@ -55,7 +54,7 @@ const city = {
       if (req.query.searchQuery) {
         searchquery = searchQuery(searchFields, req.query.searchQuery);
       }
-      let objectArray = await cityServices.getAllCity(searchquery, query);
+      let objectArray = await genderEnumServices.getAllgenderEnum(searchquery, query);
       return successResponse(
         res,
         messageUtil.success,
@@ -67,11 +66,11 @@ const city = {
     }
   },
 
-  // Update City by Id
+  // Update genderEnum by Id
 
-  updateCity: async (req, res) => {
+  updategenderEnum: async (req, res) => {
     try {
-      let data = await cityServices.updateCity(
+      let data = await genderEnumServices.updategenderEnum(
         { _id: req.params.id },
         { ...req.body }
       );
@@ -87,4 +86,4 @@ const city = {
   },
 };
 
-module.exports = city;
+module.exports = genderEnum;

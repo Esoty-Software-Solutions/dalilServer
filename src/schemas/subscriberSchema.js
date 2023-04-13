@@ -55,7 +55,7 @@ const beneficiarySchema = new mongoose.Schema({
   relationshipToSubscriber: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "relationshipToSubscriberEnum",
-    required: [true, `please provide valid relatioship id`],
+    required: [true, `please provide valid relationshipToSubscriber id`],
   },
 
   medicalFiles: {
@@ -95,13 +95,14 @@ const subscriberSchema = new mongoose.Schema({
     ref: "gender",
     required: [true, `please enter valid gender`],
   },
-  beneficiaries: {
+  beneficiaries: 
     // type: [beneficiarySchema],
-    type: [mongoose.Schema.Types.ObjectId],
+  [{
+    type: mongoose.Schema.Types.ObjectId,
     set: (v) => mongoose.Types.ObjectId(v),
     ref: "beneficiaries",
-    required: [false, `please provide valid beneficiary ID `],
-  },
+    required: [false, `please provide valid beneficiary ID `]
+  }],
   institutionId: {
     type: mongoose.Schema.Types.ObjectId,
     set: (v) => mongoose.Types.ObjectId(v),
@@ -125,7 +126,7 @@ const subscriberSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     set: (v) => mongoose.Types.ObjectId(v),
     ref: "city",
-    required: [true, `please enter valid city`],
+    required: [true, `please enter valid cityId`],
   },
   residentDistrict: String,
   userId: {

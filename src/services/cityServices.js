@@ -10,8 +10,8 @@ exports.updateCity = async (query, data) => {
   });
 };
 
-exports.getAllCity = async ({ limit, skip }) => {
-  return await City.find().skip(skip).limit(limit);
+exports.getAllCity = async (query, { limit, skip }) => {
+  return await City.find(query).skip(skip).limit(limit);
 };
 
 exports.getCity = async (query) => {

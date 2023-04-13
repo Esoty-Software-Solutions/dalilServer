@@ -24,6 +24,7 @@ const successResponse = (res, message, data, dataCount, token) => {
 };
 
 const serverErrorResponse = (res, error) => {
+  console.log(error);
   res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
     statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
     success: false,
@@ -33,6 +34,7 @@ const serverErrorResponse = (res, error) => {
 };
 
 const validationErrorResponse = (res, errors) => {
+  console.log(errors);
   res.status(StatusCodes.NON_AUTHORITATIVE_INFORMATION).json({
     success: false,
     error: errors,
@@ -41,6 +43,7 @@ const validationErrorResponse = (res, errors) => {
 };
 
 const badRequestErrorResponse = (res, message) => {
+  console.log(error);
   res.status(StatusCodes.BAD_REQUEST).send({
     statusCode: StatusCodes.BAD_REQUEST,
     success: false,
@@ -49,6 +52,7 @@ const badRequestErrorResponse = (res, message) => {
 };
 
 const userExistResponse = (res, message) => {
+  console.log(message);
   res.status(StatusCodes.OK).send({
     statusCode: StatusCodes.OK,
     success: false,
@@ -57,6 +61,7 @@ const userExistResponse = (res, message) => {
 };
 
 const existAlreadyResponse = (res, message) => {
+  console.log(message);
   res.status(StatusCodes.CONFLICT).send({
     success: false,
     message,
@@ -64,6 +69,7 @@ const existAlreadyResponse = (res, message) => {
 };
 
 const notFoundResponse = (res, message) => {
+  console.log(message);
   res.status(StatusCodes.NOT_FOUND).send({
     statusCode: StatusCodes.NOT_FOUND,
     success: false,
@@ -72,6 +78,7 @@ const notFoundResponse = (res, message) => {
 };
 
 const authorizationErrorResponse = (res, message) => {
+  console.log(message);
   res.status(StatusCodes.UNAUTHORIZED).send({
     success: false,
     message,
@@ -79,6 +86,7 @@ const authorizationErrorResponse = (res, message) => {
 };
 
 const manyRequestErrorResponse = (res, message) => {
+  console.log(message);
   res.status(StatusCodes.TOO_MANY_REQUESTS).send({
     success: false,
     message,

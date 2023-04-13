@@ -14,32 +14,23 @@ const checkFeilds = require("../utilities/checkFields");
 
 const createSubscriber = async (req, res) => {
   try {
+    console.log("createSubscriber");
     //if body contain beneficiaries
     let beneficiaries = [];
-
     if (req.body.beneficiaries) {
       for (let i = 0; i < req.body.beneficiaries.length; i++) {
-        //checking required fields in beneficiary schema
-        const isError = checkFeilds(
-          {
-            firstName: req.body.beneficiaries[i].firstName,
-            lastName: req.body.beneficiaries[i].lastName,
-            secondName: req.body.beneficiaries[i].secondName,
-            birthdate: req.body.beneficiaries[i].birthdate,
-            gender: req.body.beneficiaries[i].gender,
-            relationshipToSubscriber:
-              req.body.beneficiaries[i].relationshipToSubscriber,
-          },
-          res
-        );
 
-        if (isError) return;
         //Create beneficiary
-        let beneficiary = await SubscriberServices.createBeneficiaries(
-          req.body.beneficiaries[i]
-        );
-        //push beneficiary id in array
-        beneficiaries.push(beneficiary._id);
+        try {
+          let beneficiary = await SubscriberServices.createBeneficiaries(
+            req.body.beneficiaries[i]
+          );
+          //push beneficiary id in array
+          beneficiaries.push(beneficiary._id.toString());
+        } catch (error) {
+          console.log(error);
+          return serverErrorResponse(res, error.message);
+        }
       }
     }
 
