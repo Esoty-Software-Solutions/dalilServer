@@ -1,73 +1,96 @@
-const relationshipToSubscriberServices = require('../services/relationshipToSubscriberEnumServices');
-const {successResponse, badRequestErrorResponse, notFoundResponse, serverErrorResponse} = require('../utilities/response');
-
-
+const {
+  successResponse,
+  badRequestErrorResponse,
+  notFoundResponse,
+  serverErrorResponse,
+} = require("../utilities/response");
+const searchQuery = require("../utilities/searchQuery");
+const Services = require("../services/commonServices");
+const RelationshipToSubscriberSchema = require("../schemas/relationshipToSubscriberEnumSchema");
 
 const relationshipToSubscriber = {
+  // Add Relationship to beneficiary Enum
 
-    // Add Relationship to beneficiary Enum
+  addrelationshipToSubscriberEnum: async (req, res) => {
+    try {
+      let data = await Services.createOne({
+        schemaName: RelationshipToSubscriberSchema,
+        body: req.body,
+      });
 
-    addrelationshipToSubscriberEnum: async (req, res) => {
-        try {
-            let query = {
-                ...req.body,
-            };
-            let data = await relationshipToSubscriberServices.addrelationshipToSubscriberEnum(query);
-
-            return successResponse(res, "Relation to Beneficiary Added successfully", data)
-        } catch (err) {
-            return serverErrorResponse(res, err);
-        }
-    },
-
-
-    // Get relationshipToSubscriberEnum By Id
-
-    getrelationshipToSubscriberEnum: async (req, res) => {
-        try {
-            let data = await relationshipToSubscriberServices.getrelationshipToSubscriberEnum({ _id: req.params.id });
-            if(!data) return notFoundResponse(res, "No Record Found")
-            return successResponse(res, "Success", data)
-        } catch (err) {
-            return serverErrorResponse(res, err);
-        }
-    },
-
-
-    // Get list of relationshipToSubscriberEnum
-
-    getAllrelationshipToSubscriberEnum: async (req, res) => {
-        try {
-            let query = {
-                limit: req.query.limit,
-                skip: req.query.skip
-            }
-            let objectArray = await relationshipToSubscriberServices.getAllrelationshipToSubscriberEnum(query);
-
-            return successResponse(res, "Success", objectArray, objectArray.length);
-        } catch (err) {
-            return serverErrorResponse(res, err);
-        }
-    },
-
-    // Update relationshipToSubscriberEnum by Id
-
-    updaterelationshipToSubscriberEnum: async (req, res) => {
-        try {
-            let data = await relationshipToSubscriberServices.updaterelationshipToSubscriberEnum(
-                { _id: req.params.id },
-                {...req.body}
-            );
-
-            if (!data) {
-                return badRequestErrorResponse(res, "Record Not Found")
-              }
-
-              return successResponse(res, "RelationToBeneficiaryEnum updated successfully", data)
-        } catch (err) {
-            return serverErrorResponse(res, err);
-        }
+      return successResponse(
+        res,
+        "Relation to Beneficiary Added successfully",
+        data
+      );
+    } catch (err) {
+      return serverErrorResponse(res, err);
     }
-}
+  },
+
+  // Get relationshipToSubscriberEnum By Id
+
+  getrelationshipToSubscriberEnum: async (req, res) => {
+    try {
+      let query = {
+        _id: req.params.id,
+      };
+      let data = await Services.getOne({
+        schemaName: RelationshipToSubscriberSchema,
+        query,
+      });
+      if (!data) return notFoundResponse(res, "No Record Found");
+      return successResponse(res, "Success", data);
+    } catch (err) {
+      return serverErrorResponse(res, err);
+    }
+  },
+
+  // Get list of relationshipToSubscriberEnum
+
+  getAllrelationshipToSubscriberEnum: async (req, res) => {
+    try {
+      let limit = req.query.limit;
+      let skip = req.query.skip;
+
+      let objectArray = await Services.getMany({
+        schemaName: RelationshipToSubscriberSchema,
+        limit,
+        skip,
+      });
+      let objectCount = await Services.count({
+        schemaName: RelationshipToSubscriberSchema,
+      });
+      return successResponse(res, "Success", objectArray, objectCount);
+    } catch (err) {
+      return serverErrorResponse(res, err);
+    }
+  },
+
+  // Update relationshipToSubscriberEnum by Id
+
+  updaterelationshipToSubscriberEnum: async (req, res) => {
+    try {
+      let query = { _id: req.params.id };
+      let data = await Services.updateOne({
+        schemaName: RelationshipToSubscriberSchema,
+        query,
+        body: req.body,
+      });
+
+      if (!data) {
+        return badRequestErrorResponse(res, "Record Not Found");
+      }
+
+      return successResponse(
+        res,
+        "RelationToBeneficiaryEnum updated successfully",
+        data
+      );
+    } catch (err) {
+      return serverErrorResponse(res, err);
+    }
+  },
+};
 
 module.exports = relationshipToSubscriber;
