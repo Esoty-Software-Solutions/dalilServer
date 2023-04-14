@@ -8,9 +8,14 @@ exports.createInstitution = async (query) => {
 };
 
 exports.updateInstitution = async (query, data) => {
-  return await InstitutionSchema.findOneAndUpdate(query, data, {
+  const updatedDocument =  await InstitutionSchema.findOneAndUpdate(query, data, {
     new: true,
   });
+  if(updatedDocument?.fileLink.length) {
+    const presignedUrlArray = await Promise.all(updatedDocument.fileLink.map(async link => await uploader.getPresignedUrl(link , config.dalilStorage_bucket)));
+    updatedDocument.fileLink = presignedUrlArray;
+  }
+  return updatedDocument;
 };
 
 exports.deleteInstitution = async (query) => {
