@@ -12,7 +12,7 @@ const {
   updateBeneficiary,
 } = require("../controllers/subscriberController");
 const { customValidation } = require("../middlewares/payloadValidation");
-const { authentication } = require("../utilities/auth");
+// const { authentication } = require("../utilities/auth");
 const uploader = require("../utilities/uploader");
 const { clinicalVisitValidator, createMedicalFilesValidator, getMedicalFilesValidator, createSurgeryHistoryFilesValidator , createChronicDiseasesFilesValidator , createMedicalTestsValidator } = require("../validators/medicalFiles.validator");
 var router = express.Router();
