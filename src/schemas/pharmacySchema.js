@@ -1,9 +1,8 @@
-// importing mongooose for medicalCenterSchema and collection setup
+// importing mongooose for pharmacy and collection setup
 const mongoose = require(`mongoose`);
-// medicalCenter schema setup
-const medicalCenterSchema = new mongoose.Schema(
+
+const pharmacySchema = new mongoose.Schema(
   {
-    // medicalCenterId: { type: mongoose.ObjectId, unique: true },
     name: {
       type: String,
       required: [true, `please enter valid  name`],
@@ -13,11 +12,10 @@ const medicalCenterSchema = new mongoose.Schema(
       ref: "cities",
       required: [true, `please enter valid city`],
     },
-    district: {
-      type: String,
-      default: null,
+    description: { 
+        type: String, 
+        default: null 
     },
-    description: { type: String, default: null },
     address: {
       type: String,
       default: null,
@@ -38,9 +36,8 @@ const medicalCenterSchema = new mongoose.Schema(
     },
     thumbnailLink: {
       type: String,
-      default : "https://cdn.iconscout.com/icon/free/png-512/document-957-452909.png?f=avif&w=256",
+      default : null,
     },
-
     fileLink: { 
       type: Array, 
       default: null 
@@ -48,17 +45,12 @@ const medicalCenterSchema = new mongoose.Schema(
     isActive: { type: Boolean },
   },
   { timestamps: true }
-  // { collection: 'medicalCenters' }
 );
-
-
 // this middleware will always return the city object and not the city objectId
-medicalCenterSchema.pre(['find' , "findOne"], function(next) {
+pharmacySchema.pre(['find' , "findOne"], function(next) {
   this.populate('cityId' , '-_id -__v');
   next();
 });
+const pharmacy = mongoose.model(`pharmacy`, pharmacySchema);
 
-
-const medicalCenter = mongoose.model(`medicalCenters`, medicalCenterSchema);
-
-module.exports = medicalCenter;
+module.exports = pharmacy;

@@ -13,6 +13,7 @@ const city = {
   // Add Appointment Status Enum
 
   addCity: async (req, res) => {
+    console.log("in the add city controller");
     try {
       let data = await Services.createOne({
         body: req.body,

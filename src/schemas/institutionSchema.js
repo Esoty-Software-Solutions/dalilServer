@@ -1,53 +1,112 @@
 const mongoose = require(`mongoose`);
 
-const institutionSchema = mongoose.Schema(
+const institutionSchema = new mongoose.Schema(
   {
-    // institutionId: {
-    //   type: String,
-    // },
     name: {
       type: String,
-      required: [true, `please provide name`],
-      unique: true,
+      required: [true, `please provide name`]
     },
-    cityHQ: { type: String, required: [true, `please provide cityHQ`] },
-
-    employees: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "users",
+    phoneNumber : {
+      type : String,
+      required : [true, `please provide Phone Number`]
     },
-    // employeeCount: {
-    //   type: Number,
-    //   get: (v) => Math.round(v),
-    //   set: (v) => Math.round(v),
-    //   alias: "i",
-    // },
-
-    subscribers: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "users",
+    cityId: { 
+      type: mongoose.Schema.Types.ObjectId,
+      ref : "cities", 
+      required: [true, `please provide cityid`] 
     },
-    institute_image: {
-      type: String,
+    employeeCount: {
+      type : String
     },
-    // subscriberCount: {
-    //   type: Number,
-    //   get: (v) => Math.round(v),
-    //   set: (v) => Math.round(v),
-    //   alias: "i",
-    // },
-
-    // benefitPolicy: {
-    //   type: benefitPolicySchema,
-    //   required: [false, `please provide valid family member `],
-    // },
-
-    // createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
-
-    // updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+    email : {
+      type : String,
+    },
+    subscriberCount : {
+      type : String
+    },
+    benefitPolicy : {
+      insuranceType : {
+        type : String,
+        required : [true, "Please provide insurance type"]
+      },
+      insuranceIssuer : {
+        type : String,
+        required : [true, "Please provide insurance Issuer"]
+      },
+      balanceResetDate : {
+        type : String,
+        required : [true, "Please provide balance Reset Date"]
+      },
+      policyExpirationDate: {
+        type: String,
+        required: true,
+        validate: {
+          validator: function(v) {
+            return /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/.test(v);
+          },
+          message: props => `${props.value} is not a valid value for policyExpirationDate.`
+        }
+      },
+      inPatientAggregateLimit : {
+        type : Number,
+        float : true,
+        required : [true, "Please provide inPatientAggregateLimit"]
+      },
+      inPatientServices : {
+        type : [
+          {
+            service : {
+              type : String,
+              required : [true, "Please provide type in Patient services"]
+            }
+          },
+          {
+            limit : {
+              type : Number, 
+              float : true,
+              required : [true, "Please provide Limit in Patient services"]
+            }
+          }
+        ],
+        required : [true, "Please provide insurance type"]
+      },
+      outPatientAggregateLimit : {
+        type : Number,
+        float : true,
+        required : [true, "Please provide out Patient Aggregate Limit"]
+      },
+      outPatientServices : {
+        type : [
+          {
+            service : {
+              type : String,
+              required : [true, "Please provide service in out Patient service"]
+            }
+          } , 
+          {
+            limit : {
+              type : Number, 
+              float : true,
+              required : [true, "Please provide Limit in Patient services"]
+            }
+          }
+        ],
+        required : [true, "Please provide insurance type"]
+      },
+    },
+    fileLink: { 
+      type: Array, 
+      default: null 
+    },
   },
   { timestamps: true }
 );
+
+institutionSchema.pre(["find" , "findOne"] , function (next) {
+  this.populate('cityId' , '-_id -__v');
+  this.lean();
+  next();
+})
 
 const institution = mongoose.model(`institutions`, institutionSchema);
 
