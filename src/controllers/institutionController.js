@@ -1,13 +1,8 @@
 const InstitutionServices = require("../services/institutionServices");
-const aws = require("aws-sdk");
+const { successResponse, serverErrorResponse } = require("../utilities/response");
+const { messageUtil } = require("../utilities/message");
 require("dotenv").config();
 
-const s3 = new aws.S3({
-  accessKeyId: process.env.aws_accessKeyID,
-  secretAccessKey: process.env.aws_secretAccessKey,
-  // Bucket: process.env.aws_bucketName,
-});
-let S3_BUCKET_URL = "https://pistas-bucket.s3.amazonaws.com/";
 
 // class Institution {
 const AddInstitution = async (req, res) => {
@@ -21,57 +16,56 @@ const AddInstitution = async (req, res) => {
     let query = {
       ...req.body,
     };
+    const fieldNamesList = [];
+    // check if files are submitted
+
+    if ("files" in req) {
+      req.files.forEach((file) => {
+        fieldNamesList.push(file.location);
+      });
+    }
     if (req.files.length > 0) {
-      query.institute_image = req.files[0].location;
+      query.fileLink = fieldNamesList;
     }
     let institution = await InstitutionServices.createInstitution(query);
-    res.status(200).json({
-      institution,
-      message: "Institute created successfully",
-    });
-    //   successResponse(res, messageUtil.ok, institution);
-  } catch (err) {
-    //   serverErrorResponse(res, err);
-    res.status(500).json({ message: err.message });
+    return successResponse(res, messageUtil.resourceCreated, institution);
+} catch (err) {
+    return serverErrorResponse(res, err.message);
   }
 };
 
 const AllInstitutions = async (req, res) => {
   try {
     let institutions = await InstitutionServices.getAllInstitution();
-
-    if (institutions.length === 0) {
-      return res.status(404).json({ message: "No institute found" });
-    }
-
-    return res.status(200).json({
+    return successResponse(res, messageUtil.success, {
       institutions,
       objectCount: institutions.length,
     });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return serverErrorResponse(res, err.message);
+    
   }
 };
 
 const InstitutionById = async (req, res) => {
   //destructure queryObject
 
-  const { expiry_time, institution_id } = req.query;
+  const { institution_id } = req.params;
 
   if (!institution_id) {
     return res.status(404).json({ message: "Please insert institution id" });
   }
 
   //this function will be moved in utilities
-  const getSignedUrl = (image, expiry_time) => {
-    let bucket_params = {
-      Bucket: process.env.aws_bucketName,
-      Key: image.split(S3_BUCKET_URL)[1],
-      Expires: expiry_time ? Number(expiry_time) : 60,
-    };
-    //returning the signed url
-    return s3.getSignedUrl("getObject", bucket_params);
-  };
+  // const getSignedUrl = (image, expiry_time) => {
+  //   let bucket_params = {
+  //     Bucket: process.env.aws_bucketName,
+  //     Key: image.split(S3_BUCKET_URL)[1],
+  //     Expires: expiry_time ? Number(expiry_time) : 60,
+  //   };
+  //   //returning the signed url
+  //   return s3.getSignedUrl("getObject", bucket_params);
+  // };
 
   try {
     let findInstitution = await InstitutionServices.getInstitutionDetails({
@@ -80,16 +74,15 @@ const InstitutionById = async (req, res) => {
     if (!findInstitution) {
       return res.status(404).json({ message: "No institute found" });
     }
-    let signed_url;
-    if (findInstitution.institute_image) {
-      signed_url = getSignedUrl(findInstitution.institute_image, expiry_time);
-    }
-    return res.status(200).json({
-      data: { findInstitution, signed_url },
-      message: "Institution found.",
-    });
+    // let signed_url;
+    // if (findInstitution.institute_image) {
+    //   signed_url = getSignedUrl(findInstitution.institute_image, expiry_time);
+    // }
+    return successResponse(res, messageUtil.success, findInstitution);
+    
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return serverErrorResponse(res, err.message);
+    
   }
 };
 
@@ -101,12 +94,11 @@ const DeleteInstitution = async (req, res) => {
     if (!institution) {
       return res.status(404).json({ message: "No institute found" });
     }
-    return res.status(200).json({
-      institution,
-      message: "Institution delted.",
-    });
+    return successResponse(res, messageUtil.resourceDeleted);
+    
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return serverErrorResponse(res, err.message);
+    
   }
 };
 
@@ -122,12 +114,11 @@ const UpdateInstitution = async (req, res) => {
     if (!institution) {
       return res.status(404).json({ message: "No institute found" });
     }
-    return res.status(200).json({
-      institution,
-      message: "Institution updated successfully.",
-    });
+    return successResponse(res, messageUtil.resourceUpdated, prescription);
+
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return serverErrorResponse(res, err.message);
+    
   }
 };
 

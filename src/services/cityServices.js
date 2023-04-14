@@ -1,4 +1,4 @@
-const City = require("../schemas/citySchema");
+const City = require("../schemas/citiesSchema");
 
 exports.addCity = async (query) => {
   return await City.create(query);

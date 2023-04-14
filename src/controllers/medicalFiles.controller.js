@@ -103,7 +103,6 @@ const initMedicalFilesController = () => {
     }
     const createClinicalVisitsController = async (req, res) => {
         try {
-            console.log(req.file);
             const createResponse = await medicalFilesServices.createMedicalFiles(req.body, req.params, clinicalVisit, req.file);
             if (createResponse?.success) {
                 return successResponse(res, messageUtil.resourceUpdated, createResponse.data);
