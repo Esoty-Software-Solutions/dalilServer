@@ -47,10 +47,17 @@ const genderEnum = {
 
   getAllgenderEnum: async (req, res) => {
     try {
+<<<<<<< HEAD
       let limit = req.query.limit;
       let skip = req.query.skip;
       let searchquery = {};
       let query = {};
+=======
+
+      limit = req.query.limit ?? 100
+      skip =  req.query.skip ?? 0
+
+>>>>>>> da78205 (trying to resolve conflicts)
       const searchFields = ["backendName", "englishName"];
       if (req.query.id) {
         query._id = req.query.id;
@@ -60,6 +67,7 @@ const genderEnum = {
         searchquery = searchQuery(searchFields, req.query.searchQuery);
         query = { ...query, ...searchquery };
       }
+<<<<<<< HEAD
       let objectArray = await Services.getMany({
         schemaName: GenderEnums,
         query,
@@ -71,6 +79,9 @@ const genderEnum = {
         schemaName: GenderEnums,
       });
 
+=======
+      let objectArray = await genderEnumServices.getAllgenderEnum(searchquery, limit, skip);
+>>>>>>> da78205 (trying to resolve conflicts)
       return successResponse(
         res,
         messageUtil.success,

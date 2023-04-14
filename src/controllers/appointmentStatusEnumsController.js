@@ -17,6 +17,7 @@ const appointmentStatusEnums = {
         body: req.body,
       });
 
+<<<<<<< HEAD
       return successResponse(
         res,
         "Appointment Status Added successfully",
@@ -24,6 +25,69 @@ const appointmentStatusEnums = {
       );
     } catch (err) {
       return serverErrorResponse(res, err);
+=======
+    addappointmentStatusEnums: async (req, res) => {
+        try {
+            let query = {
+                ...req.body,
+            };
+            let data = await appointmentStatusEnumsServices.addappointmentStatusEnums(query);
+
+            return successResponse(res, "Appointment Status Added successfully", data)
+        } catch (err) {
+            return serverErrorResponse(res, err);
+        }
+    },
+
+
+    // Get appointmentStatusEnums By Id
+
+    getappointmentStatusEnums: async (req, res) => {
+        try {
+            let data = await appointmentStatusEnumsServices.getappointmentStatusEnums({ _id: req.params.id });
+            if(!data) return successResponse(res, "No Record Found", {})
+
+            return successResponse(res, "Success", data)
+        } catch (err) {
+            return serverErrorResponse(res, err);
+        }
+    },
+
+
+    // Get list of appointmentStatusEnums
+
+    getAllappointmentStatusEnums: async (req, res) => {
+        try {
+            let query = {
+                limit: req.query.limit,
+                skip: req.query.skip
+            }
+            let objectArray = await appointmentStatusEnumsServices.getAllappointmentStatusEnums(query);
+            console.log(objectArray)
+            return successResponse(res, "Success", objectArray, objectArray.length);
+        } catch (err) {
+            return serverErrorResponse(res, err);
+        }
+    },
+
+    // Update appointmentStatusEnums by Id
+
+    updateappointmentStatusEnums: async (req, res) => {
+        try {
+            let data = await appointmentStatusEnumsServices.updateappointmentStatusEnums(
+                { _id: req.params.id },
+                {...req.body}
+            );
+
+            if (!data) {
+                return badRequestErrorResponse(res, "Record Not Found")
+              }
+
+              return successResponse(res, "Appointment Status Enums updated successfully", data)
+        } catch (err) {
+            return serverErrorResponse(res, err);
+        }
+>>>>>>> da78205 (trying to resolve conflicts)
     }
   },
 

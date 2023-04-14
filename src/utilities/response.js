@@ -43,7 +43,6 @@ const validationErrorResponse = (res, errors) => {
 };
 
 const badRequestErrorResponse = (res, message) => {
-  console.log(error);
   res.status(StatusCodes.BAD_REQUEST).send({
     statusCode: StatusCodes.BAD_REQUEST,
     success: false,
