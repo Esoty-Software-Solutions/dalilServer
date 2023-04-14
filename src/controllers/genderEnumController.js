@@ -1,4 +1,5 @@
-const genderEnumServices = require("../services/genderEnumServices");
+const Services = require("../services/commonServices");
+const GenderEnums = require("../schemas/genderEnumSchema");
 const {
   successResponse,
   badRequestErrorResponse,
@@ -12,10 +13,10 @@ const genderEnum = {
 
   addgenderEnum: async (req, res) => {
     try {
-      let query = {
-        ...req.body,
-      };
-      let data = await genderEnumServices.addgenderEnum(query);
+      let data = await Services.createOne({
+        schemaName: GenderEnums,
+        body: req.body,
+      });
 
       return successResponse(res, messageUtil.resourceCreated, data);
     } catch (err) {
@@ -27,8 +28,12 @@ const genderEnum = {
 
   getgenderEnum: async (req, res) => {
     try {
-      let data = await genderEnumServices.getgenderEnum({
+      let query = {
         _id: req.params.id,
+      };
+      let data = await Services.getOne({
+        schemaName: GenderEnums,
+        query,
       });
       if (!data) return successResponse(res, messageUtil.resourceNotFound, {});
 
@@ -42,24 +47,35 @@ const genderEnum = {
 
   getAllgenderEnum: async (req, res) => {
     try {
-      let query = {
-        limit: req.query.limit,
-        skip: req.query.skip,
-      };
-
+      let limit = req.query.limit;
+      let skip = req.query.skip;
+      let searchquery = {};
+      let query = {};
       const searchFields = ["backendName", "englishName"];
+      if (req.query.id) {
+        query._id = req.query.id;
+      }
 
-      // Define the search query
-      let searchquery;
       if (req.query.searchQuery) {
         searchquery = searchQuery(searchFields, req.query.searchQuery);
+        query = { ...query, ...searchquery };
       }
-      let objectArray = await genderEnumServices.getAllgenderEnum(searchquery, query);
+      let objectArray = await Services.getMany({
+        schemaName: GenderEnums,
+        query,
+        limit,
+        skip,
+      });
+
+      let objectCount = await Services.count({
+        schemaName: GenderEnums,
+      });
+
       return successResponse(
         res,
         messageUtil.success,
         objectArray,
-        objectArray.length
+        objectCount
       );
     } catch (err) {
       return serverErrorResponse(res, err);
@@ -70,10 +86,16 @@ const genderEnum = {
 
   updategenderEnum: async (req, res) => {
     try {
-      let data = await genderEnumServices.updategenderEnum(
-        { _id: req.params.id },
-        { ...req.body }
-      );
+      let query = { _id: req.params.id };
+      let data = await Services.updateOne({
+        schemaName: GenderEnums,
+        query,
+        body: req.body,
+      });
+
+      if (!data) {
+        return badRequestErrorResponse(res, "Record Not Found");
+      }
 
       if (!data) {
         return badRequestErrorResponse(res, messageUtil.resourceNotFound);

@@ -6,7 +6,7 @@ exports.clinicalVisitValidator = joi.object({
     centerName : joi.string().required(),
     doctorName : joi.string().required(),
     notes : joi.string().required(),
-    files : joi.string().allow("" , null)
+    file : joi.string().optional().allow("" , null)
 });
 
 exports.getMedicalFilesValidator = joi.object({

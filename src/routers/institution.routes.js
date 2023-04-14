@@ -6,14 +6,18 @@ const {
   InstitutionById,
   AllInstitutions,
 } = require("../controllers/institutionController");
-const { checkToken } = require("../utilities/tokenAuth");
+// const { checkToken } = require("../utilities/tokenAuth");
 var router = express.Router();
 const uploader = require("../utilities/uploader");
 const config = require("../config/config");
 
-router.post("",  uploader.uploadFileS3("multiple" , config.dalilStorage_bucket), checkToken, AddInstitution);
-router.patch("/:institutionId", checkToken, UpdateInstitution);
+router.post(
+  "",
+  uploader.uploadFileS3("multiple", config.dalilStorage_bucket),
+  AddInstitution
+);
+router.patch("/:institutionId", UpdateInstitution);
 router.get("", AllInstitutions);
 router.get("/:institution_id", InstitutionById);
-router.delete("/:institution_id", checkToken, DeleteInstitution);
+router.delete("/:institution_id", DeleteInstitution);
 module.exports = router;
