@@ -14,4 +14,5 @@ module.exports = {
   aws_bucketName : process.env.aws_bucketName,
   aws_accessKeyID : process.env.aws_accessKeyID,
   aws_secretAccessKey : process.env.aws_secretAccessKey,
+  dalilStorage_bucket : process.env.dalilStorage_bucket
 };

@@ -25,7 +25,8 @@ const genderEnumRouter = require("./genderEnum.routes");
 
 const reviewRouter = require("./review.routes");
 const API_VERSION = "/v1";
-
+const prescriptionsRouter = require("./prescriptions.routes");
+const pharmacyRouter= require("./pharmacy.routes");
 router.use(API_VERSION + "/login", loginRouter);
 router.use(API_VERSION + "/logout", logoutRouter);
 router.use(API_VERSION + "/users", usersRouter);
@@ -33,7 +34,9 @@ router.use(API_VERSION + "/userRoles", userRolesRouter);
 router.use(API_VERSION + "/subscribers", subscribersRouter);
 router.use(API_VERSION + "/appointments", appointmentsRouter);
 router.use(API_VERSION + "/institutions", institutesRouter);
+router.use(API_VERSION + "/prescriptions", prescriptionsRouter);
 router.use(API_VERSION + "/medicalCenters", medicalCentersRouter);
+router.use(API_VERSION + "/pharmacies", pharmacyRouter);
 router.use(API_VERSION + "/schedules", schedulesRouter);
 router.use(API_VERSION + "/TestNotification", notificationRouter);
 router.use(API_VERSION + "/sms", smsRouter);

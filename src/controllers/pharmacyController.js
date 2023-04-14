@@ -1,4 +1,4 @@
-const MedicalCenterServices = require("../services/medicalCenterServices");
+const PharmacyServices = require("../services/pharmacyServices");
 const { messageUtil } = require("../utilities/message");
 const ScheduleServices = require("../services/scheduleServices");
 const {
@@ -8,16 +8,15 @@ const {
   notFoundResponse,
 } = require("../utilities/response");
 
-const CreateMedicalCenter = async (req, res) => {
+const CreatePharmacy = async (req, res) => {
   try {
     const fieldNamesList = [];
-    // check if files are submitted
     if ("files" in req) {
       req.files.forEach((file) => {
         fieldNamesList.push(file.location);
       });
     }
-    const document = await MedicalCenterServices.createMedicalCenter({
+    const document = await PharmacyServices.createPharmacy({
       ...req.body,
       isActive: true,
       fileLink: fieldNamesList,
@@ -30,10 +29,11 @@ const CreateMedicalCenter = async (req, res) => {
   }
 };
 
-const SingleMedicalCenter = async (req, res) => {
+const SinglePharmacy = async (req, res) => {
   try {
-    const document = await MedicalCenterServices.getMedicalCenterDetails({
-      _id: req.params.medicalCenterId,
+    
+    const document = await PharmacyServices.getPharmacyDetails({
+      _id: req.params.pharmacyId,
     });
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
@@ -46,10 +46,10 @@ const SingleMedicalCenter = async (req, res) => {
   }
 };
 
-const UpdateMedicalCenter = async (req, res) => {
+const UpdatePharmacy = async (req, res) => {
   try {
-    const document = await MedicalCenterServices.updateMedicalCenter(
-      { _id: req.params.medicalCenterId },
+    const document = await PharmacyServices.updatePharmacy(
+      { _id: req.params.pharmacyId },
       { ...req.body }
     );
 
@@ -63,10 +63,10 @@ const UpdateMedicalCenter = async (req, res) => {
   }
 };
 
-const DeleteMedicalCenter = async (req, res) => {
+const DeletePharmacy = async (req, res) => {
   try {
-    const document = await MedicalCenterServices.deleteMedicalCenter({
-      _id: req.params.medicalCenterId,
+    const document = await PharmacyServices.deletePharmacy({
+      _id: req.params.pharmacyId,
     });
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceDeleted);
@@ -77,7 +77,7 @@ const DeleteMedicalCenter = async (req, res) => {
   }
 };
 
-const AllMedicalCenter = async (req, res) => {
+const AllPharmacy = async (req, res) => {
   try {
     let limitQP = req.query.limit;
     let skipOP = req.query.skip;
@@ -103,18 +103,25 @@ const AllMedicalCenter = async (req, res) => {
       let schedules = await ScheduleServices.getAllSchedules({
         doctorId: req.query.doctorId,
       });
+      //returning if schedules not found
+      if (schedules.length < 1) {
+        return notFoundResponse(res, messageUtil.resourceNotFound);
+      }
 
-
-      //iterating all schdules to find medical center through medicalCenterId
+      //iterating all schdules to find medical center through pharmacyId
       for (let i = 0; i < schedules.length; i++) {
         //finding medical centers
-        let medicalCenter = await MedicalCenterServices.getMedicalCenterDetails(
-          { _id: schedules[i].medicalCenterId }
+        let medicalCenter = await PharmacyServices.getPharmacyDetails(
+          { _id: schedules[i].pharmacyId }
         );
         //pushing medical centers
         medicalCenters.push(medicalCenter);
       }
 
+      //returning if no medical center found
+      if (medicalCenters.length < 1) {
+        return notFoundResponse(res, messageUtil.resourceNotFound);
+      }
 
       return successResponse(res, messageUtil.success, {
         objectCount: medicalCenters.length,
@@ -122,19 +129,21 @@ const AllMedicalCenter = async (req, res) => {
       });
     } else {
       let query = {};
-      if (req.query.medicalCenterId) {
-        query._id = req.query.medicalCenterId;
+      if (req.query.pharmacyId) {
+        query._id = req.query.pharmacyId;
       }
       if (req.query.city) {
         query.city = req.query.city;
       }
 
-      const documents = await MedicalCenterServices.getAllMedicalCenters(
+      const documents = await PharmacyServices.getAllPharmacys(
         query,
         limitQP,
         skipOP
       );
-
+      if (documents.length < 1) {
+        return notFoundResponse(res, messageUtil.resourceNotFound);
+      }
       return successResponse(res, messageUtil.success, {
         objectCount: documents.length,
         objectArray: documents,
@@ -145,9 +154,9 @@ const AllMedicalCenter = async (req, res) => {
   }
 };
 module.exports = {
-  CreateMedicalCenter,
-  SingleMedicalCenter,
-  UpdateMedicalCenter,
-  DeleteMedicalCenter,
-  AllMedicalCenter,
+  CreatePharmacy,
+  SinglePharmacy,
+  UpdatePharmacy,
+  DeletePharmacy,
+  AllPharmacy,
 };
