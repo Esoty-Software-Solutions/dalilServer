@@ -8,14 +8,16 @@ class Notification {
     const notificationData = req.body;
     console.log(notificationData);
     try {
-      let test = await singleNotification(notificationData.payload.title, notificationData.payload.body, notificationData.deviceToken, notificationData.payload);
-      if (!test.successCount >= 1) {
+      const {result, response} = await singleNotification(notificationData.payload.title, notificationData.payload.body, notificationData.deviceToken, notificationData.payload);
+      if (!result) {
         return res.status(400).json({
           message: "Notification failed.",
+          response
         });
       }
       return res.status(200).json({
         message: "Notification sent.",
+        response
       });
     } catch (err) {
       console.log("error in the main api function " , err);
