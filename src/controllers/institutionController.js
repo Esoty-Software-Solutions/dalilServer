@@ -114,7 +114,7 @@ const UpdateInstitution = async (req, res) => {
     if (!institution) {
       return res.status(404).json({ message: "No institute found" });
     }
-    return successResponse(res, messageUtil.resourceUpdated, prescription);
+    return successResponse(res, messageUtil.resourceUpdated, institution);
 
   } catch (err) {
     return serverErrorResponse(res, err.message);
