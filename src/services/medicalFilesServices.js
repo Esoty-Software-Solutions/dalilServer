@@ -74,31 +74,27 @@ exports.getDataMedicalFiles = async (queryPayload, schema) => {
 exports.createMedicalFiles = async (body, params, schema, fileData) => {
   const createdPayload = _.merge(body, params);
   let fileLinkAddedPayload;
-  if (fileData) {
-    const { location: fileLink } = fileData;
-    fileLinkAddedPayload = _.assign(createdPayload, { fileLink: fileLink });
+
+  if(fileData) {
+    const {location : fileLink} = fileData;
+    fileLinkAddedPayload = _.assign(createdPayload , {fileLink : fileLink});
   }
   try {
-    const createDocument = await schema.create(
-      fileData ? fileLinkAddedPayload : createdPayload
-    );
-    if (fileData) {
-      const presignedUrl = await uploader.getPresignedUrl(
-        createDocument.fileLink,
-        config.aws_bucketName
-      );
+    const createDocument = await schema.create(fileData ? fileLinkAddedPayload : createdPayload);
+    if(fileData) {
+       const presignedUrl = await uploader.getPresignedUrl(createDocument.fileLink , config.aws_bucketName);
       createDocument.fileLink = presignedUrl;
     }
-    if (!createDocument) {
-      return {
-        success: false,
-        data: [],
-      };
-    } else {
-      return {
-        success: true,
-        data: createDocument,
-      };
+    if(!createDocument) {
+        return {
+          success : false, 
+          data : []
+        }
+    }else{
+        return {
+          success : true,
+          data : createDocument
+        }
     }
   } catch (error) {
     console.log(error);

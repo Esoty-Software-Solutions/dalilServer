@@ -92,7 +92,7 @@ function uploadFileS3(fileType, bucketName) {
       fileFilter: function (req, file, cb) {
         checkFileType(file, cb);
       },
-    }).array("file", 4);
+    }).array("file" ,4);
   }
 }
 
