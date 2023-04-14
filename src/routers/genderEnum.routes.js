@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 
-const genderEnumController = require("../controllers/genderEnum");
+const genderEnumController = require("../controllers/genderEnumController");
 
 router.get("/", genderEnumController.getAllgenderEnum);
 router.get("/:id", genderEnumController.getgenderEnum);

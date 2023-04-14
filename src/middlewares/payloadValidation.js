@@ -1,6 +1,4 @@
-const {
-    badRequestErrorResponse
-} = require("../utilities/response");
+const { badRequestErrorResponse } = require("../utilities/response");
 
 exports.customValidation = (joiValidator, payloadType , isFile = false) => {
     // payload type can be body or query as of now

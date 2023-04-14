@@ -38,6 +38,7 @@ const createSubscriber = async (req, res) => {
     if (beneficiaries.length > 0) {
       req.body.beneficiaries = beneficiaries;
     }
+    console.log(req.body);
     //create subscriber
     const doc = await SubscriberServices.createSubscriber({
       ...req.body,

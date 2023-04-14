@@ -1,8 +1,10 @@
 const InstitutionServices = require("../services/institutionServices");
-const { successResponse, serverErrorResponse } = require("../utilities/response");
+const {
+  successResponse,
+  serverErrorResponse,
+} = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
 require("dotenv").config();
-
 
 // class Institution {
 const AddInstitution = async (req, res) => {
@@ -29,7 +31,7 @@ const AddInstitution = async (req, res) => {
     }
     let institution = await InstitutionServices.createInstitution(query);
     return successResponse(res, messageUtil.resourceCreated, institution);
-} catch (err) {
+  } catch (err) {
     return serverErrorResponse(res, err.message);
   }
 };
@@ -43,7 +45,6 @@ const AllInstitutions = async (req, res) => {
     });
   } catch (err) {
     return serverErrorResponse(res, err.message);
-    
   }
 };
 
@@ -79,10 +80,8 @@ const InstitutionById = async (req, res) => {
     //   signed_url = getSignedUrl(findInstitution.institute_image, expiry_time);
     // }
     return successResponse(res, messageUtil.success, findInstitution);
-    
   } catch (err) {
     return serverErrorResponse(res, err.message);
-    
   }
 };
 
@@ -95,10 +94,8 @@ const DeleteInstitution = async (req, res) => {
       return res.status(404).json({ message: "No institute found" });
     }
     return successResponse(res, messageUtil.resourceDeleted);
-    
   } catch (err) {
     return serverErrorResponse(res, err.message);
-    
   }
 };
 
@@ -115,10 +112,8 @@ const UpdateInstitution = async (req, res) => {
       return res.status(404).json({ message: "No institute found" });
     }
     return successResponse(res, messageUtil.resourceUpdated, institution);
-
   } catch (err) {
     return serverErrorResponse(res, err.message);
-    
   }
 };
 

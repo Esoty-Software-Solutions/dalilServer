@@ -12,7 +12,7 @@ exports.updateMedicalService = async (query, data) => {
 };
 
 
-exports.getAllMedicalServices = async ({limit, skip}) => {
+exports.getAllMedicalServices = async (query, limit, skip) => {
   return await MedicalServices.find().skip(skip).limit(limit);
 };
 
