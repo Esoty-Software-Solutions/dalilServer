@@ -7,7 +7,7 @@ const {
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
 const searchQuery = require("../utilities/searchQuery");
-const CitySchema = require("../schemas/citySchema");
+const CitySchema = require("../schemas/citiesSchema");
 
 const city = {
   // Add Appointment Status Enum
