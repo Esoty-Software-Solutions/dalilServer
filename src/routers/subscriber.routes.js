@@ -12,7 +12,7 @@ const {
   updateBeneficiary,
 } = require("../controllers/subscriberController");
 const { customValidation } = require("../middlewares/payloadValidation");
-// const { authentication } = require("../utilities/auth");
+const { authentication } = require("../utilities/auth");
 const uploader = require("../utilities/uploader");
 const { clinicalVisitValidator, createMedicalFilesValidator, getMedicalFilesValidator, createSurgeryHistoryFilesValidator , createChronicDiseasesFilesValidator , createMedicalTestsValidator } = require("../validators/medicalFiles.validator");
 const config = require("../config/config");
@@ -46,16 +46,16 @@ router
   .post(uploader.uploadFileS3("single" , config.aws_bucketName),customValidation(clinicalVisitValidator, "body"), createClinicalVisitsController )
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/allergies`)
-  .get(customValidation(getMedicalFilesValidator , "query"),authentication,  getAllergiesController )
-  .post(uploader.uploadFileS3("single" , config.aws_bucketName),customValidation(createMedicalFilesValidator, "body"),authentication, createAllergiesController )
+  .get(customValidation(getMedicalFilesValidator , "query"),  getAllergiesController )
+  .post(uploader.uploadFileS3("single" , config.aws_bucketName),customValidation(createMedicalFilesValidator, "body"), createAllergiesController )
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/surgeryHistories`)
-  .get(customValidation(getMedicalFilesValidator , "query"),authentication, getSurgeryHistoriesController )
-  .post(uploader.uploadFileS3("single" , config.aws_bucketName),customValidation(createSurgeryHistoryFilesValidator , "body"),authentication, createSurgeryHistoriesController )
+  .get(customValidation(getMedicalFilesValidator , "query"), getSurgeryHistoriesController )
+  .post(uploader.uploadFileS3("single" , config.aws_bucketName),customValidation(createSurgeryHistoryFilesValidator , "body"), createSurgeryHistoriesController )
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/chronicDiseases`)
-  .get(customValidation(getMedicalFilesValidator , "query"),authentication, getChronicDiseasesController )
-  .post(uploader.uploadFileS3("single" , config.aws_bucketName),customValidation(createChronicDiseasesFilesValidator , "body"),authentication, createChronicDiseasesController )
+  .get(customValidation(getMedicalFilesValidator , "query"), getChronicDiseasesController )
+  .post(uploader.uploadFileS3("single" , config.aws_bucketName),customValidation(createChronicDiseasesFilesValidator , "body"), createChronicDiseasesController )
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/medicalTests`)
   .get(customValidation(getMedicalFilesValidator , "query"), getMedicalTestsController )
