@@ -1,25 +1,80 @@
-const AppointmentSchema = require("../schemas/appointmentSchema");
-// import all schemas
+class Service {
+  createOne = async ({
+    schemaName,
+    body,
+    query,
+    skip,
+    limit,
+    select,
+    populate,
+  }) => {
+    return await schemaName.create(body);
+  };
 
-const service = {
+  updateOne = async ({
+    schemaName,
+    body,
+    query,
+    skip,
+    limit,
+    select,
+    populate,
+  }) => {
+    return await schemaName
+      .findOneAndUpdate(query, body, { new: true })
+      .populate(populate)
+      .select(select);
+  };
 
-  createOne = async ({schemaName, body, query, skip, limit, select, populate}) => {
-  };
-  
-  updateOne = async ({schemaName, body, query, skip, limit, select, populate}) => {
-  };
-  
-  deleteOne = async ({schemaName, body, query, skip, limit, select, populate}) => {
+  deleteOne = async ({
+    schemaName,
+    body,
+    query,
+    skip,
+    limit,
+    select,
+    populate,
+  }) => {};
 
+  getOne = async ({
+    schemaName,
+    body,
+    query,
+    skip,
+    limit,
+    select,
+    populate,
+  }) => {
+    return await schemaName.findOne(body).populate(populate);
   };
-  
-  getOne = async (query) => {
+
+  getMany = async ({
+    schemaName,
+    body,
+    query,
+    skip = 0,
+    limit = 100,
+    select,
+    populate,
+  }) => {
+    return await schemaName
+      .find(query)
+      .populate(populate)
+      .skip(skip)
+      .limit(limit)
+      .select(select);
   };
-  
-  getMany = async (query, limit) => {
+  count = async ({
+    schemaName,
+    body,
+    query,
+    skip,
+    limit,
+    select,
+    populate,
+  }) => {
+    return await schemaName.find(query).count();
   };
 }
 
-module.exports = service;
-
-
+module.exports = new Service();
