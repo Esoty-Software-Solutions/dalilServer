@@ -32,6 +32,8 @@
     "multer-s3-v2": "^2.2.1"
   },
   "devDependencies": {
+    "eslint": "^8.38.0",
+    "eslint-config-google": "^0.14.0",
     "nodemon": "^2.0.21"
   }
 }
