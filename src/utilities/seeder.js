@@ -5,7 +5,7 @@ const SubscriberServices = require("../services/subscriberServices");
 const AppointmentServices = require("../services/appointmentServices");
 
 const bcrypt = require("bcrypt");
-const jwt = require(`jsonwebtoken`);
+const jwt = require("jsonwebtoken");
 const UsersData = require("./users.json");
 const DoctorData = require("./doctors.json");
 const AppointmentsData = require("./appointments.json");
@@ -72,10 +72,10 @@ const createAppointmentsData = async () => {
 
 const removeData = async () => {
   try {
-    //drop databse
+    // drop database
     await dropDB();
 
-    //inserting data
+    // inserting data
     await createData();
     await createDoctorData();
     await createAppointmentsData();

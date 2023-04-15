@@ -1,15 +1,35 @@
 {
-    "env": {
-        "browser": true,
-        "commonjs": true,
-        "es2021": true
-    },
-    "extends": "google",
-    "overrides": [
-    ],
-    "parserOptions": {
-        "ecmaVersion": "latest"
-    },
-    "rules": {
-    }
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es2021": true
+  },
+  "extends": [ "google"],
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "rules": {
+    "max-len": ["error", { "code": 120 }],
+    "require-jsdoc": "error",
+    "no-unused-vars": "warn",
+    "no-invalid-this": "warn",
+    "no-constant-condition": "off",
+    "no-prototype-builtins": "off",
+    "no-async-promise-executor": "off",
+    "no-empty": "off",
+    "no-irregular-whitespace": "off",
+    "no-throw-literal": "off",
+    "no-undef-init": "off",
+    "no-unsafe-negation": "off",
+    "no-useless-escape": "off",
+    "no-var": "off",
+    "no-warning-comments": "off",
+    "validateLineBreaks": "off",
+    "linebreak-style": "off",
+    "indent": ["error", 2],
+    "quotes": ["error", "double"],
+    "object-curly-spacing": ["error", "always"],
+    "new-cap": "warn"
+  }
 }

@@ -1,7 +1,8 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+// eslint-disable-next-line new-cap
+const router = express.Router();
 
-const accountStatusEnumController = require('../controllers/accountStatusEnumController');
+const accountStatusEnumController = require("../controllers/accountStatusEnumController");
 
 router.get("/", accountStatusEnumController.getAllAccountStatusEnum);
 router.get("/:id", accountStatusEnumController.getAccountStatusEnum);
