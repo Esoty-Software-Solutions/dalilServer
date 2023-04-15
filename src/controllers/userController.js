@@ -1,6 +1,6 @@
 const UserServices = require("../services/userServices");
 const bcrypt = require("bcrypt");
-const jwt = require(`jsonwebtoken`);
+const jwt = require("jsonwebtoken");
 const {
   successResponse,
   serverErrorResponse,
@@ -18,7 +18,6 @@ const createUser = async (req, res) => {
     if (req.body.password) {
       myPlaintextPassword = req.body.password;
     }
-    
 
     // hashing user password
     // const hash = bcrypt.hashSync(myPlaintextPassword, 10);
@@ -44,11 +43,7 @@ const createUser = async (req, res) => {
     // delete document._doc.password;
     // // delete document._doc.sd;
     // // server response
-    return successResponse(
-      res,
-      messageUtil.resourceCreated,
-      document._doc
-    );
+    return successResponse(res, messageUtil.resourceCreated, document._doc);
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
@@ -64,7 +59,7 @@ const getUsers = async (req, res) => {
     let skipQP = Number(req.query.skip) ?? 0;
     if (skipQP < 0) skipQP = 0;
 
-    let sortByQP = Number(req.query.sortBy) ?? { userId: 1 };
+    const sortByQP = Number(req.query.sortBy) ?? { userId: 1 };
 
     const filterQP = null; // temporary
 
@@ -72,7 +67,7 @@ const getUsers = async (req, res) => {
       filterQP,
       sortByQP,
       skipQP,
-      limitQP
+      limitQP,
     );
 
     let message = "good";
@@ -89,12 +84,12 @@ const getUsers = async (req, res) => {
 };
 
 const getUserById = async (req, res) => {
-  //checking if the provided id is valid mongoose id
+  // checking if the provided id is valid mongoose id
   // if (!mongoose.Types.ObjectId.isValid(req.params.userId)) {
   //   return notFoundResponse(res, "Invalid id");
   // }
 
-  let user = await UserServices.getUser({ _id: req.params.id });
+  const user = await UserServices.getUser({ _id: req.params.id });
 
   if (!user) {
     return notFoundResponse(res, messageUtil.notFound);
@@ -109,17 +104,13 @@ const updateUser = async (req, res) => {
     }
     const users = await UserServices.updateUser(
       { _id: req.params.id },
-      { },
-      { new: true }
+      {},
+      { new: true },
     );
     if (!users) {
       return res.status(404).json({ error: "No user found" });
     }
-    return successResponse(
-      res,
-      messageUtil.resourceCreated,
-      users
-    );
+    return successResponse(res, messageUtil.resourceCreated, users);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -127,14 +118,14 @@ const updateUser = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { username, password , deviceToken, deviceType } = req.body;
+    const { username, password, deviceToken, deviceType } = req.body;
     const doc = await UserServices.getUser({
       username,
     });
     if (!doc) {
       return badRequestErrorResponse(
         res,
-        `Either username or password is invalid`
+        "Either username or password is invalid",
       );
     }
     const hashedPassword = doc.password;
@@ -146,10 +137,10 @@ const login = async (req, res) => {
     if (!hash) {
       return badRequestErrorResponse(
         res,
-        `Either username or password is invalid`
+        "Either username or password is invalid",
       );
     }
-// saving the token to user schema
+    // saving the token to user schema
     const updateUser = await UserServices.updateUser(
       {
         username,
@@ -157,20 +148,20 @@ const login = async (req, res) => {
       {
         deviceToken: req.body.deviceToken,
         deviceType: req.body.deviceType,
-      }
+      },
     );
     const token = jwt.sign(
       { userId: userId, username, role },
       process.env.jwtSecret,
       {
-        expiresIn: `30d`,
-      }
+        expiresIn: "30d",
+      },
     );
 
     res.cookie("access_token", `Bearer ${token}`, {
       expires: new Date(Date.now() + 720 * 3600000),
       httpOnly: true,
-      path: `/`,
+      path: "/",
     });
 
     // removing password from doc
@@ -183,7 +174,7 @@ const login = async (req, res) => {
       messageUtil.loginSuccessful,
       doc,
       undefined,
-      `Bearer ${token}`
+      `Bearer ${token}`,
     );
   } catch (error) {
     console.log(error);
@@ -197,7 +188,7 @@ const RegisterAppToken = async (req, res) => {
   try {
     user = await UserServices.updateUserById(
       { _id: req.userId },
-      { userAppToken: req.body.registrationToken }
+      { userAppToken: req.body.registrationToken },
     );
     console.log("🚀  ~ user:", user);
     if (!user) {
@@ -212,7 +203,7 @@ const RegisterAppToken = async (req, res) => {
 
 const GetAll = async (req, res) => {
   try {
-    let users = await UserServices.getAllUser();
+    const users = await UserServices.getAllUser();
     if (users.length < 1) {
       return notFoundResponse(res, messageUtil.notFound);
     }
@@ -231,8 +222,8 @@ const SendNotification = async (req, res) => {
     if (!user) {
       return notFoundResponse(res, messageUtil.notFound);
     }
-    let title = `Hello ${user.first_name}`;
-    let body = `Notification from sapdasoft`;
+    const title = `Hello ${user.first_name}`;
+    const body = "Notification from sapdasoft";
     singleNotification(title, body, user.userAppToken);
 
     return successResponse(res, "Notification sent", user);
@@ -243,12 +234,12 @@ const SendNotification = async (req, res) => {
 
 const SendNotificationToUsers = async (req, res) => {
   try {
-    let { users } = req.body;
+    const { users } = req.body;
     console.log("🚀 ~ users:", users);
-    let array = [];
+    const array = [];
 
     for (let i = 0; i < users.length; i++) {
-      let user = await UserServices.getUser({ _id: users[i] });
+      const user = await UserServices.getUser({ _id: users[i] });
       if (user.userAppToken) {
         array.push(user.userAppToken);
       }
@@ -274,40 +265,40 @@ const logout = async (req, res) => {
 
 const ChangePassword = async (req, res) => {
   try {
-    console.log("change password")
+    console.log("change password");
     console.log("req.params", req.params);
     console.log("req.body", req.body);
     const { currentPassword, newPassword } = req.body;
-    //checking the required fields
+    // checking the required fields
     const isError = checkFeilds(
       {
         currentPassword,
         newPassword,
       },
-      res
+      res,
     );
-    //returning if required filed is missing
+    // returning if required filed is missing
     if (isError) return;
 
-    //getting user by id
-    let user = await UserServices.getUser({ _id: req.params.userId });
+    // getting user by id
+    const user = await UserServices.getUser({ _id: req.params.userId });
     if (!user) {
       return notFoundResponse(res, messageUtil.notFound);
     }
 
-    //verifying the old password
+    // verifying the old password
     const hash = await bcrypt.compare(currentPassword, user.password);
     if (!hash) {
       return badRequestErrorResponse(res, messageUtil.invalidCurrentPassword);
     }
 
-    //creating new hash password after verifying old password
+    // creating new hash password after verifying old password
     const newHash = bcrypt.hashSync(newPassword, 10);
 
-    //updating user
+    // updating user
     const updatedUser = await UserServices.updateUser(
       { _id: req.params.userId },
-      { password: newHash }
+      { password: newHash },
     );
     return successResponse(res, messageUtil.resourceUpdated, updatedUser);
   } catch (err) {
@@ -317,23 +308,23 @@ const ChangePassword = async (req, res) => {
 
 const UpdateDeviceToken = async (req, res) => {
   const { deviceToken, deviceType } = req.body;
-  //checking the required fields
+  // checking the required fields
   const isError = checkFeilds(
     {
       deviceToken,
       deviceType,
     },
-    res
+    res,
   );
-  //returning if required filed is missing
+  // returning if required filed is missing
   if (isError) return;
 
-  let user = await UserServices.updateUser(
+  const user = await UserServices.updateUser(
     { _id: req.params.userId },
     {
       deviceToken,
       deviceType,
-    }
+    },
   );
   if (!user) {
     return notFoundResponse(res, messageUtil.notFound);

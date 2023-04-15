@@ -12,7 +12,7 @@ const timeSlotEnum = {
 
   addTimeSlotEnum: async (req, res) => {
     try {
-      let data = await Services.createOne({
+      const data = await Services.createOne({
         schemaName: TimeSlotEnumSchema,
         body: req.body,
       });
@@ -27,10 +27,10 @@ const timeSlotEnum = {
 
   getTimeSlotEnum: async (req, res) => {
     try {
-      let query = {
+      const query = {
         _id: req.params.id,
       };
-      let data = await Services.getOne({
+      const data = await Services.getOne({
         schemaName: TimeSlotEnumSchema,
         query,
       });
@@ -45,15 +45,15 @@ const timeSlotEnum = {
 
   getAlltimeSlotEnum: async (req, res) => {
     try {
-      let limit = req.query.limit;
-      let skip = req.query.skip;
-      let objectArray = await Services.getMany({
+      const limit = req.query.limit;
+      const skip = req.query.skip;
+      const objectArray = await Services.getMany({
         schemaName: TimeSlotEnumSchema,
         limit,
         skip,
       });
 
-      let objectCount = await Services.count({
+      const objectCount = await Services.count({
         schemaName: TimeSlotEnumSchema,
       });
       return successResponse(res, "Success", objectArray, objectCount);
@@ -66,8 +66,8 @@ const timeSlotEnum = {
 
   updateTimeSlotEnum: async (req, res) => {
     try {
-      let query = { _id: req.params.id };
-      let data = await Services.updateOne({
+      const query = { _id: req.params.id };
+      const data = await Services.updateOne({
         schemaName: TimeSlotEnumSchema,
         query,
         body: req.body,

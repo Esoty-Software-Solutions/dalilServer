@@ -15,17 +15,16 @@ const checkFeilds = require("../utilities/checkFields");
 const createSubscriber = async (req, res) => {
   try {
     console.log("createSubscriber");
-    //if body contain beneficiaries
-    let beneficiaries = [];
+    // if body contain beneficiaries
+    const beneficiaries = [];
     if (req.body.beneficiaries) {
       for (let i = 0; i < req.body.beneficiaries.length; i++) {
-
-        //Create beneficiary
+        // Create beneficiary
         try {
-          let beneficiary = await SubscriberServices.createBeneficiaries(
-            req.body.beneficiaries[i]
+          const beneficiary = await SubscriberServices.createBeneficiaries(
+            req.body.beneficiaries[i],
           );
-          //push beneficiary id in array
+          // push beneficiary id in array
           beneficiaries.push(beneficiary._id.toString());
         } catch (error) {
           console.log(error);
@@ -34,12 +33,12 @@ const createSubscriber = async (req, res) => {
       }
     }
 
-    //Push beneficiary ids array in req.body
+    // Push beneficiary ids array in req.body
     if (beneficiaries.length > 0) {
       req.body.beneficiaries = beneficiaries;
     }
     console.log(req.body);
-    //create subscriber
+    // create subscriber
     const doc = await SubscriberServices.createSubscriber({
       ...req.body,
     });
@@ -58,7 +57,7 @@ const updateSubscriber = async (req, res) => {
       {
         _id: req.params.subscriberId,
       },
-      { ...req.body }
+      { ...req.body },
     );
 
     return successResponse(res, messageUtil.resourceUpdated, document);
@@ -77,7 +76,7 @@ const getSubscribers = async (req, res) => {
     let skipQP = Number(req.query.skip) ?? 0;
     if (skipQP < 0) skipQP = 0;
 
-    let sortByQP = Number(req.query.sortBy) ?? { userId: 1 };
+    const sortByQP = Number(req.query.sortBy) ?? { userId: 1 };
 
     const filterQP = null; // temporary
 
@@ -85,7 +84,7 @@ const getSubscribers = async (req, res) => {
       filterQP,
       sortByQP,
       skipQP,
-      limitQP
+      limitQP,
     );
 
     let message = "good";
@@ -102,7 +101,7 @@ const getSubscribers = async (req, res) => {
 };
 
 const getSubscriber = async (req, res) => {
-  let subscriber = await SubscriberServices.getSubscriber({
+  const subscriber = await SubscriberServices.getSubscriber({
     _id: req.params.subscriberId,
   });
 
@@ -113,7 +112,7 @@ const getSubscriber = async (req, res) => {
 };
 
 const getBeneficiaries = async (req, res) => {
-  let subscriber = await SubscriberServices.getSubscriber({
+  const subscriber = await SubscriberServices.getSubscriber({
     _id: req.params.subscriberId,
   });
 
@@ -127,7 +126,7 @@ const getBeneficiaries = async (req, res) => {
 };
 
 const getBeneficiary = async (req, res) => {
-  let beneficiary = await SubscriberServices.getBeneficiary({
+  const beneficiary = await SubscriberServices.getBeneficiary({
     _id: req.params.beneficiaryId,
   });
 
@@ -138,11 +137,11 @@ const getBeneficiary = async (req, res) => {
 };
 
 const updateBeneficiary = async (req, res) => {
-  let beneficiary = await SubscriberServices.updateBeneficiary(
+  const beneficiary = await SubscriberServices.updateBeneficiary(
     {
       _id: req.params.beneficiaryId,
     },
-    { ...req.body }
+    { ...req.body },
   );
 
   if (!beneficiary) {
@@ -153,7 +152,7 @@ const updateBeneficiary = async (req, res) => {
 
 const createBeneficiaryForSubscriber = async (req, res) => {
   try {
-    let {
+    const {
       firstName,
       lastName,
       secondName,
@@ -162,7 +161,7 @@ const createBeneficiaryForSubscriber = async (req, res) => {
       relationshipToSubscriber,
     } = req.body;
 
-    //checking required fields in beneficiary schema
+    // checking required fields in beneficiary schema
     const isError = checkFeilds(
       {
         firstName,
@@ -172,15 +171,15 @@ const createBeneficiaryForSubscriber = async (req, res) => {
         gender,
         relationshipToSubscriber,
       },
-      res
+      res,
     );
     if (isError) return;
 
-    let beneficiary = await SubscriberServices.createBeneficiaries(req.body);
-    //Updating subscriber service
-    let updateSubscriber = await SubscriberServices.updateSubscriberById(
+    const beneficiary = await SubscriberServices.createBeneficiaries(req.body);
+    // Updating subscriber service
+    const updateSubscriber = await SubscriberServices.updateSubscriberById(
       { _id: req.params.subscriberId },
-      { $push: { beneficiaries: beneficiary._id } }
+      { $push: { beneficiaries: beneficiary._id } },
     );
 
     return successResponse(res, messageUtil.resourceCreated, beneficiary);
@@ -196,9 +195,9 @@ const createSubscribersCSV = async (req, res) => {
     .then(async (result) => {
       try {
         // result is the array of json objects
-        //this loop is checking all the required fields but it will not check enum valid values
+        // this loop is checking all the required fields but it will not check enum valid values
         for (let i = 0; i < result.length; i++) {
-          let subscriberData = await SubscriberServices.getSubscriber({
+          const subscriberData = await SubscriberServices.getSubscriber({
             _id: result[i].employeeId,
           });
 
@@ -207,7 +206,7 @@ const createSubscribersCSV = async (req, res) => {
               message: `Please provide valid employee id for record ${i + 1}`,
             });
           }
-          //checking required fields in beneficiary schema
+          // checking required fields in beneficiary schema
           const isError = checkFields(
             {
               FirstName: result[i].firstName,
@@ -217,22 +216,22 @@ const createSubscribersCSV = async (req, res) => {
               gender: result[i].gender,
               relationshipToSubscriber: result[i].relationshipToSubscriber,
             },
-            res
+            res,
           );
           if (isError) return;
         }
-        //Creating records in beneficiary schema
+        // Creating records in beneficiary schema
         for (let i = 0; i < result.length; i++) {
-          let beneficiary = await SubscriberServices.createBeneficiaries(
-            result[i]
+          const beneficiary = await SubscriberServices.createBeneficiaries(
+            result[i],
           );
-          //Updating subscriber service
-          let updateSubscriber = await SubscriberServices.updateSubscriberById(
+          // Updating subscriber service
+          const updateSubscriber = await SubscriberServices.updateSubscriberById(
             { _id: result[i].employeeId },
-            { $push: { beneficiaries: beneficiary } }
+            { $push: { beneficiaries: beneficiary } },
           );
         }
-        //unlinking csv file from disk
+        // unlinking csv file from disk
         fs.unlinkSync(path.resolve(req.files[0].path));
 
         return successResponse(res, messageUtil.resourceCreated);

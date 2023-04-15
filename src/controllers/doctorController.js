@@ -51,7 +51,7 @@ const UpdateDoctor = async (req, res) => {
 
     const document = await DoctorServices.updateDoctor(
       { _id: req.params.doctorId },
-      { ...req.body }
+      { ...req.body },
     );
 
     if (!document) {
@@ -98,7 +98,7 @@ const AllDoctors = async (req, res) => {
     } else {
       skipOP = 0;
     }
-    let query = {};
+    const query = {};
     if (req.query.doctorId) {
       query._id = req.query.doctorId;
     }

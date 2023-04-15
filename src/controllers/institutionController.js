@@ -15,7 +15,7 @@ const AddInstitution = async (req, res) => {
     if (institute) {
       return res.status(400).json({ error: "Institue already exist" });
     }
-    let query = {
+    const query = {
       ...req.body,
     };
     const fieldNamesList = [];
@@ -29,7 +29,7 @@ const AddInstitution = async (req, res) => {
     if (req.files.length > 0) {
       query.fileLink = fieldNamesList;
     }
-    let institution = await InstitutionServices.createInstitution(query);
+    const institution = await InstitutionServices.createInstitution(query);
     return successResponse(res, messageUtil.resourceCreated, institution);
   } catch (err) {
     return serverErrorResponse(res, err.message);
@@ -38,7 +38,7 @@ const AddInstitution = async (req, res) => {
 
 const AllInstitutions = async (req, res) => {
   try {
-    let institutions = await InstitutionServices.getAllInstitution();
+    const institutions = await InstitutionServices.getAllInstitution();
     return successResponse(res, messageUtil.success, {
       institutions,
       objectCount: institutions.length,
@@ -49,15 +49,15 @@ const AllInstitutions = async (req, res) => {
 };
 
 const InstitutionById = async (req, res) => {
-  //destructure queryObject
+  // destructure queryObject
 
-  const { institution_id } = req.params;
+  const { institutionId } = req.params;
 
-  if (!institution_id) {
+  if (!institutionId) {
     return res.status(404).json({ message: "Please insert institution id" });
   }
 
-  //this function will be moved in utilities
+  // this function will be moved in utilities
   // const getSignedUrl = (image, expiry_time) => {
   //   let bucket_params = {
   //     Bucket: process.env.aws_bucketName,
@@ -69,8 +69,8 @@ const InstitutionById = async (req, res) => {
   // };
 
   try {
-    let findInstitution = await InstitutionServices.getInstitutionDetails({
-      _id: institution_id,
+    const findInstitution = await InstitutionServices.getInstitutionDetails({
+      _id: institutionId,
     });
     if (!findInstitution) {
       return res.status(404).json({ message: "No institute found" });
@@ -87,7 +87,7 @@ const InstitutionById = async (req, res) => {
 
 const DeleteInstitution = async (req, res) => {
   try {
-    let institution = await InstitutionServices.deleteInstitution({
+    const institution = await InstitutionServices.deleteInstitution({
       _id: req.params.id,
     });
     if (!institution) {
@@ -103,9 +103,9 @@ const UpdateInstitution = async (req, res) => {
   const { institutionId } = req.params;
 
   try {
-    let institution = await InstitutionServices.updateInstitution(
+    const institution = await InstitutionServices.updateInstitution(
       { _id: institutionId },
-      { ...req.body }
+      { ...req.body },
     );
 
     if (!institution) {

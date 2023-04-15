@@ -13,7 +13,7 @@ const genderEnum = {
 
   addgenderEnum: async (req, res) => {
     try {
-      let data = await Services.createOne({
+      const data = await Services.createOne({
         schemaName: GenderEnums,
         body: req.body,
       });
@@ -28,10 +28,10 @@ const genderEnum = {
 
   getgenderEnum: async (req, res) => {
     try {
-      let query = {
+      const query = {
         _id: req.params.id,
       };
-      let data = await Services.getOne({
+      const data = await Services.getOne({
         schemaName: GenderEnums,
         query,
       });
@@ -47,8 +47,8 @@ const genderEnum = {
 
   getAllgenderEnum: async (req, res) => {
     try {
-      let limit = req.query.limit;
-      let skip = req.query.skip;
+      const limit = req.query.limit;
+      const skip = req.query.skip;
       let searchquery = {};
       let query = {};
       const searchFields = ["backendName", "englishName"];
@@ -60,14 +60,14 @@ const genderEnum = {
         searchquery = searchQuery(searchFields, req.query.searchQuery);
         query = { ...query, ...searchquery };
       }
-      let objectArray = await Services.getMany({
+      const objectArray = await Services.getMany({
         schemaName: GenderEnums,
         query,
         limit,
         skip,
       });
 
-      let objectCount = await Services.count({
+      const objectCount = await Services.count({
         schemaName: GenderEnums,
       });
 
@@ -75,7 +75,7 @@ const genderEnum = {
         res,
         messageUtil.success,
         objectArray,
-        objectCount
+        objectCount,
       );
     } catch (err) {
       return serverErrorResponse(res, err);
@@ -86,8 +86,8 @@ const genderEnum = {
 
   updategenderEnum: async (req, res) => {
     try {
-      let query = { _id: req.params.id };
-      let data = await Services.updateOne({
+      const query = { _id: req.params.id };
+      const data = await Services.updateOne({
         schemaName: GenderEnums,
         query,
         body: req.body,

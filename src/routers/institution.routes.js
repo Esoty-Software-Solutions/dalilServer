@@ -14,7 +14,7 @@ const config = require("../config/config");
 router.post(
   "",
   uploader.uploadFileS3("multiple", config.dalilStorage_bucket),
-  AddInstitution
+  AddInstitution,
 );
 router.patch("/:institutionId", UpdateInstitution);
 router.get("", AllInstitutions);

@@ -31,7 +31,6 @@ const CreatePharmacy = async (req, res) => {
 
 const SinglePharmacy = async (req, res) => {
   try {
-    
     const document = await PharmacyServices.getPharmacyDetails({
       _id: req.params.pharmacyId,
     });
@@ -50,7 +49,7 @@ const UpdatePharmacy = async (req, res) => {
   try {
     const document = await PharmacyServices.updatePharmacy(
       { _id: req.params.pharmacyId },
-      { ...req.body }
+      { ...req.body },
     );
 
     if (!document) {
@@ -98,27 +97,27 @@ const AllPharmacy = async (req, res) => {
       skipOP = 0;
     }
     if (req.query.doctorId) {
-      let medicalCenters = [];
-      //finding schedules for doctor
-      let schedules = await ScheduleServices.getAllSchedules({
+      const medicalCenters = [];
+      // finding schedules for doctor
+      const schedules = await ScheduleServices.getAllSchedules({
         doctorId: req.query.doctorId,
       });
-      //returning if schedules not found
+      // returning if schedules not found
       if (schedules.length < 1) {
         return notFoundResponse(res, messageUtil.resourceNotFound);
       }
 
-      //iterating all schdules to find medical center through pharmacyId
+      // iterating all schdules to find medical center through pharmacyId
       for (let i = 0; i < schedules.length; i++) {
-        //finding medical centers
-        let medicalCenter = await PharmacyServices.getPharmacyDetails(
-          { _id: schedules[i].pharmacyId }
+        // finding medical centers
+        const medicalCenter = await PharmacyServices.getPharmacyDetails(
+          { _id: schedules[i].pharmacyId },
         );
-        //pushing medical centers
+        // pushing medical centers
         medicalCenters.push(medicalCenter);
       }
 
-      //returning if no medical center found
+      // returning if no medical center found
       if (medicalCenters.length < 1) {
         return notFoundResponse(res, messageUtil.resourceNotFound);
       }
@@ -128,7 +127,7 @@ const AllPharmacy = async (req, res) => {
         objectArray: medicalCenters,
       });
     } else {
-      let query = {};
+      const query = {};
       if (req.query.pharmacyId) {
         query._id = req.query.pharmacyId;
       }
@@ -139,7 +138,7 @@ const AllPharmacy = async (req, res) => {
       const documents = await PharmacyServices.getAllPharmacys(
         query,
         limitQP,
-        skipOP
+        skipOP,
       );
       if (documents.length < 1) {
         return notFoundResponse(res, messageUtil.resourceNotFound);

@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const AddPrescription = async (req, res) => {
   try {
-  let query = {
+    const query = {
       ...req.body,
     };
     const fieldNamesList = [];
@@ -18,18 +18,16 @@ const AddPrescription = async (req, res) => {
     if (req.files.length > 0) {
       query.fileLink = fieldNamesList;
     }
-    let prescription = await PrescriptionServices.createPrescription(query);
+    const prescription = await PrescriptionServices.createPrescription(query);
     return successResponse(res, messageUtil.resourceCreated, prescription);
-    
   } catch (err) {
     return serverErrorResponse(res, err.message);
-    
   }
 };
 
 const AllPrescriptions = async (req, res) => {
   try {
-    let prescriptions = await PrescriptionServices.getAllPrescriptions();
+    const prescriptions = await PrescriptionServices.getAllPrescriptions();
 
     if (prescriptions.length === 0) {
       return res.status(404).json({ message: "No prescription found" });
@@ -39,15 +37,13 @@ const AllPrescriptions = async (req, res) => {
       prescriptions,
       objectCount: prescriptions.length,
     });
-
   } catch (err) {
     return serverErrorResponse(res, err.message);
-    
   }
 };
 
 const PrescriptionById = async (req, res) => {
-  //destructure queryObject
+  // destructure queryObject
 
   const { prescriptionId } = req.params;
 
@@ -55,7 +51,7 @@ const PrescriptionById = async (req, res) => {
     return res.status(404).json({ message: "Please insert prescription id" });
   }
 
-  //this function will be moved in utilities
+  // this function will be moved in utilities
   // const getSignedUrl = (image, expiry_time) => {
   //   let bucket_params = {
   //     Bucket: process.env.aws_bucketName,
@@ -67,7 +63,7 @@ const PrescriptionById = async (req, res) => {
   // };
 
   try {
-    let findPrescription = await PrescriptionServices.getPrescriptionDetails({
+    const findPrescription = await PrescriptionServices.getPrescriptionDetails({
       _id: prescriptionId,
     });
     if (!findPrescription) {
@@ -81,23 +77,20 @@ const PrescriptionById = async (req, res) => {
     return successResponse(res, messageUtil.success, findPrescription);
   } catch (err) {
     return serverErrorResponse(res, err.message);
-    
   }
 };
 
 const DeletePrescription = async (req, res) => {
   try {
-    let prescription = await PrescriptionServices.deletePrescription({
+    const prescription = await PrescriptionServices.deletePrescription({
       _id: req.params.id,
     });
     if (!prescription) {
       return res.status(404).json({ message: "No prescription found" });
     }
     return successResponse(res, messageUtil.resourceDeleted);
-
   } catch (err) {
     return serverErrorResponse(res, err.message);
-    
   }
 };
 
@@ -105,19 +98,17 @@ const UpdatePrescription = async (req, res) => {
   const { prescriptionId } = req.params;
 
   try {
-    let prescription = await PrescriptionServices.updatePrescription(
+    const prescription = await PrescriptionServices.updatePrescription(
       { _id: prescriptionId },
-      { ...req.body }
+      { ...req.body },
     );
 
     if (!prescription) {
       return res.status(404).json({ message: "No prescription found" });
     }
     return successResponse(res, messageUtil.resourceUpdated, prescription);
-
   } catch (err) {
     return serverErrorResponse(res, err.message);
-    
   }
 };
 

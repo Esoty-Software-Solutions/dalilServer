@@ -12,9 +12,9 @@ var router = express.Router();
 
 router.get("", getAppointments);
 router.post("", createAppointment);
-router.get("/:appointmentId",  getAppointment);
-router.post("/:appointmentId",  updateAppointment);
-router.patch("/:appointmentId",  updateAppointment);
-router.delete("/:appointmentId",  deleteAppointment);
+router.get("/:appointmentId", getAppointment);
+router.post("/:appointmentId", updateAppointment);
+router.patch("/:appointmentId", updateAppointment);
+router.delete("/:appointmentId", deleteAppointment);
 router.get("/subscribers/:subscriberId", getUserAppointments);
 module.exports = router;
