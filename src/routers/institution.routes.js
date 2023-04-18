@@ -11,7 +11,11 @@ var router = express.Router();
 const uploader = require("../utilities/uploader");
 const config = require("../config/config");
 
-router.post("",  uploader.uploadFileS3("multiple" , config.dalilStorage_bucket), AddInstitution);
+router.post(
+  "",
+  uploader.uploadFileS3("multiple", config.dalilStorage_bucket),
+  AddInstitution
+);
 router.patch("/:institutionId", UpdateInstitution);
 router.get("", AllInstitutions);
 router.get("/:institution_id", InstitutionById);

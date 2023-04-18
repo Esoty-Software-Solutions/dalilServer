@@ -5,7 +5,7 @@ module.exports = {
   issue(payload, expiresIn) {
     // token will be issue with the given payload and expire time
     return jwt.sign(payload, config.jwtSecret, {
-      //process.env.jwtSecret
+      // process.env.jwtSecret
       expiresIn: expiresIn ? expiresIn : "1d",
     });
   },

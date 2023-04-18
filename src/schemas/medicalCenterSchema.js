@@ -11,7 +11,7 @@ const medicalCenterSchema = new mongoose.Schema(
     cityId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "cities",
-      required: [true, `please enter valid city`],
+      required: [true, `please enter valid city ID`],
     },
     district: {
       type: String,
