@@ -40,8 +40,8 @@ const AllInstitutions = async (req, res) => {
   try {
     let institutions = await InstitutionServices.getAllInstitution();
     return successResponse(res, messageUtil.success, {
-      institutions,
       objectCount: institutions.length,
+      objectArray: institutions,
     });
   } catch (err) {
     return serverErrorResponse(res, err.message);
@@ -105,7 +105,7 @@ const UpdateInstitution = async (req, res) => {
   try {
     let institution = await InstitutionServices.updateInstitution(
       { _id: institutionId },
-      { ...req.body }
+      { ...req.body },
     );
 
     if (!institution) {
