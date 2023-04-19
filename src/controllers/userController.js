@@ -104,13 +104,13 @@ const getUserById = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    if (!req.files[0].location) {
-      return res.status(401).json({ error: "Please upload a picture" });
-    }
+    // this code is commented because update user api does not accepts file
+    // if (!req?.files[0]?.location) {
+    //   return res.status(401).json({ error: "Please upload a picture" });
+    // }
     const users = await UserServices.updateUser(
       { _id: req.params.id },
-      { },
-      { new: true }
+      { ...req.body }
     );
     if (!users) {
       return res.status(404).json({ error: "No user found" });
