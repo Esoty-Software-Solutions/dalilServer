@@ -7,6 +7,7 @@ const dotenv = require(`dotenv`).config();
 const config = require("./src/config/config");
 // app.use(express.json({ urlencoded: true }));
 
+// enable cors
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
