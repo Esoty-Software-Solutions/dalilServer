@@ -24,6 +24,7 @@ messageUtil = {
   invalidMedicalCenterId: "Please privide valid medical center id",
   selectDay: "Please select atleast one day",
   invalidStartDate: "Start date must be lesser or euqal to end date",
+  resourceFound : "resourceFound"
 };
 
 module.exports = { messageUtil };

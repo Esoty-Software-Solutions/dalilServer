@@ -232,7 +232,27 @@ const initMedicalFilesController = () => {
             return serverErrorResponse(res, error.message);
         }
     }
-
+    
+    const createMedicalFilesController = async (req, res) => {
+        try {
+            const query = {_id : req.params.beneficiaryId}
+            const createResponse = await medicalFilesServices.createMedFileForSubscriber(query , {medicalFiles : req.body} , "create");
+            return successResponse(res, messageUtil.resourceUpdated , createResponse)
+        } catch (error) {
+            console.log(error);
+            return serverErrorResponse(res, error.message);
+        }
+    }
+    const getMedicalFilesController = async (req , res) => {
+        try {
+            const query = {_id : req.params.beneficiaryId}
+            const getResponse = await medicalFilesServices.createMedFileForSubscriber(query , {} , "get");
+            return successResponse(res, messageUtil.resourceFound , getResponse);
+        } catch (error) {
+            console.log(error);
+            return serverErrorResponse(res, error.message);
+        }
+    }
     return {
         getClinicalVisitsController,
         createClinicalVisitsController,
@@ -244,6 +264,8 @@ const initMedicalFilesController = () => {
         createChronicDiseasesController,
         getMedicalTestsController,
         createMedicalTestsController,
+        createMedicalFilesController,
+        getMedicalFilesController
     }
 }
 

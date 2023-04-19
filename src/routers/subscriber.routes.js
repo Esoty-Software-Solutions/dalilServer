@@ -21,6 +21,7 @@ const {
   createSurgeryHistoryFilesValidator,
   createChronicDiseasesFilesValidator,
   createMedicalTestsValidator,
+  createSimpleMedicalFileValidator,
 } = require("../validators/medicalFiles.validator");
 const config = require("../config/config");
 var router = express.Router();
@@ -35,6 +36,8 @@ const {
   createChronicDiseasesController,
   getMedicalTestsController,
   createMedicalTestsController,
+  createMedicalFilesController,
+  getMedicalFilesController
 } = initMedicalFilesController();
 // router.post(
 //   "/uploadCSV",
@@ -53,6 +56,15 @@ router.post(
   createBeneficiaryForSubscriber
 );
 router.patch("/:subscriberId", updateSubscriber);
+
+// ---------------------------------------- just medical files router -----------------------------------------------
+
+router
+.route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles`)
+.patch(customValidation(createSimpleMedicalFileValidator , "body") , createMedicalFilesController)
+.get(getMedicalFilesController)
+
+// ---------------------------------------- just medical files router -----------------------------------------------
 
 // ---------------------------------------- medical files routes -----------------------------------------------
 router
