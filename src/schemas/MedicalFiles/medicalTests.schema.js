@@ -7,7 +7,7 @@ const medicalTestSchema = new mongoose.Schema({
     },
     centerName: {
         type : String,
-        required : true,
+        default : null
     },
     city: {
         type : String,

@@ -233,7 +233,7 @@ const initMedicalFilesController = () => {
         }
     }
     
-    const createMedicalFilesController = async (req, res) => {
+    const updateMedicalFileController = async (req, res) => {
         try {
             const query = {_id : req.params.beneficiaryId}
             const createResponse = await medicalFilesServices.createMedFileForSubscriber(query , {medicalFiles : req.body} , "create");
@@ -264,7 +264,7 @@ const initMedicalFilesController = () => {
         createChronicDiseasesController,
         getMedicalTestsController,
         createMedicalTestsController,
-        createMedicalFilesController,
+        updateMedicalFileController,
         getMedicalFilesController
     }
 }

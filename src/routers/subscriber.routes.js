@@ -21,7 +21,7 @@ const {
   createSurgeryHistoryFilesValidator,
   createChronicDiseasesFilesValidator,
   createMedicalTestsValidator,
-  createSimpleMedicalFileValidator,
+  updateSimpleMedicalFilevalidator,
 } = require("../validators/medicalFiles.validator");
 const config = require("../config/config");
 var router = express.Router();
@@ -36,7 +36,7 @@ const {
   createChronicDiseasesController,
   getMedicalTestsController,
   createMedicalTestsController,
-  createMedicalFilesController,
+  updateMedicalFileController,
   getMedicalFilesController
 } = initMedicalFilesController();
 // router.post(
@@ -61,7 +61,7 @@ router.patch("/:subscriberId", updateSubscriber);
 
 router
 .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles`)
-.patch(customValidation(createSimpleMedicalFileValidator , "body") , createMedicalFilesController)
+.patch(customValidation(updateSimpleMedicalFilevalidator , "body") , updateMedicalFileController)
 .get(getMedicalFilesController)
 
 // ---------------------------------------- just medical files router -----------------------------------------------

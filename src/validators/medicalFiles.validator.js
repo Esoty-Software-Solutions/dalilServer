@@ -47,7 +47,7 @@ exports.createMedicalTestsValidator = joi.object({
     file : joi.string().optional().allow("" , null)
 });
 
-exports.createSimpleMedicalFileValidator = joi.object({
+exports.updateSimpleMedicalFilevalidator = joi.object({
     weight : joi.number().optional().allow(0 , null),
     bloodType : joi.string().optional().allow("" , null),
     height : joi.number().optional().allow(0 , null),
