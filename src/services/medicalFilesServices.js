@@ -110,7 +110,7 @@ exports.createMedicalFiles = async (body, params, schema, fileData) => {
 exports.createMedFileForSubscriber = async (query, body , param) => {
   let user;
   if(param === "create") {
-   user = await beneficiaries.findOneAndUpdate(query , body);
+   user = await beneficiaries.findOneAndUpdate(query , body , {new : true});
   }else if(param === "get"){
     user = await beneficiaries.findOne(query);
   }
