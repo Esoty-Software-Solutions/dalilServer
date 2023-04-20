@@ -127,6 +127,7 @@ const updateUser = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+    console.log("login", req.body);
     const { username, password , deviceToken, deviceType } = req.body;
     const doc = await UserServices.getUser({
       username,
