@@ -41,7 +41,7 @@ exports.createChronicDiseasesFilesValidator = joi.object({
 exports.createMedicalTestsValidator = joi.object({
     title : joi.string().required(),
     reportDate : joi.string().pattern(new RegExp('([0-9]{4})-(?:[0-9]{2})-([0-9]{2})')).optional(),
-    city : joi.string().optional().allow("" , null),
+    cityId : joi.string().optional().allow("" , null),
     centerName : joi.string().optional().allow("" , null),
     notes : joi.string().optional().allow("" , null),
     file : joi.string().optional().allow("" , null)
