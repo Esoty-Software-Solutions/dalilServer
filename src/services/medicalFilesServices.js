@@ -18,7 +18,7 @@ const { beneficiaries } = require("../schemas/subscriberSchema");
 // };
 
 exports.getMedicalFilesAggregator = async (schema, query, skip, limit) => {
-  let documentsCount = await schema.find(query).count();
+  let objectCount = await schema.find(query).count();
   let documents = await schema
     .find(query)
     .skip(skip)
@@ -27,7 +27,7 @@ exports.getMedicalFilesAggregator = async (schema, query, skip, limit) => {
     .lean();
 
   // iterating over the array to replace public url to presigned url..
-  const newDocuments = await Promise.all(
+  const objectArray = await Promise.all(
     documents.map(async (data) => {
       if (data?.fileLink) {
         const presignedUrl = await uploader.getPresignedUrl(
@@ -39,7 +39,7 @@ exports.getMedicalFilesAggregator = async (schema, query, skip, limit) => {
       return data;
     })
   );
-  return { newDocuments, documentsCount };
+  return { objectArray, objectCount };
 };
 
 exports.getDataMedicalFiles = async (queryPayload, schema) => {
