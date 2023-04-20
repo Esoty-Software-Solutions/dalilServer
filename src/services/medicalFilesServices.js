@@ -4,6 +4,7 @@ const findQueryCommonUtil = require("../utilities/findQueryUtil");
 const _ = require("lodash");
 const uploader = require("../utilities/uploader");
 const config = require("../config/config");
+const { beneficiaries } = require("../schemas/subscriberSchema");
 // exports.createMedicalFile = async (query) => {
 //   return await medicalFiles.create(query);
 // };
@@ -104,3 +105,25 @@ exports.createMedicalFiles = async (body, params, schema, fileData) => {
     };
   }
 };
+
+
+exports.createMedFileForSubscriber = async (query, body , param) => {
+  let user;
+  if(param === "create") {
+   user = await beneficiaries.findOneAndUpdate(query , body);
+  }else if(param === "get"){
+    user = await beneficiaries.findOne(query);
+  }
+  if(user) {
+    return {
+      _id : user._id,
+      beneficiaryId : user?.beneficiaryId,
+      weight : user?.medicalFiles?.weight,
+      bloodType : user?.medicalFiles?.bloodType,
+      height : user?.medicalFiles?.height,
+    }
+  }
+  else{
+    return {}
+  }
+}

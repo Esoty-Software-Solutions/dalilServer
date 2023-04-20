@@ -2,7 +2,7 @@
 const mongoose = require(`mongoose`);
 
 // doctor schema setup
-const doctorSchema = mongoose.Schema(
+const doctorSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
@@ -16,7 +16,7 @@ const doctorSchema = mongoose.Schema(
       type: String,
       required: [true, `please enter valid last name`],
     },
-    specialty: {
+    specialtyId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "medicalSpecialties",
       required: [true, `please provide valid specialty id`],
@@ -24,7 +24,7 @@ const doctorSchema = mongoose.Schema(
     level: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "level",
-      required: [true, `please enter valid level`],
+      // required: [true, `please enter valid level`],
     },
     gender: {
       type: mongoose.Schema.Types.ObjectId,
@@ -40,6 +40,11 @@ const doctorSchema = mongoose.Schema(
   },
   { collection: "doctors" }
 );
+
+doctorSchema.pre(['find' , 'findOne' , 'save'], function(next) {
+  this.populate('specialtyId' , '-__v -_id -id');
+  next();
+});
 
 const doctor = mongoose.model(`doctors`, doctorSchema);
 
