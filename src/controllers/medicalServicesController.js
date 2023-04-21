@@ -38,11 +38,11 @@ const medicalServices = {
 
     getAllMedicalServices: async (req, res) => {
         try {
-            let query = {
-                limit: req.query.limit,
-                skip: req.query.skip
-            }
-            let objectArray = await medicalServiceServices.getAllMedicalServices(query);
+            // let query = {
+            //     limit: req.query.limit,
+            //     skip: req.query.skip
+            // }
+            let objectArray = await medicalServiceServices.getAllMedicalServices({} , req.query.limit , req.query.skip);
 
             return successResponse(res, "Success", objectArray, objectArray.length);
         } catch (err) {

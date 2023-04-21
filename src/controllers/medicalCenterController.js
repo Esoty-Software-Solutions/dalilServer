@@ -92,7 +92,7 @@ const AllMedicalCenter = async (req, res) => {
     if (skipOP) {
       skipOP = Number(skipOP);
       if (skipOP > 100 || skipOP < 1) {
-        limitQP = 0;
+        skipOP = 0;
       }
     } else {
       skipOP = 0;

@@ -11,7 +11,7 @@ exports.updateMedicalService = async (query, data) => {
 };
 
 exports.getAllMedicalServices = async (query, limit, skip) => {
-  return await MedicalServices.find().skip(skip).limit(limit);
+  return await MedicalServices.find(query).skip(skip).limit(limit);
 };
 
 exports.getMedicalService = async (query) => {
