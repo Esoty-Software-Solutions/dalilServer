@@ -109,7 +109,7 @@ const AllDoctors = async (req, res) => {
 
     return successResponse(res, messageUtil.success, {
       objectCount: documents.objectsCount,
-      object: documents.updatedDocument,
+      objectArray: documents.updatedDocument,
     });
   } catch (error) {
     return serverErrorResponse(res, error);
