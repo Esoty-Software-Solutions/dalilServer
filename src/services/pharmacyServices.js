@@ -19,6 +19,8 @@ exports.deletePharmacy = async (query) => {
 };
 
 exports.getAllPharmacys = async (query, limit, skip) => {
+  let objectsCount = await PharmacySchema.find(query).count();
+  
   const pharmacyDocuments = await PharmacySchema.find(query)
     .skip(skip)
     .limit(limit)
@@ -34,7 +36,7 @@ exports.getAllPharmacys = async (query, limit, skip) => {
     return renamedData;
   }))
 
-  return newDocuments;
+  return {objectsCount, newDocuments};
 };
 
 exports.getPharmacyDetails = async (query) => {

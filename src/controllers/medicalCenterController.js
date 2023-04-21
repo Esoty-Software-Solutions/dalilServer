@@ -136,8 +136,8 @@ const AllMedicalCenter = async (req, res) => {
       );
 
       return successResponse(res, messageUtil.success, {
-        objectCount: documents.length,
-        objectArray: documents,
+        objectCount: documents.objectsCount,
+        objectArray: documents.newDocuments,
       });
     }
   } catch (error) {

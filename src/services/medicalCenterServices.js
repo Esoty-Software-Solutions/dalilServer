@@ -19,6 +19,8 @@ exports.deleteMedicalCenter = async (query) => {
 };
 
 exports.getAllMedicalCenters = async (query, limit, skip) => {
+  let objectsCount = await MedicalCenterSchema.find(query).count();
+  
   const medicalCenterDocuments = await MedicalCenterSchema.find(query)
     .skip(skip)
     .limit(limit)
@@ -34,7 +36,7 @@ exports.getAllMedicalCenters = async (query, limit, skip) => {
     return renamedData;
   }))
 
-  return newDocuments;
+  return {objectsCount , newDocuments};
 };
 
 exports.getMedicalCenterDetails = async (query) => {

@@ -44,7 +44,7 @@ const medicalServices = {
             // }
             let objectArray = await medicalServiceServices.getAllMedicalServices({} , req.query.limit , req.query.skip);
 
-            return successResponse(res, "Success", objectArray, objectArray.length);
+            return successResponse(res, "Success", {objectCount : objectArray.objectsCount , objectArray : objectArray.object});
         } catch (err) {
             return serverErrorResponse(res, err);
         }

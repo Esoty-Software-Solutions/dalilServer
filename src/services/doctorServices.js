@@ -21,8 +21,18 @@ exports.deleteDoctor = async (query) => {
   return await DoctorSchema.findOneAndDelete(query);
 };
 
-exports.getDoctors = async (query, limit, skip) => {
-  return await DoctorSchema.find(query).skip(skip).limit(limit).select("-__v");
+exports.getDoctors = async (query, limit, skip , sort) => {
+  let objectsCount = await DoctorSchema.find(query).count();
+
+  let object = await DoctorSchema
+    .find(query)
+    .sort(sort)
+    .skip(skip)
+    .limit(limit)
+    .select("-__v")
+    .lean();
+  const updatedDocument = object.map(doctorObject =>  uploader.renameKey(doctorObject ,"specialty", "specialtyId"));
+  return {updatedDocument, objectsCount};
 };
 
 exports.getDoctorDetails = async (query) => {

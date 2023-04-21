@@ -25,6 +25,8 @@ exports.deletePrescription = async (query) => {
 };
 
 exports.getAllPrescriptions = async (query, limit, skip) => {
+  let objectsCount = await PrescriptionSchema.find(query).count();
+
   const medicalCenterDocuments = await PrescriptionSchema.find(query)
     .skip(skip)
     .limit(limit)
@@ -38,7 +40,8 @@ exports.getAllPrescriptions = async (query, limit, skip) => {
     return data;
   }))
 
-  return newDocuments;
+  return {objectsCount, newDocuments};
+
 };
 
 exports.getPrescriptionDetails = async (query) => {

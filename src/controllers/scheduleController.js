@@ -126,6 +126,7 @@ const DeleteSchedule = async (req, res) => {
 const AllSchedule = async (req, res) => {
   try {
     let limitQP = req.query.limit;
+    let skipOP = req.query.skip;
     if (limitQP) {
       limitQP = Number(limitQP);
       if (limitQP > 100 || limitQP < 1) {
@@ -134,21 +135,18 @@ const AllSchedule = async (req, res) => {
     } else {
       limitQP = 30;
     }
-    let documents = await ScheduleServices.getAllSchedules({}, limitQP);
-    let message = "success";
-    if (documents.length === 0) {
-      message = "list is empty change your query";
+    if (skipOP) {
+      skipOP = Number(skipOP);
+      if (skipOP > 100 || skipOP < 1) {
+        skipOP = 0;
+      }
+    } else {
+      skipOP = 0;
     }
-    const responseBody = {
-      codeStatus: "200",
-      message: message,
-      data: {
-        objectCount: documents.length,
-        objectArray: documents,
-      },
-    };
+    let document = await ScheduleServices.getAllSchedules({}, limitQP , skipOP);
+    
+    return successResponse(res, messageUtil.success, {objectCount : document.objectsCount , objectArray : document.updatedDocument});
 
-    res.status(200).json({ ...responseBody });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });

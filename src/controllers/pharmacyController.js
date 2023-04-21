@@ -141,12 +141,12 @@ const AllPharmacy = async (req, res) => {
         limitQP,
         skipOP
       );
-      if (documents.length < 1) {
-        return notFoundResponse(res, messageUtil.resourceNotFound);
-      }
+      // if (documents.length < 1) {
+      //   return notFoundResponse(res, messageUtil.resourceNotFound);
+      // }
       return successResponse(res, messageUtil.success, {
-        objectCount: documents.length,
-        objectArray: documents,
+        objectCount: documents.objectsCount,
+        objectArray: documents.newDocuments,
       });
     }
   } catch (error) {

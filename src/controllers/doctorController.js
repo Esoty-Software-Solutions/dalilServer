@@ -108,8 +108,8 @@ const AllDoctors = async (req, res) => {
     const documents = await DoctorServices.getDoctors(query, limitQP, skipOP);
 
     return successResponse(res, messageUtil.success, {
-      objectCount: documents.length,
-      objectArray: documents,
+      objectCount: documents.objectsCount,
+      object: documents.updatedDocument,
     });
   } catch (error) {
     return serverErrorResponse(res, error);

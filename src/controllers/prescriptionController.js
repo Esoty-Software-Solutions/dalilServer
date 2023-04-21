@@ -29,15 +29,32 @@ const AddPrescription = async (req, res) => {
 
 const AllPrescriptions = async (req, res) => {
   try {
-    let prescriptions = await PrescriptionServices.getAllPrescriptions();
-
-    if (prescriptions.length === 0) {
-      return res.status(404).json({ message: "No prescription found" });
+    let limitQP = req.query.limit;
+    let skipOP = req.query.skip;
+    if (limitQP) {
+      limitQP = Number(limitQP);
+      if (limitQP > 100 || limitQP < 1) {
+        limitQP = 30;
+      }
+    } else {
+      limitQP = 30;
     }
-
+    if (skipOP) {
+      skipOP = Number(skipOP);
+      if (skipOP > 100 || skipOP < 1) {
+        limitQP = 0;
+      }
+    } else {
+      skipOP = 0;
+    }
+    let query = {};
+    let prescriptions = await PrescriptionServices.getAllPrescriptions(query,
+      limitQP,
+      skipOP
+    );
     return successResponse(res, messageUtil.success, {
-      prescriptions,
-      objectCount: prescriptions.length,
+      objectCount : prescriptions.objectsCount,
+      objectArray: prescriptions.newDocuments,
     });
 
   } catch (err) {

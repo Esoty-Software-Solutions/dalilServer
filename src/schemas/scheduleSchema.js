@@ -12,7 +12,7 @@ const scheduleSchema = new mongoose.Schema(
       ref: "doctors",
       required: [true, `please provide valid doctor id`],
     },
-    timeslot: {
+    timeSlotId: {
       type: mongoose.Schema.Types.ObjectId,
       set: (v) => mongoose.Types.ObjectId(v),
       ref: "timeSlotEnum",
@@ -60,6 +60,14 @@ const scheduleSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+scheduleSchema.pre(['find' , 'findOne' , 'save' , 'create'], function(next) {
+  this.populate('medicalCenterId' , '-__v -_id -id');
+  this.populate('doctorId' , '-__v -_id -id');
+  next();
+});
+
+
 
 const schedule = mongoose.model(`schedules`, scheduleSchema);
 

@@ -22,13 +22,18 @@ exports.deleteInstitution = async (query) => {
   return await InstitutionSchema.findOneAndDelete(query);
 };
 
-exports.getAllInstitution = async () => {
-  const document = await InstitutionSchema
-  .find()
-  .sort({ _id: -1 })
-  .select("-__v");
+exports.getAllInstitution = async (query , limit, skip , sort) => {
+  let objectsCount = await InstitutionSchema.find(query).count();
 
-  const newDocuments = await Promise.all(document.map(async data => {
+  let object = await InstitutionSchema
+    .find(query)
+    .sort(sort)
+    .skip(skip)
+    .limit(limit)
+    .select("-__v")
+    .lean();
+
+  const newDocuments = await Promise.all(object.map(async data => {
     if(data?.fileLink.length) {
       const presignedUrlArray = await Promise.all(data.fileLink.map(async link => await uploader.getPresignedUrl(link , config.dalilStorage_bucket)));
       data.fileLink = presignedUrlArray;
@@ -37,8 +42,7 @@ exports.getAllInstitution = async () => {
     return renamedData; 
   }))
 
-  // const finalDocument = uploader.allDocumentsPresignedUrl(document);
-  return newDocuments;
+  return {objectsCount , newDocuments};
 };
 
 exports.getInstitutionDetails = async (query) => {

@@ -38,10 +38,16 @@ const AddInstitution = async (req, res) => {
 
 const AllInstitutions = async (req, res) => {
   try {
-    let institutions = await InstitutionServices.getAllInstitution();
+    let limit = Number(req.query.limit);
+    let skip = Number(req.query.skip);
+    if(limit > 100 || limit < 1) {
+      limit = 0
+    } 
+    if (skip < 0) skip = 0;
+    let institutions = await InstitutionServices.getAllInstitution({} , req.query.limit , req.query.skip);
     return successResponse(res, messageUtil.success, {
-      objectCount: institutions.length,
-      objectArray: institutions,
+      objectCount: institutions.objectsCount,
+      objectArray: institutions.newDocuments,
     });
   } catch (err) {
     return serverErrorResponse(res, err.message);

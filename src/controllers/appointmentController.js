@@ -32,8 +32,8 @@ const createAppointment = async (req, res) => {
       beneficiaryId,
       scheduleId,
       appointmentDate,
-      appointmentStatus,
-      timeSlot,
+      appointmentStatusId,
+      timeSlotId,
     } = req.body;
     if (!dateRegex.test(appointmentDate)) {
       return badRequestErrorResponse(res, "Invalid date format");
@@ -43,8 +43,8 @@ const createAppointment = async (req, res) => {
         beneficiaryId,
         scheduleId,
         appointmentDate,
-        appointmentStatus,
-        timeSlot,
+        appointmentStatusId,
+        timeSlotId,
       },
       res
     );

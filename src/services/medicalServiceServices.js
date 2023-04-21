@@ -11,7 +11,11 @@ exports.updateMedicalService = async (query, data) => {
 };
 
 exports.getAllMedicalServices = async (query, limit, skip) => {
-  return await MedicalServices.find(query).skip(skip).limit(limit);
+  let objectsCount = await MedicalServices.find(query).count();
+  
+  let object =  await MedicalServices.find(query).skip(skip).limit(limit).lean();
+
+  return {objectsCount , object}
 };
 
 exports.getMedicalService = async (query) => {
