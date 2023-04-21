@@ -235,7 +235,7 @@ const initMedicalFilesController = () => {
     
     const updateMedicalFileController = async (req, res) => {
         try {
-            const query = {beneficiaryId : req.params.beneficiaryId}
+            const query = {_id : req.params.beneficiaryId}
             const createResponse = await medicalFilesServices.createMedFileForSubscriber(query , {medicalFiles : req.body} , "create");
             return successResponse(res, messageUtil.resourceUpdated , createResponse)
         } catch (error) {
@@ -245,7 +245,7 @@ const initMedicalFilesController = () => {
     }
     const getMedicalFilesController = async (req , res) => {
         try {
-            const query = {beneficiaryId : req.params.beneficiaryId}
+            const query = {_id : req.params.beneficiaryId}
             const getResponse = await medicalFilesServices.createMedFileForSubscriber(query , {} , "get");
             return successResponse(res, messageUtil.resourceFound , getResponse);
         } catch (error) {
