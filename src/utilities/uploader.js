@@ -101,7 +101,7 @@ const getPresignedUrl = async (mainUrl, bucketName) => {
     Bucket: bucketName,
     Key: mainUrl.split(".com/")[1],
     ResponseContentDisposition: "inline", // Set the disposition to inline
-    Expires: 20, // Set the URL expiration time to 10 seconds --
+    Expires: process.env.PRESIGNED_URL_EXPIRY_TIME, // Set the URL expiration time to 10 seconds --
     //   time can be changed anywhere afterwards
   };
   try {
