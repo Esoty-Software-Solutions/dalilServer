@@ -9,6 +9,7 @@ const {
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
 const checkFeilds = require("../utilities/checkFields");
+const {searchQuery, getSearchQuery} = require("../utilities/searchQuery");
 // const { default: mongoose } = require("mongoose");
 
 const createUser = async (req, res) => {
@@ -65,9 +66,8 @@ const getUsers = async (req, res) => {
     if (skipQP < 0) skipQP = 0;
 
     let sortByQP = Number(req.query.sortBy) ?? { userId: 1 };
-
-    const filterQP = null; // temporary
-
+    let filterQP = {};
+    if(req.query.searchQuery) filterQP = getSearchQuery(["firstName","secondName", "thirdName" , "lastName"], req.query.searchQuery)
     const [docArray, docCount] = await UserServices.getUsers(
       filterQP,
       sortByQP,

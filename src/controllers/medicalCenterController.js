@@ -7,6 +7,7 @@ const {
   badRequestErrorResponse,
   notFoundResponse,
 } = require("../utilities/response");
+const { getSearchQuery } = require("../utilities/searchQuery");
 
 const CreateMedicalCenter = async (req, res) => {
   try {
@@ -128,7 +129,7 @@ const AllMedicalCenter = async (req, res) => {
       if (req.query.city) {
         query.city = req.query.city;
       }
-
+      if(req.query.searchQuery) query = getSearchQuery(["name"], req.query.searchQuery)
       const documents = await MedicalCenterServices.getAllMedicalCenters(
         query,
         limitQP,

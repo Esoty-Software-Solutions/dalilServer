@@ -7,7 +7,7 @@ const {
   serverErrorResponse,
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
-const searchQuery = require("../utilities/searchQuery");
+const {searchQuery} = require("../utilities/searchQuery");
 const genderEnum = {
   // Add Appointment Status Enum
 
@@ -69,6 +69,7 @@ const genderEnum = {
 
       let objectCount = await Services.count({
         schemaName: GenderEnums,
+        query : query
       });
 
       return successResponse(

@@ -6,6 +6,7 @@ const {
   notFoundResponse,
   serverErrorResponse,
 } = require("../utilities/response");
+const { getSearchQuery } = require("../utilities/searchQuery");
 
 const appointmentStatusEnums = {
   // Add Appointment Status Enum
@@ -52,14 +53,19 @@ const appointmentStatusEnums = {
     try {
       let limit = req.query.limit;
       let skip = req.query.skip;
+      
+      let filterQP = {}; // temporary
+      if(req.query.searchQuery) filterQP = getSearchQuery(["backendName","arabicName", "englishName"], req.query.searchQuery)
       let objectArray = await Services.getMany({
         schemaName: AppointmentStatusEnumSchema,
-        limit,
-        skip,
+        limit : limit,
+        skip : skip,
+        query : filterQP
       });
 
       let objectCount = await Services.count({
         schemaName: AppointmentStatusEnumSchema,
+        query : filterQP
       });
       return successResponse(res, "Success", objectArray, objectCount);
     } catch (err) {

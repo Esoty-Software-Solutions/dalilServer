@@ -6,7 +6,7 @@ const {
   serverErrorResponse,
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
-const searchQuery = require("../utilities/searchQuery");
+const {searchQuery} = require("../utilities/searchQuery");
 const CitySchema = require("../schemas/citiesSchema");
 
 const city = {
@@ -77,7 +77,7 @@ const city = {
         select: "-__v ",
       });
 
-      let objectCount = await Services.count({ schemaName: CitySchema });
+      let objectCount = await Services.count({ schemaName: CitySchema , query : query });
       return successResponse(
         res,
         messageUtil.success,

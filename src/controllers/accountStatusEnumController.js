@@ -6,6 +6,7 @@ const {
 } = require("../utilities/response");
 const Services = require("../services/commonServices");
 const AccountStatusEnumSchema = require("../schemas/accountStatusEnumSchema");
+const { getSearchQuery } = require("../utilities/searchQuery");
 
 const accountStatusEnum = {
   // Add Account Status Enum
@@ -51,14 +52,19 @@ const accountStatusEnum = {
     try {
       let limit = req.query.limit;
       let skip = req.query.skip;
+      let filterQP = {}; // temporary
+      if(req.query.searchQuery) filterQP = getSearchQuery(["backendName","arabicName", "englishName"], req.query.searchQuery)
+      
       let objectArray = await Services.getMany({
         schemaName: AccountStatusEnumSchema,
-        limit,
-        skip,
+        query : filterQP,
+        limit : limit,
+        skip : skip,
       });
 
       let objectCount = await Services.count({
         schemaName: AccountStatusEnumSchema,
+        query : filterQP
       });
       return successResponse(res, "Success", objectArray, objectCount);
     } catch (err) {

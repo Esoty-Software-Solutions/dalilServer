@@ -46,15 +46,8 @@ router.use(API_VERSION + "/review", reviewRouter);
 // router.use("/claims", claimsRouter);
 
 // Miscellaneous APIs
-router.use(
-  API_VERSION + "/misc/relationshipToSubscriberEnum",
-  relationshipToSubscriber
-);
 router.use(API_VERSION + "/misc/appointmentStatusEnum", appointmentStatusEnums);
-router.use(
-  API_VERSION + "/misc/relationshipToSubscriberEnum",
-  relationshipToSubscriber
-);
+router.use(API_VERSION + "/misc/relationshipToSubscriberEnum",relationshipToSubscriber);
 router.use(API_VERSION + "/misc/appointmentStatusEnum", appointmentStatusEnums);
 router.use(API_VERSION + "/misc/medicalSpecialties", medicalSpecialties);
 router.use(API_VERSION + "/misc/medicalServices", medicalServices);

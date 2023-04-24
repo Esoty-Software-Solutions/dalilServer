@@ -1,5 +1,6 @@
 const medicalServiceServices = require('../services/medicalServiceServices');
 const {successResponse, badRequestErrorResponse, notFoundResponse, serverErrorResponse} = require('../utilities/response');
+const { getSearchQuery } = require('../utilities/searchQuery');
 
 
 
@@ -42,7 +43,9 @@ const medicalServices = {
             //     limit: req.query.limit,
             //     skip: req.query.skip
             // }
-            let objectArray = await medicalServiceServices.getAllMedicalServices({} , req.query.limit , req.query.skip);
+            let filterQP = {}; // temporary
+            if(req.query.searchQuery) filterQP = getSearchQuery(["backendName","arabicName", "englishName"], req.query.searchQuery)
+            let objectArray = await medicalServiceServices.getAllMedicalServices(filterQP , req.query.limit , req.query.skip);
 
             return successResponse(res, "Success", {objectCount : objectArray.objectsCount , objectArray : objectArray.object});
         } catch (err) {

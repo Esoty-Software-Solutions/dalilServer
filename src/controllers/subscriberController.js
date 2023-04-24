@@ -11,6 +11,7 @@ const path = require("path");
 const fs = require("fs");
 // const { beneficiaries } = require("../schemas/subscriberSchema");
 const checkFeilds = require("../utilities/checkFields");
+const {searchQuery, getSearchQuery} = require("../utilities/searchQuery");
 
 const createSubscriber = async (req, res) => {
   try {
@@ -78,9 +79,9 @@ const getSubscribers = async (req, res) => {
     if (skipQP < 0) skipQP = 0;
 
     let sortByQP = Number(req.query.sortBy) ?? { userId: 1 };
-
-    const filterQP = null; // temporary
-
+    
+    let filterQP = {}; // temporary
+    if(req.query.searchQuery) filterQP = getSearchQuery(["firstName","secondName", "thirdName" , "lastName"], req.query.searchQuery)
     const [docArray, docCount] = await SubscriberServices.getSubscribers(
       filterQP,
       sortByQP,

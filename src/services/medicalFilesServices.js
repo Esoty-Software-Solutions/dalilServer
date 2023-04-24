@@ -1,10 +1,10 @@
 const LIMIT = 30;
 const SKIP = 0;
-const findQueryCommonUtil = require("../utilities/findQueryUtil");
 const _ = require("lodash");
 const uploader = require("../utilities/uploader");
 const config = require("../config/config");
 const { beneficiaries } = require("../schemas/subscriberSchema");
+const { getSearchQuery } = require("../utilities/searchQuery");
 // exports.createMedicalFile = async (query) => {
 //   return await medicalFiles.create(query);
 // };
@@ -47,10 +47,8 @@ exports.getDataMedicalFiles = async (queryPayload, schema) => {
     var findQuery = {};
     const { limit, searchQuery, skip } = queryPayload;
 
-    if (searchQuery) {
-      findQuery = findQueryCommonUtil(searchQuery, findQuery);
-    }
-
+    if(searchQuery) findQuery = getSearchQuery(["visitDate","visitType", "centerName","doctorName" , "notes"], searchQuery);
+    
     const allData = await this.getMedicalFilesAggregator(
       schema,
       findQuery,

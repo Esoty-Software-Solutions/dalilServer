@@ -6,6 +6,7 @@ const {
   badRequestErrorResponse,
   notFoundResponse,
 } = require("../utilities/response");
+const { getSearchQuery } = require("../utilities/searchQuery");
 const dateRegex = /^([0-9]{4})-(?:[0-9]{2})-([0-9]{2})$/;
 
 const CreateDoctor = async (req, res) => {
@@ -105,8 +106,8 @@ const AllDoctors = async (req, res) => {
     if (req.query.specialty) {
       query.specialty = req.query.specialty;
     }
+    if(req.query.searchQuery) query = getSearchQuery(["firstName" , "secondName" ,"lastName" ], req.query.searchQuery)
     const documents = await DoctorServices.getDoctors(query, limitQP, skipOP);
-
     return successResponse(res, messageUtil.success, {
       objectCount: documents.objectsCount,
       objectArray: documents.updatedDocument,

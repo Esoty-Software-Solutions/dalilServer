@@ -6,6 +6,7 @@ const {
   notFoundResponse,
   serverErrorResponse,
 } = require("../utilities/response");
+const { getSearchQuery } = require("../utilities/searchQuery");
 
 const medicalSpecialties = {
   // Add Medical Specialty
@@ -48,14 +49,18 @@ const medicalSpecialties = {
     try {
       let limit = req.query.limit;
       let skip = req.query.skip;
+      let filterQP = {}; // temporary
+      if(req.query.searchQuery) filterQP = getSearchQuery(["backendName","arabicName", "englishName"], req.query.searchQuery)
       let objectArray = await Services.getMany({
         schemaName: MedicalSpecialties,
-        limit,
-        skip,
+        query : filterQP,
+        limit : limit,
+        skip : skip,
       });
 
       let objectCount = await Services.count({
         schemaName: MedicalSpecialties,
+        query : filterQP
       });
 
       return successResponse(res, "Success", objectArray, objectCount);
