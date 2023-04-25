@@ -181,11 +181,10 @@ const AllScheduleNew = async (req, res) => {
     }
     let document = await ScheduleServices.getAllSchedulesNew(query, limitQP , skipOP);
     
-    return successResponse(res, messageUtil.success, {objectCount : document.objectsCount , objectArray : [{"medicalCenter":document.medicalCenterDetail,"scheduleCount": document.objectsCount,
-    "scheduleList": document.updatedDocument}]});
+    return successResponse(res, messageUtil.success, {objectCount : document.objectsCount , objectArray : document.newDocuments});
 
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
