@@ -1,16 +1,17 @@
 const config = require("../config/config");
 const InstitutionSchema = require("../schemas/institutionSchema");
+const { renameKey } = require("../utilities/replaceKey");
 const uploader = require("../utilities/uploader");
 exports.createInstitution = async (query) => {
-  const document = await InstitutionSchema.create(query);
+  const renamedData = renameKey(query , "city" , "cityId");
+  const document = await InstitutionSchema.create(renamedData);
   const doc = await uploader.returnedSingleDoc(InstitutionSchema , document._id);
   return doc;
 };
 
 exports.updateInstitution = async (query, data) => {
-  const updatedDocument =  await InstitutionSchema.findOneAndUpdate(query, data, {
-    new: true,
-  });
+  const renamedData = renameKey(data , "city" , "cityId");
+  const updatedDocument =  await InstitutionSchema.findOneAndUpdate(query, renamedData, {new: true});
   if(updatedDocument?.fileLink.length) {
     const presignedUrlArray = await Promise.all(updatedDocument.fileLink.map(async link => await uploader.getPresignedUrl(link , config.dalilStorage_bucket)));
     updatedDocument.fileLink = presignedUrlArray;
@@ -38,8 +39,7 @@ exports.getAllInstitution = async (query , limit, skip , sort) => {
       const presignedUrlArray = await Promise.all(data.fileLink.map(async link => await uploader.getPresignedUrl(link , config.dalilStorage_bucket)));
       data.fileLink = presignedUrlArray;
     }
-    const renamedData = uploader.renameKey(data , "city" , "cityId");
-    return renamedData; 
+    return data; 
   }))
 
   return {objectsCount , newDocuments};

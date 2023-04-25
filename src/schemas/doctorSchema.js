@@ -16,7 +16,7 @@ const doctorSchema = new mongoose.Schema(
       type: String,
       required: [true, `please enter valid last name`],
     },
-    specialtyId: {
+    specialty: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "medicalSpecialties",
       required: [true, `please provide valid specialty id`],
@@ -41,8 +41,8 @@ const doctorSchema = new mongoose.Schema(
   { collection: "doctors" }
 );
 
-doctorSchema.pre(['find' , 'findOne' , 'save'], function(next) {
-  this.populate('specialtyId' , '-__v -_id -id');
+doctorSchema.pre(['find' , 'findOne' , 'save' , 'findOneAndUpdate'], function(next) {
+  this.populate('specialty' , '-__v -_id -id');
   next();
 });
 

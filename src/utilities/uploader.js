@@ -101,7 +101,7 @@ const getPresignedUrl = async (mainUrl, bucketName) => {
     Bucket: bucketName,
     Key: mainUrl.split(".com/")[1],
     ResponseContentDisposition: "inline", // Set the disposition to inline
-    Expires: process.env.PRESIGNED_URL_EXPIRY_TIME, // Set the URL expiration time to 10 seconds --
+    Expires: parseInt(process.env.PRESIGNED_URL_EXPIRY_TIME), // Set the URL expiration time to 10 seconds --
     //   time can be changed anywhere afterwards
   };
   try {
@@ -143,34 +143,7 @@ const allDocumentsPresignedUrl = async (document) => {
   return newDocuments;
 };
 
-function renameKey(document, newKey, oldKey) {
-  // check if the document has the old key
-  if (!document.hasOwnProperty(oldKey)) {
-    return document; // return the original document if oldKey is not found
-  }
 
-  // create a new object to hold the renamed keys
-  const newDocument = {};
-
-  // loop through the keys in the original document
-  for (const [key, value] of Object.entries(document)) {
-    // if the current key matches oldKey, use the new key instead
-    if (key === oldKey) {
-      newDocument[newKey] = value;
-    } else {
-      newDocument[key] = value;
-    }
-  }
-
-  // also rename any key that matches oldKey in subdocuments recursively
-  for (const [key, value] of Object.entries(newDocument)) {
-    if (typeof value === "object" && value !== null) {
-      newDocument[key] = renameKey(value, newKey, oldKey);
-    }
-  }
-
-  return newDocument;
-}
 
 async function returnedSingleDoc(schema, query) {
   const singleDocument = await schema
@@ -179,22 +152,21 @@ async function returnedSingleDoc(schema, query) {
     .lean();
   if (!singleDocument) return;
 
-  const updatedDocument = renameKey(singleDocument, "city", "cityId");
-  if (updatedDocument?.fileLink.length) {
+  // const updatedDocument = renameKey(singleDocument, "city", "cityId");
+  if (singleDocument?.fileLink.length) {
     const presignedUrlArray = await Promise.all(
-      updatedDocument.fileLink.map(
+      singleDocument.fileLink.map(
         async (link) => await getPresignedUrl(link, config.dalilStorage_bucket)
       )
     );
-    updatedDocument.fileLink = presignedUrlArray;
+    singleDocument.fileLink = presignedUrlArray;
   }
-  return updatedDocument;
+  return singleDocument;
 }
 module.exports = {
   uploadFileS3,
   getPresignedUrl,
   assignedPresignedUrlSingle,
   allDocumentsPresignedUrl,
-  renameKey,
   returnedSingleDoc,
 };
