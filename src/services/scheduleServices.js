@@ -1,3 +1,4 @@
+const medicalCenter = require("../schemas/medicalCenterSchema");
 const ScheduleSchema = require("../schemas/scheduleSchema");
 const uploader = require("../utilities/uploader")
 exports.createSchedule = async (query) => {
@@ -29,12 +30,16 @@ exports.getAllSchedules = async (query, limit, skip, sort) => {
     .populate("medicalCenterId")
     .populate("doctorId")
     .lean();
+    console.log(object)
 
   const updatedDocument = object.map(scheduleObject => {
-    if(Object.keys(scheduleObject?.medicalCenterId).length) {
-       const renamedKey = uploader.renameKey(scheduleObject.medicalCenterId,"city", "cityId");
+    let finalKey=scheduleObject.medicalCenterId ? scheduleObject.medicalCenterId :(scheduleObject.medicalCenter ? scheduleObject.medicalCenter : '');
+    console.log(finalKey);
+    // console.log(Object.keys(scheduleObject?.medicalCenterId).length)
+   if(Object.keys(finalKey).length) {
+       const renamedKey = uploader.renameKey(finalKey,"city", "cityId");
        scheduleObject.medicalCenterId = renamedKey;
-    }
+    } 
     const updateMedicalKey = uploader.renameKey(scheduleObject,"medicalCenter", "medicalCenterId");
     
     const updateDoctorKey = uploader.renameKey(updateMedicalKey,"doctor", "doctorId");
@@ -58,3 +63,46 @@ exports.getScheduleDetails = async (query) => {
     .populate("medicalCenterId")
     .select("-__v -createdAt -updatedAt");
 };
+// created by chetan according to old response
+exports.getAllSchedulesNew = async (query, limit, skip, sort) => {
+
+  let medicalCenterDetail=await medicalCenter.findById(query.medicalCenterId);
+
+  let objectsCount = await ScheduleSchema.find(query).count();
+  console.log("medicalCenterDetail",medicalCenterDetail);
+  let object = await ScheduleSchema
+    .find(query)
+    .sort(sort)
+    .skip(skip)
+    .limit(limit)
+    .select("-__v")
+    .populate("medicalCenterId")
+    .populate("doctorId")
+    .lean();
+    // console.log(object)
+
+  const updatedDocument = object.map(scheduleObject => {
+    let finalKey=scheduleObject.medicalCenterId ? scheduleObject.medicalCenterId :(scheduleObject.medicalCenter ? scheduleObject.medicalCenter : '');
+    // console.log(finalKey);
+    // console.log(Object.keys(scheduleObject?.medicalCenterId).length)
+   if(Object.keys(finalKey).length) {
+       const renamedKey = uploader.renameKey(finalKey,"city", "cityId");
+       scheduleObject.medicalCenterId = renamedKey;
+    } 
+    const updateMedicalKey = uploader.renameKey(scheduleObject,"medicalCenter", "medicalCenterId");
+    
+    const updateDoctorKey = uploader.renameKey(updateMedicalKey,"doctor", "doctorId");
+    return updateDoctorKey;
+  });
+  
+  return {updatedDocument, objectsCount,medicalCenterDetail};
+
+
+
+  // return await ScheduleSchema.find(query)
+  //   .populate("medicalCenterId")
+  //   .populate("doctorId")
+  //   .limit(limit)
+  //   .select("-__v ");
+};
+

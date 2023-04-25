@@ -62,8 +62,8 @@ const scheduleSchema = new mongoose.Schema(
 );
 
 scheduleSchema.pre(['find' , 'findOne' , 'save' , 'create'], function(next) {
-  this.populate('medicalCenterId' , '-__v -_id -id');
-  this.populate('doctorId' , '-__v -_id -id');
+  this.populate('medicalCenterId' , '-__v');
+  this.populate('doctorId' , '-__v');
   next();
 });
 

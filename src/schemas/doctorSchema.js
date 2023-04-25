@@ -42,7 +42,7 @@ const doctorSchema = new mongoose.Schema(
 );
 
 doctorSchema.pre(['find' , 'findOne' , 'save'], function(next) {
-  this.populate('specialtyId' , '-__v -_id -id');
+  this.populate('specialtyId' , '-__v');
   next();
 });
 

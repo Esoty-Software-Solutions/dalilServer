@@ -152,10 +152,48 @@ const AllSchedule = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const AllScheduleNew = async (req, res) => {
+  try {
+    let limitQP = req.query.limit;
+    let skipOP = req.query.skip;
+    let medicalCenterId = req.query.medicalCenterId;
+    // let skipOP = req.query.grou;
+    if (limitQP) {
+      limitQP = Number(limitQP);
+      if (limitQP > 100 || limitQP < 1) {
+        limitQP = 30;
+      }
+    } else {
+      limitQP = 30;
+    }
+    if (skipOP) {
+      skipOP = Number(skipOP);
+      if (skipOP > 100 || skipOP < 1) {
+        skipOP = 0;
+      }
+    } else {
+      skipOP = 0;
+    }
+    let query={};
+    if(medicalCenterId)
+    {
+      query.medicalCenterId=medicalCenterId;
+    }
+    let document = await ScheduleServices.getAllSchedulesNew(query, limitQP , skipOP);
+    
+    return successResponse(res, messageUtil.success, {objectCount : document.objectsCount , objectArray : [{"medicalCenter":document.medicalCenterDetail,"scheduleCount": document.objectsCount,
+    "scheduleList": document.updatedDocument}]});
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
 module.exports = {
   CreateSchedule,
   UpdateSchedule,
   SpecificSchedule,
+  AllScheduleNew,
   DeleteSchedule,
   AllSchedule,
 };
