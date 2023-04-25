@@ -1,0 +1,10 @@
+[
+    {
+        "_id": "6447e219bccf65bcc55a1fe2",
+        "doctorId": "6447ae107160202b058da709",
+        "subscriberId": "6447d9075c4e2d447e393694",
+        "appointmentId": "642ae89984810dda25dc4113",
+        "comment": "This is initial cooment",
+        "starRating": 4
+      }
+]

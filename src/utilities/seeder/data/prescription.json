@@ -1,0 +1,24 @@
+[
+    {
+        "_id": "6447d9a560b6ceb774f70574",
+        "title": "Prescription 1",
+        "subscriberId": "6447d9075c4e2d447e393694",
+        "notes": "Notes regarding Prescription",
+        "Quotes ": [{
+            "pharmacyId": "6447d99aa87bdc2aee9301cb",
+            "prescriptionId": "6447d9a560b6ceb774f70574",
+            "totalPrice": 450,
+            "table": {
+                "type": [
+                    {
+                        "name": "Tab 1"
+                    },
+                    {
+                        "price": 450
+                    }
+                ]
+            }
+        }],
+        "isActive": true
+    }
+]

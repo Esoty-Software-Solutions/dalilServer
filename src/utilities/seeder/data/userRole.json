@@ -1,0 +1,9 @@
+[
+    {
+        "_id": "6447e33ca9e661a679b2e2b1", 
+        "name": "user1",
+        "apiPrivilages": "create",    
+        "createdBy": "6447bae5e18b2ceba9217251",
+        "updatedBy": "6447bae5e18b2ceba9217251"
+      }
+]
