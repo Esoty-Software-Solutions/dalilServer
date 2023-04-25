@@ -8,12 +8,12 @@ const searchQuery = (searchFields, searchQuery) => {
     })),
   };
 };
-const getSearchQuery = (searchFields , query) => {
+const getSearchQuery = (searchFields , query, existingQuery) => {
  // search query 
   let filterQP = {}; // temporary
   const searchData = searchFields;
   let searchquery= searchQuery(searchData, query);
-  filterQP = { ...filterQP, ...searchquery };
+  filterQP = { ...filterQP, ...searchquery , ...existingQuery };
   return filterQP;
 }
 //  searchquery
