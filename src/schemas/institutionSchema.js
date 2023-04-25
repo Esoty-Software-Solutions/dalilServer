@@ -10,7 +10,7 @@ const institutionSchema = new mongoose.Schema(
       type: String,
       required: [true, "please provide Phone Number"],
     },
-    cityId: {
+    city: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "cities",
       required: [true, "please provide cityid"],
@@ -103,9 +103,8 @@ const institutionSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-institutionSchema.pre(["find", "findOne"], function (next) {
-  this.populate("cityId", "-_id -__v");
-  this.lean();
+institutionSchema.pre(["find", "findOne" , "save" , "findOneAndUpdate"], function (next) {
+  this.populate("city", "-_id -__v");
   next();
 });
 

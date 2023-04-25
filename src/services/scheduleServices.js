@@ -1,18 +1,18 @@
 const doctor = require("../schemas/doctorSchema");
 const medicalCenter = require("../schemas/medicalCenterSchema");
 const ScheduleSchema = require("../schemas/scheduleSchema");
+const { renameKey } = require("../utilities/replaceKey");
 const uploader = require("../utilities/uploader")
 exports.createSchedule = async (query) => {
-  console.log(query);
-  return await ScheduleSchema.create(query);
+  const renamedDoc = renameKey (query , ["medicalCenter" , "doctor" , "timeSlot"] , ["medicalCenterId","doctorId","timeSlotId"]);
+  return await ScheduleSchema.create(renamedDoc);
 };
 
 exports.updateSchedule = async (query, data) => {
-  return await ScheduleSchema.findOneAndUpdate(query, data, {
+  const renamedDoc = renameKey (data , ["medicalCenter" , "doctor" , "timeSlot"] , ["medicalCenterId","doctorId","timeSlotId"]);
+  return await ScheduleSchema.findOneAndUpdate(query, renamedDoc, {
     new: true,
   })
-    .populate("doctorId")
-    .populate("medicalCenterId");
 };
 
 exports.deleteSchedule = async (query) => {
@@ -22,14 +22,14 @@ exports.deleteSchedule = async (query) => {
 exports.getAllSchedules = async (query, limit, skip, sort) => {
   let objectsCount = await ScheduleSchema.find(query).count();
 
-  let object = await ScheduleSchema
+  let updatedDocument = await ScheduleSchema
     .find(query)
     .sort(sort)
     .skip(skip)
     .limit(limit)
     .select("-__v")
-    .populate("medicalCenterId")
-    .populate("doctorId")
+    .populate("medicalCenter")
+    .populate("doctor")
     .lean();
     console.log(object)
 
@@ -48,20 +48,12 @@ exports.getAllSchedules = async (query, limit, skip, sort) => {
   });
   
   return {updatedDocument, objectsCount};
-
-
-
-  // return await ScheduleSchema.find(query)
-  //   .populate("medicalCenterId")
-  //   .populate("doctorId")
-  //   .limit(limit)
-  //   .select("-__v ");
 };
 
 exports.getScheduleDetails = async (query) => {
   return await ScheduleSchema.findOne(query)
-    .populate("doctorId")
-    .populate("medicalCenterId")
+    .populate("doctor")
+    .populate("medicalCenter")
     .select("-__v -createdAt -updatedAt");
 };
 // created by chetan according to old response
