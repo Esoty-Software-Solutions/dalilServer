@@ -1,0 +1,16 @@
+[
+    {
+        "_id": "6447d7bc35acf47880f43ba5",
+        "name": "Medical Center 1",
+        "cityId": "644683607879326f252c2e78",
+        "district": "Dist",
+        "description": "This is first medical center",
+        "address": "Medical Center 1, Dist, Ghat",
+        "phoneNumber": ["9876543210", "0123456789"],
+        "email": "medical@center.com",
+        "facebookLink": "NA",
+        "googleMapLink": "NA",
+        "website": "NA",
+        "isActive": true
+    }
+]

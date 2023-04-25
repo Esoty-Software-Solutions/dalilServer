@@ -1,0 +1,16 @@
+[
+    {
+        "_id": "6447d99aa87bdc2aee9301cb",
+        "name": "Pharmacy 1",
+        "cityId": "6447d7c6741ae776ba5bf76c",
+        "district": "Dist",
+        "description": "This is first Pharmacy",
+        "address": "Pharmacy 1, Dist, Ghat",
+        "phoneNumber": ["9876543210", "0123456789"],
+        "email": "medical@center.com",
+        "facebookLink": "NA",
+        "googleMapLink": "NA",
+        "website": "NA",
+        "isActive": true
+    }
+]

@@ -1,0 +1,21 @@
+[
+    {
+        "_id": "6447e20972d1c40f6ebb09d7",
+        "medicalCenterId": "6447d7bc35acf47880f43ba5",
+        "doctorId": "6447ae107160202b058da709",
+        "timeSlotId": "64468ea45658b684ca5b8e09",
+    
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": false,
+        "sunday": false,
+    
+        "price": 335,
+        "startDate": "01-12-2023",
+        "endDate": "01-01-2024",
+        "isActive": true
+      }
+]
