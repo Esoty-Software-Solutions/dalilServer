@@ -1,18 +1,14 @@
 const DoctorSchema = require("../schemas/doctorSchema");
-const uploader = require("../utilities/uploader");
+const { renameKey } = require("../utilities/replaceKey");
 exports.createDoctor = async (query) => {
-  const createDoctor = await DoctorSchema.create(query);
-  // const leanObject = await this.getDoctorDetails({_id : createDoctor._id});
-  const leanObject = createDoctor.toObject({ getters: true });
-  // console.log("before renaming" , leanObject);
-  const renamedData = uploader.renameKey(leanObject , "specialty" , "specialtyId");
-  // console.log("after renaming" , renamedData)
-  return renamedData;
-  
+  const renamedData = renameKey(query , "specialty" , "specialtyId");
+  const createDoctor = await DoctorSchema.create(renamedData);
+  return createDoctor;
 };
 
 exports.updateDoctor = async (query, data) => {
-  return await DoctorSchema.findOneAndUpdate(query, data, {
+  const renamedData = renameKey(data , "specialty" , "specialtyId");
+  return await DoctorSchema.findOneAndUpdate(query, renamedData, {
     new: true,
   }).select("-__v -createdAt -updatedAt");
 };
@@ -31,13 +27,10 @@ exports.getDoctors = async (query, limit, skip , sort) => {
     .limit(limit)
     .select("-__v")
     .lean();
-  const updatedDocument = object.map(doctorObject =>  uploader.renameKey(doctorObject ,"specialty", "specialtyId"));
-  return {updatedDocument, objectsCount};
+  return {object, objectsCount};
 };
 
 exports.getDoctorDetails = async (query) => {
-
   const returnedDoc =  await DoctorSchema.findOne(query).select("-__v -createdAt -updatedAt").lean();
-  const renamedData = uploader.renameKey(returnedDoc , "specialty" , "specialtyId");
-  return renamedData;
+  return returnedDoc;
 };
