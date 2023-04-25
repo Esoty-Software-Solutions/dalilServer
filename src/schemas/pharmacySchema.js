@@ -7,7 +7,7 @@ const pharmacySchema = new mongoose.Schema(
       type: String,
       required: [true, `please enter valid  name`],
     },
-    cityId: {
+    city: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "cities",
       required: [true, `please enter valid city`],
@@ -47,8 +47,8 @@ const pharmacySchema = new mongoose.Schema(
   { timestamps: true }
 );
 // this middleware will always return the city object and not the city objectId
-pharmacySchema.pre(['find' , "findOne"], function(next) {
-  this.populate('cityId' , '-_id -__v');
+pharmacySchema.pre(['find' , "findOne" , "save" , "findOneAndUpdate"], function(next) {
+  this.populate('city' , '-_id -__v');
   next();
 });
 const pharmacy = mongoose.model(`pharmacy`, pharmacySchema);

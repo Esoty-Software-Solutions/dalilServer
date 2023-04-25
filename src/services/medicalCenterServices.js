@@ -1,17 +1,23 @@
 const config = require("../config/config");
 const MedicalCenterSchema = require("../schemas/medicalCenterSchema");
 const _ = require("lodash");
+const { renameKey, removeKey } = require("../utilities/replaceKey");
 const uploader = require("../utilities/uploader");
 exports.createMedicalCenter = async (query) => {
-  const createdDoc = await MedicalCenterSchema.create(query);
+  const renamedData = renameKey(query , "city" , "cityId");
+  const createdDoc = await MedicalCenterSchema.create(renamedData);
   const doc = await uploader.returnedSingleDoc(MedicalCenterSchema , createdDoc._id);
   return doc;
 };
 
 exports.updateMedicalCenter = async (query, data) => {
-  return await MedicalCenterSchema.findOneAndUpdate(query, data, {
+  const renamedData = renameKey(data , "city" , "cityId");
+  const updatedData = await MedicalCenterSchema.findOneAndUpdate(query, renamedData, {
     new: true,
+    lean : true
   });
+  const finalData = removeKey(updatedData , "fileLink");
+  return finalData;
 };
 
 exports.deleteMedicalCenter = async (query) => {
@@ -32,10 +38,8 @@ exports.getAllMedicalCenters = async (query, limit, skip) => {
       const presignedUrlArray = await Promise.all(data.fileLink.map(async link => await uploader.getPresignedUrl(link , config.dalilStorage_bucket)));
       data.fileLink = presignedUrlArray;
     }
-    const renamedData = uploader.renameKey(data , "city" , "cityId");
-    return renamedData;
+    return data;
   }))
-
   return {objectsCount , newDocuments};
 };
 

@@ -1,5 +1,6 @@
 const DoctorServices = require("../services/doctorServices");
 const { messageUtil } = require("../utilities/message");
+const { renameKey } = require("../utilities/replaceKey");
 const {
   successResponse,
   serverErrorResponse,
@@ -14,7 +15,6 @@ const CreateDoctor = async (req, res) => {
     if (!dateRegex.test(req.body.birthdate)) {
       return badRequestErrorResponse(res, "Invalid date format");
     }
-
     const document = await DoctorServices.createDoctor({
       ...req.body,
     });
@@ -110,7 +110,7 @@ const AllDoctors = async (req, res) => {
     const documents = await DoctorServices.getDoctors(query, limitQP, skipOP);
     return successResponse(res, messageUtil.success, {
       objectCount: documents.objectsCount,
-      objectArray: documents.updatedDocument,
+      objectArray: documents.object,
     });
   } catch (error) {
     return serverErrorResponse(res, error);
