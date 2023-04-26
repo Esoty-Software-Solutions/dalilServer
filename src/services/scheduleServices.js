@@ -54,21 +54,9 @@ exports.getAllSchedules = async (query, limit, skip, sort) => {
 };
 exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
   try {
-    const city = req.query.city;
-    const doctorId = req.query.doctorId;
-    const medicalCenterId = req.query.medicalCenterId;
-    const specialty = req.query.specialty;
-    const timeSlot = req.query.timeSlot;
-    const groupBy = req.query.groupBy;
+    
+    let searchQuery = req.query.searchQuery;
 
-    let hasMore = true;
-    let query = {};
-    query["$and"] = [];
-    //MedicalCenter Id Filter. mostly apply When we need group by doctor
-    if (medicalCenterId) {
-      query["$and"].push({ "medicalCenter": { $eq: mongoose.Types.ObjectId(medicalCenterId) } });
-    }
-     //doctorId Filter. mostly apply When we need group by medical center
     if (doctorId) {
       query["$and"].push({ "doctor": { $eq: mongoose.Types.ObjectId(doctorId) } });
     }
@@ -135,6 +123,8 @@ exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
         },
       },
       groupByPipeLine,
+      {"$limit":limit},
+      {"$skip":skip}
       
     ]);
 
