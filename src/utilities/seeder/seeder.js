@@ -55,6 +55,8 @@ const userRole = require("../../schemas/userRoleSchema");
 
 // add fake schema
 const fakerSchema = require("./data/FakerSchemas");
+const doctor = require("../../schemas/doctorSchema");
+const user = require("../../schemas/userSchema");
 
 // Add AccountStatus Data
 
@@ -348,7 +350,7 @@ const createBeneficiaryData = async () => {
   try {
     console.log("GeneratingFake");
     const fakeBeneficiaries = [];
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 50; i++) {
       const sample = fakerSchema.randomBeneficiary();
       const genderObject = await commonServices.getOne({ schemaName: Gender });
       sample.gender = genderObject._id;
@@ -357,7 +359,6 @@ const createBeneficiaryData = async () => {
       fakeBeneficiaries.push(sample);
     }
 
-    console.log(fakeBeneficiaries);
 
     await SubscriberServices.insertManyBeneficiaries(fakeBeneficiaries);
     console.log("Fake beneficiaries inserted");
@@ -376,6 +377,45 @@ const createBeneficiaryData = async () => {
 
 const createSubscriberData = async () => {
   try {
+
+    const fakeSubscriber = [];
+    const fakeBeneficiaries = [];
+
+    for (let i = 0; i < 10; i++) {
+      const fakeData = fakerSchema.randomSubscriber();
+      const genderObject = await commonServices.getOne({ schemaName: Gender });
+      fakeData.gender = genderObject._id;
+      fakeData.beneficiaries = [];
+      const institutionObject = await commonServices.getOne({ schemaName: institution });
+      fakeData.institutionId = institutionObject._id;
+      const doctorObejct = await commonServices.getOne({ schemaName: doctor });
+      fakeData.doctorId = doctorObejct._id;
+      const cityObejct = await commonServices.getOne({ schemaName: Cities });
+      fakeData.city = cityObejct._id;
+      const userObject = await commonServices.getOne({ schemaName: user });
+      fakeData.userId = userObject._id;
+
+      for (let i = 0; i < 4; i++) {
+        const sample = fakerSchema.randomBeneficiary();
+        const genderObject = await commonServices.getOne({ schemaName: Gender });
+        sample.gender = genderObject._id;
+        const relationshipToSubscriberEnumObject = await commonServices.getOne({ schemaName: relationshipToSubscriberEnum });
+        sample.relationshipToSubscriber = relationshipToSubscriberEnumObject._id;
+        fakeBeneficiaries.push(sample);
+        fakeData.beneficiaries.push(sample._id);
+      }
+
+      fakeSubscriber.push(fakeData)
+    }
+
+    await SubscriberServices.insertManyBeneficiaries(fakeBeneficiaries);
+    console.log("Fake beneficiaries inserted");
+
+    console.log(fakeSubscriber);
+
+    await SubscriberServices.insertManySubscribers(fakeSubscriber);
+    console.log("Fake Subscribers inserted");
+
     for (let i = 0; i < SubscriberData.length; i++) {
       const newBody = {
         ...SubscriberData[i],
@@ -383,6 +423,9 @@ const createSubscriberData = async () => {
       await SubscriberServices.createSubscriber(newBody);
       console.log("Subscriber created");
     }
+
+
+
   } catch (err) {
     console.error(err);
   }
@@ -424,11 +467,9 @@ const createUserRoleData = async () => {
 const createUserData = async () => {
   try {
     for (let i = 0; i < UsersData.length; i++) {
-      const hash = bcrypt.hashSync(UsersData[i].password, 10);
 
       const newBody = {
-        ...UsersData[i],
-        password: hash,
+        ...UsersData[i]
       };
       await UserServices.createUser(newBody);
       console.log("User created");
@@ -444,6 +485,10 @@ const removeData = async () => {
     await dropDB();
 
     // inserting data
+
+    await createUserData();
+
+
 
     await createAccountStatusData();
     await createAppointmentsData();
@@ -463,11 +508,11 @@ const removeData = async () => {
     await createMedicalServcieData();
     await createMedicalSpecialtiesData();
     await createRelationshipToSubscriberData();
-    await createBeneficiaryData();
-    await createSubscriberData();
     await createTimeSlotData();
     await createUserRoleData();
-    await createUserData();
+    
+    await createBeneficiaryData();
+    await createSubscriberData();
     process.exit();
   } catch (err) {
     console.error(err);

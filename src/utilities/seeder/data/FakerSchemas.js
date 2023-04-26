@@ -3,7 +3,7 @@ const { faker } = require('@faker-js/faker');
 
 const fakerSchema = {
   randomBeneficiary() {
-    const beneficiary= {
+    const beneficiary = {
       _id: faker.database.mongodbObjectId(),
       firstName: faker.name.firstName(),
       secondName: faker.name.firstName(),
@@ -19,7 +19,24 @@ const fakerSchema = {
     }
 
     return beneficiary;
+  },
+
+  randomSubscriber() {
+    const subscriber = {
+      _id: faker.database.mongodbObjectId(),
+      firstName: faker.name.firstName(),
+      secondName: faker.name.firstName(),
+      thirdName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      birthdate: faker.date.past(),
+      phoneNumber: faker.phone.number(),
+      employeeId: faker.random.alphaNumeric(5),
+      residentDistrict: faker.address.city()
+    }
+
+    return subscriber;
   }
+
 
 
 };

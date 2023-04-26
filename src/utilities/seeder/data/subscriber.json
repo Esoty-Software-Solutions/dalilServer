@@ -7,7 +7,7 @@
         "lastName": "lastName",
         "birthdate": "01-01-2000",
         "phoneNumber": "9876543210",
-        "gender": "6448554fbffa0cec0bb0bbee",
+        "gender": "6448554fbffa0cec0bb0bbee", 
         "beneficiaries": ["64485eb596112fc95ea0ee4e"],
         "institutionId": "64485c6020f454b92585b365",
         "employeeId": "Emp123",
