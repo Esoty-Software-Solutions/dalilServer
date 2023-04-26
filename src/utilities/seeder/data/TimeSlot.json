@@ -1,8 +1,14 @@
 [
-    {
-        "_id": "64468ea45658b684ca5b8e09",
-        "backendName": "TimeSolot1",
-        "arabicName": "TimeSolot1",
-        "englishName": "TimeSolot1"
-      }
+  {
+    "_id": "644855f25a199bc8aa2dbd12",
+    "backendName": "morning",
+    "arabicName": "صباحا",
+    "englishName": "Morning"
+  },
+  {
+    "_id": "6448561ba16b196baf25b710",
+    "backendName": "afternoon",
+    "arabicName": "مساءا",
+    "englishName": "Afternoon"
+  }
 ]

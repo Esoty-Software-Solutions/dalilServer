@@ -1,8 +1,20 @@
 [
-    {
-        "_id": "64468e9596e2c9d8a500979f",
-        "backendName": "Appointment 1",
-        "arabicName": "Appointment 1",
-        "englishName": "Appointment 1"
-      }
+  {
+    "_id": "64485430dd99e26729d2b682",
+    "backendName": "pending",
+    "arabicName": "انتظار",
+    "englishName": "Pending"
+  },
+  {
+    "_id": "6448543753ea2b758cffd64f",
+    "backendName": "booked",
+    "arabicName": "تم الحجز",
+    "englishName": "Booked"
+  },
+  {
+    "_id": "6448547fffcf26595338056c",
+    "backendName": "cancelled",
+    "arabicName": "ملغية",
+    "englishName": "Cancelled"
+  }
 ]

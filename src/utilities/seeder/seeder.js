@@ -3,14 +3,13 @@ const UserServices = require("../../services/userServices");
 const DoctorServices = require("../../services/doctorServices");
 const SubscriberServices = require("../../services/subscriberServices");
 const AppointmentServices = require("../../services/appointmentServices");
-const commonServices = require('../../services/commonServices');
+const commonServices = require("../../services/commonServices");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-
 // Import Schema
-const Cities = require('../../schemas/citiesSchema'); 
+const Cities = require("../../schemas/citiesSchema");
 const MedicalSpecialties = require("../../schemas/medicalSpecialtiesSchema");
 const appointmentStatusEnums = require("../../schemas/appointmentStatusEnumsSchema");
 const TimeSlotEnum = require("../../schemas/timeSlotEnumSchema");
@@ -32,43 +31,49 @@ const sms = require("../../schemas/smsSchema");
 const UsersData = require("./data/users.json");
 const DoctorData = require("./data/doctors.json");
 const AppointmentsData = require("./data/appointments.json");
+const BeneficiaryData = require("./data/beneficiary.json");
 const SubscriberData = require("./data/subscriber.json");
 const CitiesData = require("./data/cities.json");
 const medicalSpecialtiesData = require("./data/medicalSpecialties.json");
-const AppointmentStatusData = require('./data/AccountStatus.json');
-const TimeSlotData = require('./data/TimeSlot.json');
-const RelationshipToSubscriberData = require('./data/RelationshipToSubscriber.json');
-const MedicalServiceData = require('./data/MedicalService.json');
-const AccountStatusData = require('./data/AccountStatus.json');
-const GenderData = require('./data/genderEnum.json');
-const GenericServiceData = require('./data/genericService.json');
-const InstitutionData = require('./data/institution.json');
-const LevelData = require('./data/levelEnum.json');
-const MedicalCenterData = require('./data/medicalCenter.json');
-const PharmacyData = require('./data/pharmacy.json');
-const PrescriptionData = require('./data/prescription.json');
-const ReviewData = require('./data/review.json');
-const ScheduleData = require('./data/schedule.json');
-const SMSData = require('./data/sms.json');
-const UserRoleData = require('./data/userRole.json');
+const AppointmentStatusData = require("./data/AccountStatus.json");
+const TimeSlotData = require("./data/TimeSlot.json");
+const RelationshipToSubscriberData = require("./data/RelationshipToSubscriber.json");
+const MedicalServiceData = require("./data/MedicalService.json");
+const AccountStatusData = require("./data/AccountStatus.json");
+const GenderData = require("./data/genderEnum.json");
+const GenericServiceData = require("./data/genericService.json");
+const InstitutionData = require("./data/institution.json");
+const LevelData = require("./data/levelEnum.json");
+const MedicalCenterData = require("./data/medicalCenter.json");
+const PharmacyData = require("./data/pharmacy.json");
+const PrescriptionData = require("./data/prescription.json");
+const ReviewData = require("./data/review.json");
+const ScheduleData = require("./data/schedule.json");
+const SMSData = require("./data/sms.json");
+const UserRoleData = require("./data/userRole.json");
 const userRole = require("../../schemas/userRoleSchema");
+
+// add fake schema
+const fakerSchema = require("./data/FakerSchemas");
 
 // Add AccountStatus Data
 
-const createAccountStatusData = async () =>{
+const createAccountStatusData = async () => {
   try {
     for (let i = 0; i < AccountStatusData.length; i++) {
       const newBody = {
         ...AccountStatusData[i],
       };
-      await commonServices.createOne({schemaName: AccountStatusEnum, body: newBody});
+      await commonServices.createOne({
+        schemaName: AccountStatusEnum,
+        body: newBody,
+      });
       console.log("AccountStatus Added");
     }
   } catch (err) {
     console.error(err);
   }
-}
-
+};
 
 const createAppointmentsData = async () => {
   try {
@@ -86,34 +91,37 @@ const createAppointmentsData = async () => {
 
 // Add Appointment Status Data
 
-const createAppointmentStatusData = async () =>{
+const createAppointmentStatusData = async () => {
   try {
     for (let i = 0; i < AppointmentStatusData.length; i++) {
       const newBody = {
         ...AppointmentStatusData[i],
       };
-      await commonServices.createOne({schemaName: appointmentStatusEnums, body: newBody});
+      await commonServices.createOne({
+        schemaName: appointmentStatusEnums,
+        body: newBody,
+      });
       console.log("Appointment Status Added");
     }
   } catch (err) {
     console.error(err);
   }
-}
+};
 
 // Add Cities Data
-const createCitiesData = async () =>{
+const createCitiesData = async () => {
   try {
     for (let i = 0; i < CitiesData.length; i++) {
       const newBody = {
         ...CitiesData[i],
       };
-      await commonServices.createOne({schemaName: Cities, body: newBody});
+      await commonServices.createOne({ schemaName: Cities, body: newBody });
       console.log("City Added");
     }
   } catch (err) {
     console.error(err);
   }
-}
+};
 
 const createDoctorData = async () => {
   try {
@@ -135,7 +143,7 @@ const createGenderData = async () => {
       const newBody = {
         ...GenderData[i],
       };
-      await commonServices.createOne({schemaName: Gender, body: newBody});
+      await commonServices.createOne({ schemaName: Gender, body: newBody });
       console.log("Gender Data created");
     }
   } catch (err) {
@@ -149,7 +157,10 @@ const createGenericServiceData = async () => {
       const newBody = {
         ...GenericServiceData[i],
       };
-      await commonServices.createOne({schemaName: genericService, body: newBody});
+      await commonServices.createOne({
+        schemaName: genericService,
+        body: newBody,
+      });
       console.log("Generic Service Data created");
     }
   } catch (err) {
@@ -163,7 +174,10 @@ const createInstitutionData = async () => {
       const newBody = {
         ...InstitutionData[i],
       };
-      await commonServices.createOne({schemaName: institution, body: newBody});
+      await commonServices.createOne({
+        schemaName: institution,
+        body: newBody,
+      });
       console.log("Institution Data created");
     }
   } catch (err) {
@@ -177,7 +191,7 @@ const createLevelEnumData = async () => {
       const newBody = {
         ...LevelData[i],
       };
-      await commonServices.createOne({schemaName: Level, body: newBody});
+      await commonServices.createOne({ schemaName: Level, body: newBody });
       console.log("Level Enum Data created");
     }
   } catch (err) {
@@ -191,7 +205,10 @@ const createMedicalCenterData = async () => {
       const newBody = {
         ...MedicalCenterData[i],
       };
-      await commonServices.createOne({schemaName: medicalCenter, body: newBody});
+      await commonServices.createOne({
+        schemaName: medicalCenter,
+        body: newBody,
+      });
       console.log("Medical center Data created");
     }
   } catch (err) {
@@ -205,7 +222,7 @@ const createPharmacyData = async () => {
       const newBody = {
         ...PharmacyData[i],
       };
-      await commonServices.createOne({schemaName: pharmacy, body: newBody});
+      await commonServices.createOne({ schemaName: pharmacy, body: newBody });
       console.log("Pharmacy Data created");
     }
   } catch (err) {
@@ -219,7 +236,10 @@ const createPrescriptionData = async () => {
       const newBody = {
         ...PrescriptionData[i],
       };
-      await commonServices.createOne({schemaName: prescriptionCenter, body: newBody});
+      await commonServices.createOne({
+        schemaName: prescriptionCenter,
+        body: newBody,
+      });
       console.log("Prescription Data created");
     }
   } catch (err) {
@@ -233,7 +253,7 @@ const createReviewData = async () => {
       const newBody = {
         ...ReviewData[i],
       };
-      await commonServices.createOne({schemaName: Review, body: newBody});
+      await commonServices.createOne({ schemaName: Review, body: newBody });
       console.log("Review Data created");
     }
   } catch (err) {
@@ -247,7 +267,7 @@ const createScheduleData = async () => {
       const newBody = {
         ...ScheduleData[i],
       };
-      await commonServices.createOne({schemaName: schedule, body: newBody});
+      await commonServices.createOne({ schemaName: schedule, body: newBody });
       console.log("Schedule Data created");
     }
   } catch (err) {
@@ -261,7 +281,7 @@ const createSMSData = async () => {
       const newBody = {
         ...SMSData[i],
       };
-      await commonServices.createOne({schemaName: sms, body: newBody});
+      await commonServices.createOne({ schemaName: sms, body: newBody });
       console.log("SMS Data created");
     }
   } catch (err) {
@@ -270,50 +290,89 @@ const createSMSData = async () => {
 };
 
 // Add Medical Services Data
-const createMedicalServcieData = async () =>{
+const createMedicalServcieData = async () => {
   try {
     for (let i = 0; i < MedicalServiceData.length; i++) {
       const newBody = {
         ...MedicalServiceData[i],
       };
-      await commonServices.createOne({schemaName: MedicalServices, body: newBody});
+      await commonServices.createOne({
+        schemaName: MedicalServices,
+        body: newBody,
+      });
       console.log("Medical Services Added");
     }
   } catch (err) {
     console.error(err);
   }
-}
+};
 
 // Add Medical Specialty
 
-const createMedicalSpecialtiesData = async () =>{
+const createMedicalSpecialtiesData = async () => {
   try {
     for (let i = 0; i < medicalSpecialtiesData.length; i++) {
       const newBody = {
         ...medicalSpecialtiesData[i],
       };
-      await await commonServices.createOne({schemaName: MedicalSpecialties, body: newBody});
+      await await commonServices.createOne({
+        schemaName: MedicalSpecialties,
+        body: newBody,
+      });
       console.log("Medical Specialties Added");
     }
   } catch (err) {
     console.error(err);
   }
-}
+};
 
 // Add Relationship to subscriber Data
-const createRelationshipToSubscriberData = async () =>{
+const createRelationshipToSubscriberData = async () => {
   try {
     for (let i = 0; i < RelationshipToSubscriberData.length; i++) {
       const newBody = {
         ...RelationshipToSubscriberData[i],
       };
-      await commonServices.createOne({schemaName: relationshipToSubscriberEnum, body: newBody});
+      await commonServices.createOne({
+        schemaName: relationshipToSubscriberEnum,
+        body: newBody,
+      });
       console.log("Relationship to subscribers Added");
     }
   } catch (err) {
     console.error(err);
   }
-}
+};
+
+const createBeneficiaryData = async () => {
+  try {
+    console.log("GeneratingFake");
+    const fakeBeneficiaries = [];
+    for (let i = 0; i < 200; i++) {
+      const sample = fakerSchema.randomBeneficiary();
+      const genderObject = await commonServices.getOne({ schemaName: Gender });
+      sample.gender = genderObject._id;
+      const relationshipToSubscriberEnumObject = await commonServices.getOne({ schemaName: relationshipToSubscriberEnum });
+      sample.relationshipToSubscriber = relationshipToSubscriberEnumObject._id;
+      fakeBeneficiaries.push(sample);
+    }
+
+    console.log(fakeBeneficiaries);
+
+    await SubscriberServices.insertManyBeneficiaries(fakeBeneficiaries);
+    console.log("Fake beneficiaries inserted");
+
+    for (let i = 0; i < BeneficiaryData.length; i++) {
+      const newBody = {
+        ...BeneficiaryData[i],
+      };
+      await SubscriberServices.createBeneficiaries(newBody);
+      console.log("Beneficiary created");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 const createSubscriberData = async () => {
   try {
@@ -331,20 +390,22 @@ const createSubscriberData = async () => {
 
 // Add Time Slot Data
 
-const createTimeSlotData = async () =>{
+const createTimeSlotData = async () => {
   try {
     for (let i = 0; i < TimeSlotData.length; i++) {
       const newBody = {
         ...TimeSlotData[i],
       };
-      await commonServices.createOne({schemaName: TimeSlotEnum, body: newBody});
+      await commonServices.createOne({
+        schemaName: TimeSlotEnum,
+        body: newBody,
+      });
       console.log("Time Slots Added");
     }
   } catch (err) {
     console.error(err);
   }
-}
-
+};
 
 const createUserRoleData = async () => {
   try {
@@ -352,7 +413,7 @@ const createUserRoleData = async () => {
       const newBody = {
         ...UserRoleData[i],
       };
-      await commonServices.createOne({schemaName: userRole, body: newBody});
+      await commonServices.createOne({ schemaName: userRole, body: newBody });
       console.log("UserRole Data created");
     }
   } catch (err) {
@@ -376,9 +437,6 @@ const createUserData = async () => {
     console.error(err);
   }
 };
-
-
-
 
 const removeData = async () => {
   try {
@@ -405,6 +463,7 @@ const removeData = async () => {
     await createMedicalServcieData();
     await createMedicalSpecialtiesData();
     await createRelationshipToSubscriberData();
+    await createBeneficiaryData();
     await createSubscriberData();
     await createTimeSlotData();
     await createUserRoleData();

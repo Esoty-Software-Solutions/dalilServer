@@ -1,9 +1,9 @@
 [
     {
-        "_id":"6447e233de50b368e82ab4a9",
-        "name": "Medical Institute",
+        "_id":"64485c6020f454b92585b365",
+        "name": "Insurance Institute",
         "phoneNumber": "9876543210",
-        "cityId": "644683607879326f252c2e78",
+        "city": "644856bcf731fea5e4b205c2",
         "employeeCount": "35",
         "email": "institute@medical.com",
         "subscriberCount": "40",
@@ -34,9 +34,6 @@
                     }
                 ]
             }
-        },
-        "fileLink": [
-            ""
-        ]
+        }
     }
 ]

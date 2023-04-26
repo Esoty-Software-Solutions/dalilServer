@@ -7,13 +7,11 @@
         "lastName": "lastName",
         "birthdate": "01-01-2000",
         "phoneNumber": "9876543210",
-        "gender": "6447b9ddabf6a93aacea1fb5",
-        "beneficiaries": ["6447ba2be92029bf9ce75c0b"],
-        "institutionId": "6447ba676ce58972425082fc",
+        "gender": "6448554fbffa0cec0bb0bbee",
+        "beneficiaries": ["64485eb596112fc95ea0ee4e"],
+        "institutionId": "64485c6020f454b92585b365",
         "employeeId": "Emp123",
-        "doctorId": "6447ae107160202b058da709",
         "city": "644683607879326f252c2e78",
-        "residentDistrict": "Dist",
-        "userId": "6447bae5e18b2ceba9217251"
+        "residentDistrict": "Dist"
     }
 ]

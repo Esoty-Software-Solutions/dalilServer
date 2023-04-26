@@ -1,0 +1,18 @@
+[
+    {
+        "_id": "64485eb596112fc95ea0ee4e",
+        "firstName": "Cathy",
+        "secondName": "Spencer",
+        "thirdName": "Lorem",
+        "lastName": "lastName",
+        "birthdate": "01-01-2000",
+        "phoneNumber": "9876543210",
+        "gender": "6448554fbffa0cec0bb0bbee",
+        "relationshipToSubscriber": "644855780dfb2917a3004583",
+        "medicalFiles": {
+            "bloodType": "A+",
+            "height": 123,
+            "weight": 70
+          }
+    }
+]
