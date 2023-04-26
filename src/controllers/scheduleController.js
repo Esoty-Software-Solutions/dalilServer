@@ -8,6 +8,7 @@ const {
   badRequestErrorResponse,
   notFoundResponse,
 } = require("../utilities/response");
+const TimeSlotEnum = require("../schemas/timeSlotEnumSchema");
 
 const dateRegex = /^([0-9]{4})-(?:[0-9]{2})-([0-9]{2})$/;
 
@@ -51,7 +52,12 @@ const CreateSchedule = async (req, res) => {
     if (!medicalCenter) {
       return notFoundResponse(res, messageUtil.invalidMedicalCenterId);
     }
-
+    if (!req.body.timeSlot) {
+      let timeSlotDetail = await TimeSlotEnum.findOne();
+      console.log(timeSlotDetail);
+      req.body.timeSlot = timeSlotDetail._id.toString();
+    }
+    console.log("right")
     const document = await ScheduleServices.createSchedule({
       ...req.body,
     });
@@ -127,7 +133,10 @@ const AllSchedule = async (req, res) => {
   try {
     let limitQP = req.query.limit;
     let skipOP = req.query.skip;
+    let groupBy = req.query.groupBy;
+
     if (limitQP) {
+
       limitQP = Number(limitQP);
       if (limitQP > 100 || limitQP < 1) {
         limitQP = 30;
@@ -143,9 +152,17 @@ const AllSchedule = async (req, res) => {
     } else {
       skipOP = 0;
     }
-    let document = await ScheduleServices.getAllSchedules({}, limitQP , skipOP);
-    
-    return successResponse(res, messageUtil.success, {objectCount : document.objectsCount , objectArray : document.updatedDocument});
+    let document = {};
+    if (groupBy == "doctor" || groupBy == "medicalCenter") {
+      document = await ScheduleServices.getAllSchedulesGroupBy(req, limitQP, skipOP);
+
+    }
+    else {
+      document = await ScheduleServices.getAllSchedules({ "groupBy": groupBy }, limitQP, skipOP);
+
+    }
+
+    return successResponse(res, messageUtil.success, { objectCount: document.count, objectArray: document.documents });
 
   } catch (error) {
     console.log(error);
