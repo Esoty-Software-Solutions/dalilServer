@@ -28,12 +28,13 @@ const medicalSpecialties = {
 
   getMedicalSpecialty: async (req, res) => {
     try {
-      let query = {
+      let body = {
         _id: req.params.id,
       };
+      
       let data = await Services.getOne({
         schemaName: MedicalSpecialties,
-        query,
+        body,
       });
       if (!data) return notFoundResponse(res, "No Record Found");
 

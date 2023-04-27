@@ -28,12 +28,12 @@ const genderEnum = {
 
   getgenderEnum: async (req, res) => {
     try {
-      let query = {
+      let body = {
         _id: req.params.id,
       };
       let data = await Services.getOne({
         schemaName: GenderEnums,
-        query,
+        body,
       });
       if (!data) return successResponse(res, messageUtil.resourceNotFound, {});
 

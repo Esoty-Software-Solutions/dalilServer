@@ -81,7 +81,7 @@ const getSubscribers = async (req, res) => {
     let sortByQP = Number(req.query.sortBy) ?? { userId: 1 };
     
     let filterQP = {}; // temporary
-    if(req.query.searchQuery) filterQP = getSearchQuery(["firstName","secondName", "thirdName" , "lastName"], req.query.searchQuery)
+    if(req.query.searchQuery) filterQP = getSearchQuery(["firstName","secondName", "thirdName" , "lastName","_id"], req.query.searchQuery)
     const [docArray, docCount] = await SubscriberServices.getSubscribers(
       filterQP,
       sortByQP,
