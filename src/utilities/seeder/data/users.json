@@ -7,6 +7,17 @@
     "firstName": "ahmad",
     "secondName": "mohammed",
     "lastName": "salem",
+    "password": "123",
+    "subscriberId": "6447d9075c4e2d447e393694"
+  },
+  {
+    "_id": "644a174b70fd2085bf359b65",
+    "username": "user1",
+    "phoneNumber": "0912314455",
+    "phoneAuthenticated": false,
+    "firstName": "ahmad",
+    "secondName": "mohammed",
+    "lastName": "salem",
     "password": "123"
   }
 ]
