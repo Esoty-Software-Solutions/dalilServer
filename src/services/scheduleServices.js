@@ -21,7 +21,6 @@ exports.getAllSchedules = async (query, limit, skip, sort) => {
   let objectsCount = await ScheduleSchema.find(query).count();
 
   let updatedDocument = await ScheduleSchema
-  let updatedDocument = await ScheduleSchema
     .find(query)
     .sort(sort)
     .skip(skip)

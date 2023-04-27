@@ -17,7 +17,6 @@ const connectDB = async () => {
 
 const dropDB = async () => {
   try {
-    await connectDB();
     console.log("serverConfig.mongouri", config.mongouri);
     await mongoose.connection.db.dropDatabase();
     console.log("Database is dropped", mongoose.connection.db.databaseName);

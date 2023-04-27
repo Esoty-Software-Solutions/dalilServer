@@ -71,6 +71,41 @@ const fakerSchema = {
     }
 
     return medicalCenter;
+  },
+
+  randomSchedule (){
+    const schedule = {
+      // medicalCenter: {
+      //   type: mongoose.Schema.Types.ObjectId, 
+      //   ref: "medicalCenters",
+      //   required: [true, `please provide valid medicalCenter id`],
+      // },
+      // doctor: {
+      //   type: mongoose.Schema.Types.ObjectId,
+      //   ref: "doctors",
+      //   required: [true, `please provide valid doctor id`],
+      // },
+      // timeSlot: {
+      //   type: mongoose.Schema.Types.ObjectId,
+      //   ref: "timeSlotEnum",
+      //   required: [true, `please provide valid timeslot`],
+      // },
+  
+      monday: faker.datatype.boolean(),
+      tuesday: faker.datatype.boolean(),
+      wednesday: faker.datatype.boolean(),
+      thursday: faker.datatype.boolean(),
+      friday: faker.datatype.boolean(),
+      saturday: faker.datatype.boolean(),
+      sunday: faker.datatype.boolean(),
+  
+      price: faker.random.numeric(3),
+      startDate: faker.date.future(),
+      endDate: faker.date.future(),
+      isActive: faker.datatype.boolean(),
+    }
+
+    return schedule;
   }
 
 

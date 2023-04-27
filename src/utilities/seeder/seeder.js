@@ -58,8 +58,7 @@ const UserRoleData = require("./data/userRole.json");
 
 // add fake schema
 const fakerSchema = require("./data/FakerSchemas");
-const doctor = require("../../schemas/doctorSchema");
-const user = require("../../schemas/userSchema");
+
 
 
 // Add AccountStatus Data
@@ -218,8 +217,8 @@ const createLevelEnumData = async () => {
         ...LevelData[i],
       };
       await commonServices.createOne({ schemaName: Level, body: newBody });
-      console.log("Level Enum Data created");
     }
+    console.log("Level Enum Data created");
   } catch (err) {
     console.error(err);
   }
@@ -235,8 +234,6 @@ const createMedicalCenterData = async () => {
       sample.city = cityObject._id;
       fakeMedicalCenter.push(sample);
     }
-
-
 
     await medicalCenter.insertMany(fakeMedicalCenter);
     console.log("Fake Medical Centers inserted");
@@ -304,6 +301,27 @@ const createReviewData = async () => {
 
 const createScheduleData = async () => {
   try {
+
+    const fakeSchedules = [];   
+    
+    for (let i = 0; i < 10; i++) {
+      const sample = fakerSchema.randomSchedule();
+
+      const doctorObejct = await commonServices.getMany({ schemaName: doctor, skip: Math.floor(Math.random()*10), limit: 1 });
+      sample.doctor = doctorObejct[0]._id;
+      
+      const medicalCenterObject = await commonServices.getMany({ schemaName: medicalCenter, skip: Math.floor(Math.random()*10), limit: 1 });
+      sample.medicalCenter = medicalCenterObject[0]._id;
+      
+      const timeSlotObject = await commonServices.getOne({ schemaName: TimeSlotEnum});
+      sample.timeSlot = timeSlotObject._id;
+      
+      fakeSchedules.push(sample);
+    }
+
+    await schedule.insertMany(fakeSchedules);
+    console.log("Fake Schedule Data inserted");
+
     for (let i = 0; i < ScheduleData.length; i++) {
       const newBody = {
         ...ScheduleData[i],
@@ -516,6 +534,10 @@ const createUserData = async () => {
 
 const removeData = async () => {
   try {
+
+    // Connect DB
+    await connectDB();
+
     // drop database
     await dropDB();
 
@@ -537,7 +559,6 @@ const removeData = async () => {
     await createPharmacyData();
     await createPrescriptionData();
     await createReviewData();
-    await createScheduleData();
     await createSMSData();
     await createMedicalServcieData();
     await createMedicalSpecialtiesData();
@@ -545,6 +566,8 @@ const removeData = async () => {
     await createTimeSlotData();
     await createUserRoleData();
     await createDoctorData();
+
+    await createScheduleData();
     
     await createBeneficiaryData();
     await createSubscriberData();
