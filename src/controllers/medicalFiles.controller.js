@@ -14,8 +14,9 @@ const surgeryHistory = require("../schemas/MedicalFiles/surgeryHistory.schema");
 const chronicDiseases = require("../schemas/MedicalFiles/chronicDisease.schema");
 const medicalTests = require("../schemas/MedicalFiles/medicalTests.schema");
 const medicalFilesServices = require("../services/medicalFilesServices");
-
-
+const parseCSVToJSON = require("../utilities/CSVParser");
+const { subscribers } = require("../schemas/subscriberSchema");
+const { validationErrorResponse } = require("../utilities/response");
 /*
 
 when we are creating a document in the model then we will extend the services created in medicalFiles services
@@ -253,6 +254,29 @@ const initMedicalFilesController = () => {
             return serverErrorResponse(res, error.message);
         }
     }
+    const csvParseController = async (req, res) => {
+        try {
+            const csvBuffer = req.file.buffer; // assuming the CSV data is in a file upload field
+                parseCSVToJSON(csvBuffer)
+                .then(async(json) => {
+                    // will add the json value to mongodb 
+                    const addData = await subscribers.insertMany(json);
+                    if(addData) {
+                        return successResponse(res, messageUtil.resourceCreated);
+                    }else{
+                        return validationErrorResponse(res , "Data not added");
+                    }
+                })
+                .catch((error) => {
+                    return validationErrorResponse(res , "Provide a valid csv file");
+                });
+            
+              
+        } catch (error) {
+            console.log(error);
+            return serverErrorResponse(res , error.message);
+        }
+    }
     return {
         getClinicalVisitsController,
         createClinicalVisitsController,
@@ -265,7 +289,8 @@ const initMedicalFilesController = () => {
         getMedicalTestsController,
         createMedicalTestsController,
         updateMedicalFileController,
-        getMedicalFilesController
+        getMedicalFilesController,
+        csvParseController
     }
 }
 
