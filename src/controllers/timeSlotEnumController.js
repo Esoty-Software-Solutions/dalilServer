@@ -28,12 +28,12 @@ const timeSlotEnum = {
 
   getTimeSlotEnum: async (req, res) => {
     try {
-      let query = {
+      let body = {
         _id: req.params.id,
       };
       let data = await Services.getOne({
         schemaName: TimeSlotEnumSchema,
-        query,
+        body,
       });
       if (!data) return notFoundResponse(res, "No Record Found");
       return successResponse(res, "Success", data);
@@ -49,7 +49,7 @@ const timeSlotEnum = {
       let limit = req.query.limit;
       let skip = req.query.skip;
       let filterQP = {}; // temporary
-      if(req.query.searchQuery) filterQP = getSearchQuery(["backendName","arabicName", "englishName"], req.query.searchQuery)
+      if(req.query.searchQuery) filterQP = getSearchQuery(["backendName","arabicName", "englishName","_id"], req.query.searchQuery)
       
       let objectArray = await Services.getMany({
         schemaName: TimeSlotEnumSchema,

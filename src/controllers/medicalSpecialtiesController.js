@@ -51,7 +51,7 @@ const medicalSpecialties = {
       let limit = req.query.limit;
       let skip = req.query.skip;
       let filterQP = {}; // temporary
-      if(req.query.searchQuery) filterQP = getSearchQuery(["backendName","arabicName", "englishName"], req.query.searchQuery)
+      if(req.query.searchQuery) filterQP = getSearchQuery(["backendName","arabicName", "englishName", "_id"], req.query.searchQuery)
       let objectArray = await Services.getMany({
         schemaName: MedicalSpecialties,
         query : filterQP,
