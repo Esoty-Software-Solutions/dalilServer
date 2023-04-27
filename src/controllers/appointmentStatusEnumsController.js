@@ -32,12 +32,12 @@ const appointmentStatusEnums = {
 
   getappointmentStatusEnums: async (req, res) => {
     try {
-      let query = {
+      let body = {
         _id: req.params.id,
       };
       let data = await Services.getOne({
         schemaName: AppointmentStatusEnumSchema,
-        query,
+        body,
       });
       if (!data) return successResponse(res, "No Record Found", {});
 
@@ -55,7 +55,7 @@ const appointmentStatusEnums = {
       let skip = req.query.skip;
       
       let filterQP = {}; // temporary
-      if(req.query.searchQuery) filterQP = getSearchQuery(["backendName","arabicName", "englishName"], req.query.searchQuery)
+      if(req.query.searchQuery) filterQP = getSearchQuery(["backendName","arabicName", "englishName","_id"], req.query.searchQuery)
       let objectArray = await Services.getMany({
         schemaName: AppointmentStatusEnumSchema,
         limit : limit,
