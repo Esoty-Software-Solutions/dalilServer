@@ -26,6 +26,9 @@ const prescriptionCenter = require("../../schemas/prescriptionSchema");
 const Review = require("../../schemas/reviewSchema");
 const schedule = require("../../schemas/scheduleSchema");
 const sms = require("../../schemas/smsSchema");
+const doctor = require("../../schemas/doctorSchema");
+const user = require("../../schemas/userSchema");
+const userRole = require("../../schemas/userRoleSchema");
 
 // Import Data files
 const UsersData = require("./data/users.json");
@@ -51,12 +54,13 @@ const ReviewData = require("./data/review.json");
 const ScheduleData = require("./data/schedule.json");
 const SMSData = require("./data/sms.json");
 const UserRoleData = require("./data/userRole.json");
-const userRole = require("../../schemas/userRoleSchema");
+
 
 // add fake schema
 const fakerSchema = require("./data/FakerSchemas");
 const doctor = require("../../schemas/doctorSchema");
 const user = require("../../schemas/userSchema");
+
 
 // Add AccountStatus Data
 
@@ -70,8 +74,8 @@ const createAccountStatusData = async () => {
         schemaName: AccountStatusEnum,
         body: newBody,
       });
-      console.log("AccountStatus Added");
     }
+    console.log("AccountStatus Added");
   } catch (err) {
     console.error(err);
   }
@@ -84,8 +88,8 @@ const createAppointmentsData = async () => {
         ...AppointmentsData[i],
       };
       await AppointmentServices.createAppointment(newBody);
-      console.log("Appointment created");
     }
+    console.log("Appointment created");
   } catch (err) {
     console.error(err);
   }
@@ -103,8 +107,8 @@ const createAppointmentStatusData = async () => {
         schemaName: appointmentStatusEnums,
         body: newBody,
       });
-      console.log("Appointment Status Added");
     }
+    console.log("Appointment Status Added");
   } catch (err) {
     console.error(err);
   }
@@ -118,8 +122,8 @@ const createCitiesData = async () => {
         ...CitiesData[i],
       };
       await commonServices.createOne({ schemaName: Cities, body: newBody });
-      console.log("City Added");
     }
+    console.log("City Added");
   } catch (err) {
     console.error(err);
   }
@@ -127,13 +131,33 @@ const createCitiesData = async () => {
 
 const createDoctorData = async () => {
   try {
+
+    const fakeDoctor = [];
+    for (let i = 0; i < 10; i++) {
+      const sample = fakerSchema.randomDoctor();
+      
+      const specialtyObject = await commonServices.getOne({ schemaName: MedicalSpecialties });
+      sample.specialty = specialtyObject._id;
+      const levelObject = await commonServices.getOne({ schemaName: Level });
+      sample.level = levelObject._id;
+
+      const genderObject = await commonServices.getOne({ schemaName: Gender });
+      sample.gender = genderObject._id;
+
+      fakeDoctor.push(sample);
+    }
+
+
+    await doctor.insertMany(fakeDoctor);
+    console.log("Fake Doctors inserted");
+
     for (let i = 0; i < DoctorData.length; i++) {
       const newBody = {
         ...DoctorData[i],
       };
       await DoctorServices.createDoctor(newBody);
-      console.log("Doctor created");
     }
+    console.log("Doctor created");
   } catch (err) {
     console.error(err);
   }
@@ -146,8 +170,8 @@ const createGenderData = async () => {
         ...GenderData[i],
       };
       await commonServices.createOne({ schemaName: Gender, body: newBody });
-      console.log("Gender Data created");
     }
+    console.log("Gender Data created");
   } catch (err) {
     console.error(err);
   }
@@ -163,8 +187,8 @@ const createGenericServiceData = async () => {
         schemaName: genericService,
         body: newBody,
       });
-      console.log("Generic Service Data created");
     }
+    console.log("Generic Service Data created");
   } catch (err) {
     console.error(err);
   }
@@ -180,8 +204,8 @@ const createInstitutionData = async () => {
         schemaName: institution,
         body: newBody,
       });
-      console.log("Institution Data created");
     }
+    console.log("Institution Data created");
   } catch (err) {
     console.error(err);
   }
@@ -203,6 +227,21 @@ const createLevelEnumData = async () => {
 
 const createMedicalCenterData = async () => {
   try {
+    const fakeMedicalCenter = [];
+    for (let i = 0; i < 10; i++) {
+      const sample = fakerSchema.randomMedicalCenter();
+      
+      const cityObject = await commonServices.getOne({ schemaName: Cities });
+      sample.city = cityObject._id;
+      fakeMedicalCenter.push(sample);
+    }
+
+
+
+    await medicalCenter.insertMany(fakeMedicalCenter);
+    console.log("Fake Medical Centers inserted");
+
+
     for (let i = 0; i < MedicalCenterData.length; i++) {
       const newBody = {
         ...MedicalCenterData[i],
@@ -211,8 +250,8 @@ const createMedicalCenterData = async () => {
         schemaName: medicalCenter,
         body: newBody,
       });
-      console.log("Medical center Data created");
     }
+    console.log("Medical center Data created");
   } catch (err) {
     console.error(err);
   }
@@ -225,8 +264,8 @@ const createPharmacyData = async () => {
         ...PharmacyData[i],
       };
       await commonServices.createOne({ schemaName: pharmacy, body: newBody });
-      console.log("Pharmacy Data created");
     }
+    console.log("Pharmacy Data created");
   } catch (err) {
     console.error(err);
   }
@@ -242,8 +281,8 @@ const createPrescriptionData = async () => {
         schemaName: prescriptionCenter,
         body: newBody,
       });
-      console.log("Prescription Data created");
     }
+    console.log("Prescription Data created");
   } catch (err) {
     console.error(err);
   }
@@ -256,8 +295,8 @@ const createReviewData = async () => {
         ...ReviewData[i],
       };
       await commonServices.createOne({ schemaName: Review, body: newBody });
-      console.log("Review Data created");
     }
+    console.log("Review Data created");
   } catch (err) {
     console.error(err);
   }
@@ -270,8 +309,8 @@ const createScheduleData = async () => {
         ...ScheduleData[i],
       };
       await commonServices.createOne({ schemaName: schedule, body: newBody });
-      console.log("Schedule Data created");
     }
+    console.log("Schedule Data created");
   } catch (err) {
     console.error(err);
   }
@@ -284,8 +323,8 @@ const createSMSData = async () => {
         ...SMSData[i],
       };
       await commonServices.createOne({ schemaName: sms, body: newBody });
-      console.log("SMS Data created");
     }
+    console.log("SMS Data created");
   } catch (err) {
     console.error(err);
   }
@@ -302,8 +341,8 @@ const createMedicalServcieData = async () => {
         schemaName: MedicalServices,
         body: newBody,
       });
-      console.log("Medical Services Added");
     }
+    console.log("Medical Services Added");
   } catch (err) {
     console.error(err);
   }
@@ -321,8 +360,8 @@ const createMedicalSpecialtiesData = async () => {
         schemaName: MedicalSpecialties,
         body: newBody,
       });
-      console.log("Medical Specialties Added");
     }
+    console.log("Medical Specialties Added");
   } catch (err) {
     console.error(err);
   }
@@ -339,8 +378,8 @@ const createRelationshipToSubscriberData = async () => {
         schemaName: relationshipToSubscriberEnum,
         body: newBody,
       });
-      console.log("Relationship to subscribers Added");
     }
+    console.log("Relationship to subscribers Added");
   } catch (err) {
     console.error(err);
   }
@@ -348,7 +387,6 @@ const createRelationshipToSubscriberData = async () => {
 
 const createBeneficiaryData = async () => {
   try {
-    console.log("GeneratingFake");
     const fakeBeneficiaries = [];
     for (let i = 0; i < 50; i++) {
       const sample = fakerSchema.randomBeneficiary();
@@ -368,8 +406,8 @@ const createBeneficiaryData = async () => {
         ...BeneficiaryData[i],
       };
       await SubscriberServices.createBeneficiaries(newBody);
-      console.log("Beneficiary created");
     }
+    console.log("Beneficiary created");
   } catch (err) {
     console.error(err);
   }
@@ -409,9 +447,8 @@ const createSubscriberData = async () => {
     }
 
     await SubscriberServices.insertManyBeneficiaries(fakeBeneficiaries);
-    console.log("Fake beneficiaries inserted");
+    console.log("Fake beneficiaries inserted from subscribers");
 
-    console.log(fakeSubscriber);
 
     await SubscriberServices.insertManySubscribers(fakeSubscriber);
     console.log("Fake Subscribers inserted");
@@ -421,11 +458,9 @@ const createSubscriberData = async () => {
         ...SubscriberData[i],
       };
       await SubscriberServices.createSubscriber(newBody);
-      console.log("Subscriber created");
     }
-
-
-
+    console.log("Subscriber created");
+    
   } catch (err) {
     console.error(err);
   }
@@ -443,8 +478,8 @@ const createTimeSlotData = async () => {
         schemaName: TimeSlotEnum,
         body: newBody,
       });
-      console.log("Time Slots Added");
     }
+    console.log("Time Slots Added");
   } catch (err) {
     console.error(err);
   }
@@ -457,8 +492,8 @@ const createUserRoleData = async () => {
         ...UserRoleData[i],
       };
       await commonServices.createOne({ schemaName: userRole, body: newBody });
-      console.log("UserRole Data created");
     }
+    console.log("UserRole Data created");
   } catch (err) {
     console.error(err);
   }
@@ -472,8 +507,8 @@ const createUserData = async () => {
         ...UsersData[i]
       };
       await UserServices.createUser(newBody);
-      console.log("User created");
     }
+    console.log("User created");
   } catch (err) {
     console.error(err);
   }
@@ -494,7 +529,6 @@ const removeData = async () => {
     await createAppointmentsData();
     await createAppointmentStatusData();
     await createCitiesData();
-    await createDoctorData();
     await createGenderData();
     await createGenericServiceData();
     await createInstitutionData();
@@ -510,6 +544,7 @@ const removeData = async () => {
     await createRelationshipToSubscriberData();
     await createTimeSlotData();
     await createUserRoleData();
+    await createDoctorData();
     
     await createBeneficiaryData();
     await createSubscriberData();

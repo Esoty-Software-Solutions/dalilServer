@@ -1,9 +1,9 @@
 [
     {
         "_id": "6447e20972d1c40f6ebb09d7",
-        "medicalCenterId": "6447d7bc35acf47880f43ba5",
-        "doctorId": "6447ae107160202b058da709",
-        "timeSlotId": "64468ea45658b684ca5b8e09",
+        "medicalCenter": "6447d7bc35acf47880f43ba5",
+        "doctor": "6447ae107160202b058da709",
+        "timeSlot": "64468ea45658b684ca5b8e09",
     
         "monday": true,
         "tuesday": true,

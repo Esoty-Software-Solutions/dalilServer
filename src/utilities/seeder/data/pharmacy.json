@@ -2,7 +2,7 @@
     {
         "_id": "6447d99aa87bdc2aee9301cb",
         "name": "Pharmacy 1",
-        "cityId": "6447d7c6741ae776ba5bf76c",
+        "city": "6447d7c6741ae776ba5bf76c",
         "district": "Dist",
         "description": "This is first Pharmacy",
         "address": "Pharmacy 1, Dist, Ghat",
