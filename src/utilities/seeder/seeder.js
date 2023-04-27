@@ -58,8 +58,6 @@ const UserRoleData = require("./data/userRole.json");
 
 // add fake schema
 const fakerSchema = require("./data/FakerSchemas");
-const doctor = require("../../schemas/doctorSchema");
-const user = require("../../schemas/userSchema");
 
 
 // Add AccountStatus Data
