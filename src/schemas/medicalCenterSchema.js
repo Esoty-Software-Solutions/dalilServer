@@ -23,7 +23,7 @@ const medicalCenterSchema = new mongoose.Schema(
       default: null,
     },
     phoneNumber: {
-      type: Array,
+      type: [String],
       required: [true, `please enter valid phoneNumbers`],
     },
     email: {

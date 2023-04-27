@@ -32,22 +32,36 @@ function renameKey(document, newKeys, oldKeys) {
     const index = oldKeys.indexOf(key);
     if (index !== -1) {
       // use the corresponding newKey instead
-      newDocument[newKeys[index]] = value;
+      if (Array.isArray(value)) {
+        // if the value is an array, rename each element of the array recursively
+        newDocument[newKeys[index]] = value.map((element) =>
+          typeof element === "object" ? renameKey(element, newKeys, oldKeys) : element
+        );
+      } else if (typeof value === "object" && value !== null) {
+        // if the value is an object, rename its keys recursively
+        newDocument[newKeys[index]] = renameKey(value, newKeys, oldKeys);
+      } else {
+        newDocument[newKeys[index]] = value;
+      }
     } else {
       // use the original key
-      newDocument[key] = value;
-    }
-  }
-
-  // also rename any key that matches an oldKey in subdocuments recursively
-  for (const [key, value] of Object.entries(newDocument)) {
-    if (typeof value === "object" && value !== null) {
-      newDocument[key] = renameKey(value, newKeys, oldKeys);
+      if (Array.isArray(value)) {
+        // if the value is an array, rename each element of the array recursively
+        newDocument[key] = value.map((element) =>
+          typeof element === "object" ? renameKey(element, newKeys, oldKeys) : element
+        );
+      } else if (typeof value === "object" && value !== null) {
+        // if the value is an object, rename its keys recursively
+        newDocument[key] = renameKey(value, newKeys, oldKeys);
+      } else {
+        newDocument[key] = value;
+      }
     }
   }
 
   return newDocument;
 }
+
 
 
 
@@ -66,4 +80,19 @@ function removeKey (document , removeArg) {
   }
   return document; 
 }
-module.exports = { replaceKey , renameKey , removeKey };
+
+// converts string to array
+function convertStringToArray (document , key) {
+  if(document[key]) {
+    if(!Array.isArray(document[key])) {
+      const newArr = document[key].split(",");
+      const filteredPhoneNums = newArr.filter(val => val.length && !/[^0-9]/g.test(val));
+      document[key] = filteredPhoneNums;
+    }
+    return document;
+  }else{
+    return document;
+  }
+}
+
+module.exports = { replaceKey , renameKey , removeKey , convertStringToArray };

@@ -1,14 +1,13 @@
 const ScheduleSchema = require("../schemas/scheduleSchema");
 const { renameKey } = require("../utilities/replaceKey");
-const mongoose = require('mongoose');
 const uploader = require("../utilities/uploader")
 exports.createSchedule = async (query) => {
-  const renamedDoc = renameKey(query, ["medicalCenter", "doctor", "timeSlot"], ["medicalCenterId", "doctorId", "timeSlotId"]);
+  const renamedDoc = renameKey (query , ["medicalCenter" , "doctor" , "timeSlot"] , ["medicalCenterId","doctorId","timeSlotId"]);
   return await ScheduleSchema.create(renamedDoc);
 };
 
 exports.updateSchedule = async (query, data) => {
-  const renamedDoc = renameKey(data, ["medicalCenter", "doctor", "timeSlot"], ["medicalCenterId", "doctorId", "timeSlotId"]);
+  const renamedDoc = renameKey (data , ["medicalCenter" , "doctor" , "timeSlot"] , ["medicalCenterId","doctorId","timeSlotId"]);
   return await ScheduleSchema.findOneAndUpdate(query, renamedDoc, {
     new: true,
   })
@@ -21,6 +20,7 @@ exports.deleteSchedule = async (query) => {
 exports.getAllSchedules = async (query, limit, skip, sort) => {
   let objectsCount = await ScheduleSchema.find(query).count();
 
+  let updatedDocument = await ScheduleSchema
   let updatedDocument = await ScheduleSchema
     .find(query)
     .sort(sort)
@@ -37,12 +37,12 @@ exports.getAllSchedules = async (query, limit, skip, sort) => {
   //      scheduleObject.medicalCenterId = renamedKey;
   //   }
   //   const updateMedicalKey = uploader.renameKey(scheduleObject,"medicalCenter", "medicalCenterId");
-
+    
   //   const updateDoctorKey = uploader.renameKey(updateMedicalKey,"doctor", "doctorId");
   //   return updateDoctorKey;
   // });
-
-  return { updatedDocument, objectsCount };
+  
+  return {updatedDocument, objectsCount};
 
 
 
