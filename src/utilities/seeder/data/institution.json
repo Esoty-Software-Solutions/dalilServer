@@ -1,0 +1,39 @@
+[
+    {
+        "_id":"64485c6020f454b92585b365",
+        "name": "Insurance Institute",
+        "phoneNumber": "9876543210",
+        "city": "644856bcf731fea5e4b205c2",
+        "employeeCount": "35",
+        "email": "institute@medical.com",
+        "subscriberCount": "40",
+        " benefitPolicy": {
+            "insuranceType": "individual",
+            "insuranceIssuer": "Sr Medical Off",
+            "balanceResetDate": "05-05-2024",
+            "policyExpirationDate": "05-05-2024",
+            "inPatientAggregateLimit": 4,
+            "inPatientServices": {
+                "type": [
+                    {
+                        "service": "IT Dept"
+                    },
+                    {
+                        "limit": 4
+                    }
+                ]
+            },
+            "outPatientAggregateLimit": 5,
+            "outPatientServices": {
+                "type": [
+                    {
+                        "service": "IT Dept"
+                    },
+                    {
+                        "limit": 6
+                    }
+                ]
+            }
+        }
+    }
+]

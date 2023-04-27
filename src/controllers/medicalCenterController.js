@@ -131,7 +131,7 @@ const AllMedicalCenter = async (req, res) => {
       if (req.query.city) {
         query.city = req.query.city;
       }
-      if(req.query.searchQuery) query = getSearchQuery(["name"], req.query.searchQuery)
+      if(req.query.searchQuery) query = getSearchQuery(["name"], req.query.searchQuery ,  query);
       const documents = await MedicalCenterServices.getAllMedicalCenters(
         query,
         limitQP,

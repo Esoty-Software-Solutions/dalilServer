@@ -103,6 +103,7 @@ const getPresignedUrl = async (mainUrl, bucketName) => {
     Key: mainUrl.split(".com/")[1],
     ResponseContentDisposition: "inline", // Set the disposition to inline
     Expires: parseInt(process.env.PRESIGNED_URL_EXPIRY_TIME), // Set the URL expiration time to 10 seconds --
+    Expires: parseInt(process.env.PRESIGNED_URL_EXPIRY_TIME), // Set the URL expiration time to 10 seconds --
     //   time can be changed anywhere afterwards
   };
     const url = s3.getSignedUrl("getObject", params);

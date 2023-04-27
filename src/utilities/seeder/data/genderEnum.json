@@ -1,0 +1,14 @@
+[
+    {
+        "_id": "6448555844daa36c1d4b71c5",
+        "backendName": "male",
+        "arabicName": "ذكر",
+        "englishName": "Male"
+    },
+    {
+        "_id": "6448554fbffa0cec0bb0bbee",
+        "backendName": "female",
+        "arabicName": "أنثى",
+        "englishName": "Female"
+    }
+]

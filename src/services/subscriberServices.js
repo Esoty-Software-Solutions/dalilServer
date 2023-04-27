@@ -20,8 +20,16 @@ exports.updateBeneficiary = async (query, data) => {
   return await beneficiaries.findOneAndUpdate(query, data, { new: true });
 };
 
+exports.insertManyBeneficiaries = async (query) => {
+  return await beneficiaries.insertMany(query);
+};
+
 exports.updateSubscriber = async (query, data) => {
   return await subscribers.findOneAndUpdate(query, data, { new: true });
+};
+
+exports.insertManySubscribers = async (query) => {
+  return await subscribers.insertMany(query);
 };
 
 exports.deleteSubscriber = async (query) => {

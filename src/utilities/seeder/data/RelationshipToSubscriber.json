@@ -1,0 +1,20 @@
+[
+  {
+    "_id": "644855780dfb2917a3004583",
+    "backendName": "self",
+    "arabicName": "نفسه",
+    "englishName": "Self"
+  },
+  {
+    "_id": "6448557146730df7dc3d3401",
+    "backendName": "son",
+    "arabicName": "ابن",
+    "englishName": "Son"
+  },
+  {
+    "_id": "6448556a00625f739ab59dab",
+    "backendName": "daughter",
+    "arabicName": "ابنة",
+    "englishName": "Daughter"
+  }
+]

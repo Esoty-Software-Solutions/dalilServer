@@ -1,0 +1,17 @@
+[
+    {
+        "_id": "6447d9075c4e2d447e393694",
+        "firstName": "Cathy",
+        "secondName": "Spencer",
+        "thirdName": "Lorem",
+        "lastName": "lastName",
+        "birthdate": "01-01-2000",
+        "phoneNumber": "9876543210",
+        "gender": "6448554fbffa0cec0bb0bbee", 
+        "beneficiaries": ["64485eb596112fc95ea0ee4e"],
+        "institutionId": "64485c6020f454b92585b365",
+        "employeeId": "Emp123",
+        "city": "644683607879326f252c2e78",
+        "residentDistrict": "Dist"
+    }
+]

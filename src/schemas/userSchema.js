@@ -79,9 +79,9 @@ const userSchema = new mongoose.Schema({
     ref: "userRoles",
   },
 });
-userSchema.pre("save", function (next) {
+userSchema.pre("save", function (next) { 
+  console.log(this.password);
   var user = this;
-
   // only hash the password if it has been modified (or is new)
   if (!user.isModified("password")) return next();
 

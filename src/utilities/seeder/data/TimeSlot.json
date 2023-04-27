@@ -1,0 +1,14 @@
+[
+  {
+    "_id": "644855f25a199bc8aa2dbd12",
+    "backendName": "morning",
+    "arabicName": "صباحا",
+    "englishName": "Morning"
+  },
+  {
+    "_id": "6448561ba16b196baf25b710",
+    "backendName": "afternoon",
+    "arabicName": "مساءا",
+    "englishName": "Afternoon"
+  }
+]
