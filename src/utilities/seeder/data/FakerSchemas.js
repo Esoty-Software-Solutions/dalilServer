@@ -75,21 +75,6 @@ const fakerSchema = {
 
   randomSchedule (){
     const schedule = {
-      // medicalCenter: {
-      //   type: mongoose.Schema.Types.ObjectId, 
-      //   ref: "medicalCenters",
-      //   required: [true, `please provide valid medicalCenter id`],
-      // },
-      // doctor: {
-      //   type: mongoose.Schema.Types.ObjectId,
-      //   ref: "doctors",
-      //   required: [true, `please provide valid doctor id`],
-      // },
-      // timeSlot: {
-      //   type: mongoose.Schema.Types.ObjectId,
-      //   ref: "timeSlotEnum",
-      //   required: [true, `please provide valid timeslot`],
-      // },
   
       monday: faker.datatype.boolean(),
       tuesday: faker.datatype.boolean(),
