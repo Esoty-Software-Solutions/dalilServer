@@ -2,9 +2,11 @@ const config = require("../config/config");
 const MedicalCenterSchema = require("../schemas/medicalCenterSchema");
 const _ = require("lodash");
 const { renameKey, removeKey } = require("../utilities/replaceKey");
+const { renameKey, removeKey } = require("../utilities/replaceKey");
 const uploader = require("../utilities/uploader");
 exports.createMedicalCenter = async (query) => {
   const renamedData = renameKey(query , "city" , "cityId");
+  renamedData.phoneNumber = Object.values(renamedData.phoneNumber);
   const createdDoc = await MedicalCenterSchema.create(renamedData);
   const doc = await uploader.returnedSingleDoc(MedicalCenterSchema , createdDoc._id);
   return doc;

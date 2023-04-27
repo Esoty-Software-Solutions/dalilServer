@@ -73,6 +73,7 @@ const fakerSchema = {
     return medicalCenter;
   }
 
+
 };
 
 

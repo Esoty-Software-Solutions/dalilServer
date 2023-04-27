@@ -8,6 +8,7 @@ const {
 const { messageUtil } = require("../utilities/message");
 const {searchQuery} = require("../utilities/searchQuery");
 const CitySchema = require("../schemas/citiesSchema");
+const mongoose = require('mongoose');
 
 const city = {
   // Add Appointment Status Enum
@@ -30,13 +31,13 @@ const city = {
 
   getCity: async (req, res) => {
     try {
-      let query = {
-        _id: req.params.id,
+      let body = {
+        _id: mongoose.Types.ObjectId(req.params.id),
       };
-
+      console.log(body);
       let data = await Services.getOne({
         schemaName: CitySchema,
-        query,
+        body,
       });
 
       if (!data) return successResponse(res, messageUtil.resourceNotFound, {});
@@ -54,7 +55,7 @@ const city = {
       let limit = req.query.limit;
       let skip = req.query.skip;
 
-      const searchFields = ["backendName", "englishName"];
+      const searchFields = ["backendName", "englishName",'arabicName'];
 
       // Define the search query
       let searchquery = {};
