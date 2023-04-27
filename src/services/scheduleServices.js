@@ -1,13 +1,14 @@
 const ScheduleSchema = require("../schemas/scheduleSchema");
 const { renameKey } = require("../utilities/replaceKey");
+const mongoose = require('mongoose');
 const uploader = require("../utilities/uploader")
 exports.createSchedule = async (query) => {
-  const renamedDoc = renameKey (query , ["medicalCenter" , "doctor" , "timeSlot"] , ["medicalCenterId","doctorId","timeSlotId"]);
+  const renamedDoc = renameKey(query, ["medicalCenter", "doctor", "timeSlot"], ["medicalCenterId", "doctorId", "timeSlotId"]);
   return await ScheduleSchema.create(renamedDoc);
 };
 
 exports.updateSchedule = async (query, data) => {
-  const renamedDoc = renameKey (data , ["medicalCenter" , "doctor" , "timeSlot"] , ["medicalCenterId","doctorId","timeSlotId"]);
+  const renamedDoc = renameKey(data, ["medicalCenter", "doctor", "timeSlot"], ["medicalCenterId", "doctorId", "timeSlotId"]);
   return await ScheduleSchema.findOneAndUpdate(query, renamedDoc, {
     new: true,
   })
@@ -36,12 +37,12 @@ exports.getAllSchedules = async (query, limit, skip, sort) => {
   //      scheduleObject.medicalCenterId = renamedKey;
   //   }
   //   const updateMedicalKey = uploader.renameKey(scheduleObject,"medicalCenter", "medicalCenterId");
-    
+
   //   const updateDoctorKey = uploader.renameKey(updateMedicalKey,"doctor", "doctorId");
   //   return updateDoctorKey;
   // });
-  
-  return {updatedDocument, objectsCount};
+
+  return { updatedDocument, objectsCount };
 
 
 
@@ -55,7 +56,17 @@ exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
   try {
     
     let searchQuery = req.query.searchQuery;
-
+    let medicalCenterId=req.query.medicalCenterId;
+    let doctorId=req.query.doctorId;
+    let city=req.query.city;
+    let timeSlot=req.query.timeSlot;
+    let specialty=req.query.specialty;
+    let groupBy=req.query.groupBy;
+    let query={};
+     query["$and"]=[];
+    if (medicalCenterId) {
+      query["$and"].push({ "medicalCenter": { $eq: mongoose.Types.ObjectId(medicalCenterId) } });
+    }
     if (doctorId) {
       query["$and"].push({ "doctor": { $eq: mongoose.Types.ObjectId(doctorId) } });
     }
@@ -72,7 +83,8 @@ exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
     if (specialty) {
         query["$and"].push({ "doctorObject.specialty": { $eq: mongoose.Types.ObjectId(specialty) } });
     }
-
+    console.log(medicalCenterId);
+    console.log(query);
    
     let groupByPipeLine='';
     // This is for list of schedule for doctor where they need data according medical center
@@ -126,7 +138,7 @@ exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
       {"$skip":skip}
       
     ]);
-
+    console.log(documents);
 
     documents.forEach((document) => {
       document.doctor = document.doctor[0];

@@ -106,7 +106,7 @@ const AllDoctors = async (req, res) => {
     if (req.query.specialty) {
       query.specialty = req.query.specialty;
     }
-    if(req.query.searchQuery) query = getSearchQuery(["firstName" , "secondName" ,"lastName" ], req.query.searchQuery , query);
+    if(req.query.searchQuery) query = getSearchQuery(["firstName" , "secondName" ,"lastName","_id" ], req.query.searchQuery , query);
     const documents = await DoctorServices.getDoctors(query, limitQP, skipOP);
     return successResponse(res, messageUtil.success, {
       objectCount: documents.objectsCount,

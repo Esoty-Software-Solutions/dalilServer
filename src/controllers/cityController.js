@@ -14,8 +14,9 @@ const city = {
   // Add Appointment Status Enum
 
   addCity: async (req, res) => {
-    console.log("in the add city controller");
+    console.log("in the add city controller",req.body);
     try {
+    
       let data = await Services.createOne({
         body: req.body,
         schemaName: CitySchema,
@@ -55,7 +56,7 @@ const city = {
       let limit = req.query.limit;
       let skip = req.query.skip;
 
-      const searchFields = ["backendName", "englishName",'arabicName'];
+      const searchFields = ["backendName", "englishName",'arabicName',"_id"];
 
       // Define the search query
       let searchquery = {};
@@ -77,7 +78,7 @@ const city = {
         skip,
         select: "-__v ",
       });
-
+      console.log(objectArray)
       let objectCount = await Services.count({ schemaName: CitySchema , query : query });
       return successResponse(
         res,

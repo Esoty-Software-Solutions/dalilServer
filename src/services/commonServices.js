@@ -45,7 +45,6 @@ class Service {
     select,
     populate,
   }) => {
-     console.log(body)
     return await schemaName.findOne(body).populate(populate);
   };
 

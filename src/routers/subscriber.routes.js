@@ -1,4 +1,6 @@
 var express = require("express");
+const multer = require('multer');
+const upload = multer();
 const initMedicalFilesController = require("../controllers/medicalFiles.controller");
 const {
   createSubscriber,
@@ -37,7 +39,8 @@ const {
   getMedicalTestsController,
   createMedicalTestsController,
   updateMedicalFileController,
-  getMedicalFilesController
+  getMedicalFilesController,
+  csvParseController
 } = initMedicalFilesController();
 // router.post(
 //   "/uploadCSV",
@@ -132,4 +135,8 @@ router
   );
 
 // ---------------------------------------- Medical files routes -----------------------------------------------
+
+// csv parse route
+router.route(`/csv-parse`).post(upload.single("buffer") , csvParseController)
+
 module.exports = router;

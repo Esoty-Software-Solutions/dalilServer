@@ -71,6 +71,26 @@ const fakerSchema = {
     }
 
     return medicalCenter;
+  },
+
+  randomSchedule (){
+    const schedule = {
+  
+      monday: faker.datatype.boolean(),
+      tuesday: faker.datatype.boolean(),
+      wednesday: faker.datatype.boolean(),
+      thursday: faker.datatype.boolean(),
+      friday: faker.datatype.boolean(),
+      saturday: faker.datatype.boolean(),
+      sunday: faker.datatype.boolean(),
+  
+      price: faker.random.numeric(3),
+      startDate: faker.date.future(),
+      endDate: faker.date.future(),
+      isActive: faker.datatype.boolean(),
+    }
+
+    return schedule;
   }
 
 
