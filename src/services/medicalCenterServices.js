@@ -2,7 +2,6 @@ const config = require("../config/config");
 const MedicalCenterSchema = require("../schemas/medicalCenterSchema");
 const _ = require("lodash");
 const { renameKey, removeKey } = require("../utilities/replaceKey");
-const { renameKey, removeKey } = require("../utilities/replaceKey");
 const uploader = require("../utilities/uploader");
 exports.createMedicalCenter = async (query) => {
   const renamedData = renameKey(query , "city" , "cityId");
