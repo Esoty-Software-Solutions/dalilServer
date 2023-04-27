@@ -8,6 +8,7 @@ const {
   notFoundResponse,
 } = require("../utilities/response");
 const { getSearchQuery } = require("../utilities/searchQuery");
+const { convertStringToArray } = require("../utilities/replaceKey");
 
 const CreateMedicalCenter = async (req, res) => {
   try {
@@ -18,8 +19,9 @@ const CreateMedicalCenter = async (req, res) => {
         fieldNamesList.push(file.location);
       });
     }
+    const finalDoc = convertStringToArray(req.body, "phoneNumber");
     const document = await MedicalCenterServices.createMedicalCenter({
-      ...req.body,
+      ...finalDoc,
       isActive: true,
       fileLink: fieldNamesList,
     });

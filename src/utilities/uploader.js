@@ -97,6 +97,7 @@ function uploadFileS3(fileType, bucketName) {
 }
 
 const getPresignedUrl = async (mainUrl, bucketName) => {
+  try {
   const params = {
     Bucket: bucketName,
     Key: mainUrl.split(".com/")[1],
@@ -104,7 +105,6 @@ const getPresignedUrl = async (mainUrl, bucketName) => {
     Expires: parseInt(process.env.PRESIGNED_URL_EXPIRY_TIME), // Set the URL expiration time to 10 seconds --
     //   time can be changed anywhere afterwards
   };
-  try {
     const url = s3.getSignedUrl("getObject", params);
     return url;
   } catch (error) {
@@ -152,7 +152,6 @@ async function returnedSingleDoc(schema, query) {
     .lean();
   if (!singleDocument) return;
 
-  // const updatedDocument = renameKey(singleDocument, "city", "cityId");
   if (singleDocument?.fileLink.length) {
     const presignedUrlArray = await Promise.all(
       singleDocument.fileLink.map(

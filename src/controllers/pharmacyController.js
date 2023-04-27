@@ -7,6 +7,7 @@ const {
   badRequestErrorResponse,
   notFoundResponse,
 } = require("../utilities/response");
+const { convertStringToArray } = require("../utilities/replaceKey");
 
 const CreatePharmacy = async (req, res) => {
   try {
@@ -16,8 +17,9 @@ const CreatePharmacy = async (req, res) => {
         fieldNamesList.push(file.location);
       });
     }
+    const finalDoc = convertStringToArray(req.body, "phoneNumber");
     const document = await PharmacyServices.createPharmacy({
-      ...req.body,
+      ...finalDoc,
       isActive: true,
       fileLink: fieldNamesList,
     });
