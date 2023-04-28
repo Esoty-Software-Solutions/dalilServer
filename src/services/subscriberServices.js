@@ -1,11 +1,14 @@
 const { subscribers, beneficiaries } = require("../schemas/subscriberSchema");
+const { renameKey } = require("../utilities/replaceKey");
 
 exports.createSubscriber = async (query) => {
-  return await subscribers.create(query);
+  const renamedData = renameKey(query, ["gender" , "institution" , "city"] , ["genderId" , "institutionId" , "cityId"]);
+  return await subscribers.create(renamedData);
 };
 
 exports.createBeneficiaries = async (query) => {
-  return await beneficiaries.create(query);
+  const renamedData = renameKey(query, ["gender" , "relationshipToSubscriber"] , ["genderId" , "relationshipToSubscriberId"]);
+  return await beneficiaries.create(renamedData);
 };
 
 exports.updateBeneficiaries = async (query, data) => {
