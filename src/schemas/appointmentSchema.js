@@ -9,7 +9,9 @@ const appointmentSchema = new mongoose.Schema(
       // required: [true, `please provide valid time slot id`],
     },
     appointmentStatus: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "appointmentStatusEnums",
+      required: [true, `please provide valid time slot id`],
     },
 
     beneficiaryId: {
@@ -23,22 +25,22 @@ const appointmentSchema = new mongoose.Schema(
       // required: [true, `please provide valid schedule id`],
       type : String
     },
-    medicalCenterId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "medicalCenters",
-      // required: [true, `please provide valid medicalCenter id`],
-    },
-    doctorId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "doctors",
-    },
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
-      // required: [true, `please provide valid userId`],
-    },
+    // medicalCenterId: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "medicalCenters",
+    //   // required: [true, `please provide valid medicalCenter id`],
+    // },
+    // doctorId: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "doctors",
+    // },
+    // userId: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "users",
+    //   // required: [true, `please provide valid userId`],
+    // },
 
-    notes: { type: String },
+    // notes: { type: String },
 
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
 
@@ -46,6 +48,14 @@ const appointmentSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+
+appointmentSchema.pre(['find' , 'findOne' , 'save' , 'findOneAndUpdate'], function(next) {
+  this.populate('appointmentStatus' , '-__v -_id -id');
+  this.populate('timeSlot' , '-__v -_id');
+  
+  next();
+});
 
 const appointment = mongoose.model(`appointments`, appointmentSchema);
 
