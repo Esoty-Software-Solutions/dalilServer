@@ -19,7 +19,7 @@ const { getSearchQuery } = require("../utilities/searchQuery");
 
 exports.getMedicalFilesAggregator = async (schema, query, skip, limit) => {
   let objectCount = await schema.find(query).count();
-  console.log(query)
+  
   let documents = await schema
     .find(query)
     .skip(skip)
@@ -43,11 +43,10 @@ exports.getMedicalFilesAggregator = async (schema, query, skip, limit) => {
   return { objectArray, objectCount };
 };
 
-exports.getDataMedicalFiles = async (queryPayload, schema) => {
+exports.getDataMedicalFiles = async (queryPayload, params ,schema) => {
   try {
-    var findQuery = {};
+    var findQuery = _.merge({} , params);
     const { limit, searchQuery, skip } = queryPayload;
-
     if(searchQuery) findQuery = getSearchQuery(["visitDate","visitType", "centerName","doctorName" , "notes","_id"], searchQuery);
     
     const allData = await this.getMedicalFilesAggregator(

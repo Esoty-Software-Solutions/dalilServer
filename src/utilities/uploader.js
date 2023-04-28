@@ -47,12 +47,18 @@ function uploadFileS3(fileType, bucketName) {
           });
         },
         key: function (req, file, cb) {
+          const myString = file.originalname;
+          let checkedString = "";
+          for (let i = 0; i < myString.length; i++) {
+            if (myString[i] === " ") {
+              checkedString += "-";
+            } else {
+              checkedString += myString[i];
+            }
+          }
           const { beneficiaryId } = req.params;
-          let medicalFileType =
-            req.originalUrl.split("/")[req.originalUrl.split("/").length - 1];
-          let filePath = `${beneficiaryId}/${medicalFileType}/${
-            Date.now().toString() + "-" + file.originalname
-          }`;
+          let medicalFileType = req.originalUrl.split("/")[req.originalUrl.split("/").length - 1];
+          let filePath = `${beneficiaryId}/${medicalFileType}/${Date.now().toString() + "-" + checkedString}`;
           cb(null, filePath);
         },
         contentType: multerS3.AUTO_CONTENT_TYPE,
@@ -80,10 +86,18 @@ function uploadFileS3(fileType, bucketName) {
           });
         },
         key: function (req, file, cb) {
-          // const {beneficiaryId} = req.params;
-          // let medicalFileType = req.originalUrl.split("/")[req.originalUrl.split("/").length - 1];
-          // let filePath = `${beneficiaryId}/${medicalFileType}/${Date.now().toString() + '-' + file.originalname}`;
-          let filePath = Date.now().toString() + "-" + file.originalname;
+
+          const myString = file.originalname;
+          let checkedString = "";
+          for (let i = 0; i < myString.length; i++) {
+            if (myString[i] === " ") {
+              checkedString += "-";
+            } else {
+              checkedString += myString[i];
+            }
+          }
+          
+          let filePath = Date.now().toString() + "-" + checkedString;
           cb(null, filePath);
         },
         contentType: multerS3.AUTO_CONTENT_TYPE,
@@ -102,7 +116,6 @@ const getPresignedUrl = async (mainUrl, bucketName) => {
     Bucket: bucketName,
     Key: mainUrl.split(".com/")[1],
     ResponseContentDisposition: "inline", // Set the disposition to inline
-    Expires: parseInt(process.env.PRESIGNED_URL_EXPIRY_TIME), // Set the URL expiration time to 10 seconds --
     Expires: parseInt(process.env.PRESIGNED_URL_EXPIRY_TIME), // Set the URL expiration time to 10 seconds --
     //   time can be changed anywhere afterwards
   };

@@ -16,12 +16,22 @@ const allergySchema = new mongoose.Schema({
     // for now thumbnail link is hard coded, once s3 logic is completed
     thumbnailLink: {
         type : String,
-        default : "https://cdn.iconscout.com/icon/free/png-512/document-957-452909.png?f=avif&w=256",
+        default : null,
     },
     fileLink: {
         type : String,
-        default : "https://www.allergy.org.au/images/pcc/Clinical_History_Form.jpg",
+        default : null,
     },
+    beneficiaryId : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "beneficiaries",
+        required: [true, `please enter valid beneficiary id`],
+    },
+    subscriberId : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "subscribers",
+        required: [true, `please enter valid subscribers id`],
+    }
 });
 
 const allergy = mongoose.model("allergies" , allergySchema);
