@@ -7,5 +7,5 @@ router.get("/", relationshipToSubscriberController.getAllrelationshipToSubscribe
 router.get("/:id", relationshipToSubscriberController.getrelationshipToSubscriberEnum);
 router.post("/", relationshipToSubscriberController.addrelationshipToSubscriberEnum);
 router.patch("/:id", relationshipToSubscriberController.updaterelationshipToSubscriberEnum);
-
+router.delete("/:id", relationshipToSubscriberController.deleterelationshipToSubscriberEnum);
 module.exports = router;

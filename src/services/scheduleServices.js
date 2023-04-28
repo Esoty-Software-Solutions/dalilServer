@@ -19,9 +19,12 @@ exports.deleteSchedule = async (query) => {
 };
 
 exports.getAllSchedules = async (query, limit, skip, sort) => {
-  let objectsCount = await ScheduleSchema.find(query).count();
 
-  let updatedDocument = await ScheduleSchema
+
+
+
+  let count = await ScheduleSchema.find(query).count();
+  let documents = await ScheduleSchema
     .find(query)
     .sort(sort)
     .skip(skip)
@@ -30,19 +33,9 @@ exports.getAllSchedules = async (query, limit, skip, sort) => {
     .populate("medicalCenter")
     .populate("doctor")
     .lean();
+  console.log(documents)
 
-  // const updatedDocument = object.map(scheduleObject => {
-  //   if(Object.keys(scheduleObject?.medicalCenterId).length) {
-  //      const renamedKey = uploader.renameKey(scheduleObject.medicalCenterId,"city", "cityId");
-  //      scheduleObject.medicalCenterId = renamedKey;
-  //   }
-  //   const updateMedicalKey = uploader.renameKey(scheduleObject,"medicalCenter", "medicalCenterId");
-
-  //   const updateDoctorKey = uploader.renameKey(updateMedicalKey,"doctor", "doctorId");
-  //   return updateDoctorKey;
-  // });
-
-  return { updatedDocument, objectsCount };
+  return { documents, count }
 
 
 
@@ -54,16 +47,17 @@ exports.getAllSchedules = async (query, limit, skip, sort) => {
 };
 exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
   try {
-    
+
     let searchQuery = req.query.searchQuery;
-    let medicalCenterId=req.query.medicalCenterId;
-    let doctorId=req.query.doctorId;
-    let city=req.query.city;
-    let timeSlot=req.query.timeSlot;
-    let specialty=req.query.specialty;
-    let groupBy=req.query.groupBy;
-    let query={};
-     query["$and"]=[];
+    let medicalCenterId = req.query.medicalCenterId;
+
+    let doctorId = req.query.doctorId;
+    let city = req.query.city ? req.query.city : req.query.cityId ? req.query.cityId : '';
+    let timeSlot = req.query.timeSlot;
+    let specialty = req.query.specialty ? req.query.specialty : req.query.medicalSpecialtyId ? req.query.medicalSpecialtyId : '';
+    let groupBy = req.query.groupBy;
+    let query = {};
+    query["$and"] = [];
     if (medicalCenterId) {
       query["$and"].push({ "medicalCenter": { $eq: mongoose.Types.ObjectId(medicalCenterId) } });
     }
@@ -71,47 +65,67 @@ exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
       query["$and"].push({ "doctor": { $eq: mongoose.Types.ObjectId(doctorId) } });
     }
     // City Filter
-    if(city)
-    {
-        query["$and"].push({ "medicalCenterObject.city": { $eq: mongoose.Types.ObjectId(city) } });
+    if (city) {
+      query["$and"].push({ "medicalCenterObject.city": { $eq: mongoose.Types.ObjectId(city) } });
     }
-     // Time Slot
+
+    // Time Slot
     if (timeSlot) {
-        query["$and"].push({ timeSlot: { $eq: mongoose.Types.ObjectId(timeSlot) } });
+      query["$and"].push({ timeSlot: { $eq: mongoose.Types.ObjectId(timeSlot) } });
+    }
+    if (searchQuery) {
+      query["$and"].push({
+        $or: [
+          {
+            'medicalCenterObject.name': {
+              $regex: searchQuery,
+              $options: "i", // Case-insensitive search
+            }
+          },
+          {
+            'doctorObject.firstName': {
+              $regex: searchQuery,
+              $options: "i", // Case-insensitive search
+            }
+          }
+
+        ]
+      })
     }
 
     if (specialty) {
-        query["$and"].push({ "doctorObject.specialty": { $eq: mongoose.Types.ObjectId(specialty) } });
+      query["$and"].push({ "doctorObject.specialty": { $eq: mongoose.Types.ObjectId(specialty) } });
     }
     console.log(medicalCenterId);
     console.log(query);
-   
-    let groupByPipeLine='';
+
+    let groupByPipeLine = '';
     // This is for list of schedule for doctor where they need data according medical center
-    if(groupBy=="medicalCenter")
-    {
-      groupByPipeLine= {
+    if (groupBy == "medicalCenter") {
+      groupByPipeLine = {
         $group: {
           _id: "$medicalCenter",
           medicalCenter: { $first: "$medicalCenterObject" },
           doctor: { $first: "$doctorObject" },
           scheduleList: { $push: "$$ROOT" },
+          scheduleCount: { $sum: 1 }
         }
       };
     }
-    else{
+    else {
       // This is for list of schedule for medical center where they need data according doctor
-      groupByPipeLine=  {
+      groupByPipeLine = {
         $group: {
           _id: "$doctor",
           medicalCenter: { $first: "$medicalCenterObject" },
-          doctor: { $first: "$doctorObject" },         
+          doctor: { $first: "$doctorObject" },
           scheduleList: { $push: "$$ROOT" },
+          scheduleCount: { $sum: 1 }
         }
       };
     }
 
-    let documents = await ScheduleSchema.aggregate([    
+    let documents = await ScheduleSchema.aggregate([
       {
         $lookup: {
           from: `medicalcenters`,
@@ -128,15 +142,16 @@ exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
           as: `doctorObject`,
         },
       },
+
       {
         $match: {
           $and: query["$and"]
         },
       },
       groupByPipeLine,
-      {"$limit":limit},
-      {"$skip":skip}
-      
+      { "$limit": limit },
+      { "$skip": skip }
+
     ]);
     console.log(documents);
 

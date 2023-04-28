@@ -7,6 +7,7 @@ const {
 const Services = require("../services/commonServices");
 const TimeSlotEnumSchema = require("../schemas/timeSlotEnumSchema");
 const { getSearchQuery } = require("../utilities/searchQuery");
+const { messageUtil } = require("../utilities/message");
 
 const timeSlotEnum = {
   // Add Time Slot Enum
@@ -84,6 +85,26 @@ const timeSlotEnum = {
       }
 
       return successResponse(res, "Time Slot Enum updated successfully", data);
+    } catch (err) {
+      return serverErrorResponse(res, err);
+    }
+  },
+  deleteTimeSlotEnum: async (req, res) => {
+    try {
+      let body = {
+        _id: req.params.id,
+      };
+
+      let data = await Services.deleteOne({
+        schemaName: TimeSlotEnumSchema,
+        body
+       });
+
+      if (!data) {
+        return badRequestErrorResponse(res, messageUtil.resourceNotFound);
+      }
+
+      return successResponse(res, messageUtil.resourceDeleted, data);
     } catch (err) {
       return serverErrorResponse(res, err);
     }

@@ -7,5 +7,6 @@ router.get("/", genderEnumController.getAllgenderEnum);
 router.get("/:id", genderEnumController.getgenderEnum);
 router.post("/", genderEnumController.addgenderEnum);
 router.patch("/:id", genderEnumController.updategenderEnum);
+router.delete("/:id", genderEnumController.deletegenderEnum);
 
 module.exports = router;

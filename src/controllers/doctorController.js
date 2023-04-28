@@ -1,4 +1,5 @@
 const DoctorServices = require("../services/doctorServices");
+const ScheduleServices = require("../services/scheduleServices");
 const { messageUtil } = require("../utilities/message");
 const { renameKey } = require("../utilities/replaceKey");
 const {
@@ -105,7 +106,12 @@ const AllDoctors = async (req, res) => {
     }
     if (req.query.specialty) {
       query.specialty = req.query.specialty;
+    } 
+    if (req.query.medicalSpecialtyId) {
+      query.specialty = req.query.medicalSpecialtyId;
     }
+    
+
     if(req.query.searchQuery) query = getSearchQuery(["firstName" , "secondName" ,"lastName","_id" ], req.query.searchQuery , query);
     const documents = await DoctorServices.getDoctors(query, limitQP, skipOP);
     return successResponse(res, messageUtil.success, {

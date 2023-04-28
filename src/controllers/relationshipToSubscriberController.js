@@ -7,6 +7,7 @@ const {
 const {getSearchQuery} = require("../utilities/searchQuery");
 const Services = require("../services/commonServices");
 const RelationshipToSubscriberSchema = require("../schemas/relationshipToSubscriberEnumSchema");
+const { messageUtil } = require("../utilities/message");
 
 const relationshipToSubscriber = {
   // Add Relationship to beneficiary Enum
@@ -90,6 +91,26 @@ const relationshipToSubscriber = {
         "RelationToBeneficiaryEnum updated successfully",
         data
       );
+    } catch (err) {
+      return serverErrorResponse(res, err);
+    }
+  },
+  deleterelationshipToSubscriberEnum: async (req, res) => {
+    try {
+      let body = {
+        _id: req.params.id,
+      };
+
+      let data = await Services.deleteOne({
+        schemaName: RelationshipToSubscriberSchema,
+        body
+       });
+
+      if (!data) {
+        return badRequestErrorResponse(res, messageUtil.resourceNotFound);
+      }
+
+      return successResponse(res, messageUtil.resourceDeleted, data);
     } catch (err) {
       return serverErrorResponse(res, err);
     }
