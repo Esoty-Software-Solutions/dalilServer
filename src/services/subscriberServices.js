@@ -28,7 +28,8 @@ exports.insertManyBeneficiaries = async (query) => {
 };
 
 exports.updateSubscriber = async (query, data) => {
-  return await subscribers.findOneAndUpdate(query, data, { new: true });
+  const renamedData = renameKey (data , ["institution" , "city"] , ["institutionId" , "cityId"]);
+  return await subscribers.findOneAndUpdate(query, renamedData, { new: true });
 };
 
 exports.insertManySubscribers = async (query) => {
