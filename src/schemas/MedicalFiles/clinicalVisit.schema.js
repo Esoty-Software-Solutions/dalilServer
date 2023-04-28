@@ -26,7 +26,7 @@ const clinicalVisitsSchema = new mongoose.Schema({
         },
         thumbnailLink: {
             type : String,
-            default : "https://cdn.iconscout.com/icon/free/png-512/document-957-452909.png?f=avif&w=256",
+            default : null,
         },
         fileLink: {
             type : String,

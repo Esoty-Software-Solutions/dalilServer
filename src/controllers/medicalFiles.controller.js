@@ -90,7 +90,7 @@ const initMedicalFilesController = () => {
     const getClinicalVisitsController = async (req, res) => {
         try {
             const queryPayload = req.query;
-            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload, clinicalVisit);
+            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload, req.params, clinicalVisit);
             if (createResponse?.success) {
                 return successResponse(res, messageUtil.resourceUpdated, createResponse.data);
             } else {
@@ -119,7 +119,8 @@ const initMedicalFilesController = () => {
     const getAllergiesController = async (req, res) => {
         try {
             const queryPayload = req.query;
-            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload, allergy);
+
+            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload,req.params, allergy);
             if(createResponse?.success) {
                 return successResponse(res, messageUtil.resourceUpdated, createResponse.data);
             } else {
@@ -148,7 +149,7 @@ const initMedicalFilesController = () => {
     const getSurgeryHistoriesController = async (req, res) => {
         try {
             const queryPayload = req.query;
-            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload, surgeryHistory);
+            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload, req.params, surgeryHistory);
             if (createResponse?.success) {
                 return successResponse(res, messageUtil.resourceUpdated, createResponse.data);
             } else {
@@ -177,7 +178,7 @@ const initMedicalFilesController = () => {
     const getChronicDiseasesController = async (req, res) => {
         try {
             const queryPayload = req.query;
-            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload, chronicDiseases);
+            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload,req.params, chronicDiseases);
             if (createResponse?.success) {
                 return successResponse(res, messageUtil.resourceUpdated, createResponse.data);
             } else {
@@ -207,7 +208,7 @@ const initMedicalFilesController = () => {
     const getMedicalTestsController = async (req, res) => {
         try {
             const queryPayload = req.query;
-            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload , medicalTests);
+            const createResponse = await medicalFilesServices.getDataMedicalFiles(queryPayload , req.params , medicalTests);
             if(createResponse?.success) {
                 return successResponse(res, messageUtil.resourceUpdated, createResponse.data);
             }else {
