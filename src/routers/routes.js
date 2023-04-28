@@ -26,7 +26,12 @@ const genderEnumRouter = require("./genderEnum.routes");
 const reviewRouter = require("./review.routes");
 const API_VERSION = "/v1";
 const prescriptionsRouter = require("./prescriptions.routes");
-const pharmacyRouter= require("./pharmacy.routes");
+const pharmacyRouter = require("./pharmacy.routes");
+
+router.get(API_VERSION + "/serverHealth", (req, res) => {
+  res.type("json");
+  res.status(200).send(JSON.stringify({ Message: "Server is up and running" }));
+});
 router.use(API_VERSION + "/login", loginRouter);
 router.use(API_VERSION + "/logout", logoutRouter);
 router.use(API_VERSION + "/users", usersRouter);
@@ -47,7 +52,10 @@ router.use(API_VERSION + "/review", reviewRouter);
 
 // Miscellaneous APIs
 router.use(API_VERSION + "/misc/appointmentStatusEnum", appointmentStatusEnums);
-router.use(API_VERSION + "/misc/relationshipToSubscriberEnum",relationshipToSubscriber);
+router.use(
+  API_VERSION + "/misc/relationshipToSubscriberEnum",
+  relationshipToSubscriber,
+);
 router.use(API_VERSION + "/misc/appointmentStatusEnum", appointmentStatusEnums);
 router.use(API_VERSION + "/misc/medicalSpecialties", medicalSpecialties);
 router.use(API_VERSION + "/misc/medicalServices", medicalServices);

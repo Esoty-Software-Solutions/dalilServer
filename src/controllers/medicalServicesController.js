@@ -44,7 +44,7 @@ const medicalServices = {
             //     skip: req.query.skip
             // }
             let filterQP = {}; // temporary
-            if(req.query.searchQuery) filterQP = getSearchQuery(["backendName","arabicName", "englishName"], req.query.searchQuery)
+            if(req.query.searchQuery) filterQP = getSearchQuery(["backendName","arabicName", "englishName","_id"], req.query.searchQuery)
             let objectArray = await medicalServiceServices.getAllMedicalServices(filterQP , req.query.limit , req.query.skip);
 
             return successResponse(res, "Success", {objectCount : objectArray.objectsCount , objectArray : objectArray.object});

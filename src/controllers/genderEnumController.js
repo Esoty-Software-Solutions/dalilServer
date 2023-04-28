@@ -51,7 +51,7 @@ const genderEnum = {
       let skip = req.query.skip;
       let searchquery = {};
       let query = {};
-      const searchFields = ["backendName", "englishName"];
+      const searchFields = ["backendName", "englishName",'_id'];
       if (req.query.id) {
         query._id = req.query.id;
       }

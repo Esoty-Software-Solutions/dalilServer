@@ -60,8 +60,6 @@ const UserRoleData = require("./data/userRole.json");
 const fakerSchema = require("./data/FakerSchemas");
 
 
-
-
 // Add AccountStatus Data
 
 const createAccountStatusData = async () => {
