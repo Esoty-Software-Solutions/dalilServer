@@ -47,8 +47,15 @@ function uploadFileS3(fileType, bucketName) {
           });
         },
         key: function (req, file, cb) {
-          console.log(typeof file.originalname , file.originalname,"------------------>")
-          let checkedString = file.originalname.replaceAll(" ", "-");
+          const myString = file.originalname;
+          let checkedString = "";
+          for (let i = 0; i < myString.length; i++) {
+            if (myString[i] === " ") {
+              checkedString += "-";
+            } else {
+              checkedString += myString[i];
+            }
+          }
           const { beneficiaryId } = req.params;
           let medicalFileType = req.originalUrl.split("/")[req.originalUrl.split("/").length - 1];
           let filePath = `${beneficiaryId}/${medicalFileType}/${Date.now().toString() + "-" + checkedString}`;
@@ -79,8 +86,17 @@ function uploadFileS3(fileType, bucketName) {
           });
         },
         key: function (req, file, cb) {
-          console.log(typeof file.originalname ,file.originalname ,  "------------------>")
-          let checkedString = file.originalname.replaceAll(" ", "-");
+
+          const myString = file.originalname;
+          let checkedString = "";
+          for (let i = 0; i < myString.length; i++) {
+            if (myString[i] === " ") {
+              checkedString += "-";
+            } else {
+              checkedString += myString[i];
+            }
+          }
+          
           let filePath = Date.now().toString() + "-" + checkedString;
           cb(null, filePath);
         },
