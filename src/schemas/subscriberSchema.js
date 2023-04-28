@@ -95,15 +95,13 @@ const subscriberSchema = new mongoose.Schema({
     ref: "gender",
     required: [true, `please enter valid gender`],
   },
-  beneficiaries: 
-    // type: [beneficiarySchema],
-  [{
+  beneficiaries: [{
     type: mongoose.Schema.Types.ObjectId,
     set: (v) => mongoose.Types.ObjectId(v),
     ref: "beneficiaries",
     required: [false, `please provide valid beneficiary ID `]
   }],
-  institutionId: {
+  institution: {
     type: mongoose.Schema.Types.ObjectId,
     set: (v) => mongoose.Types.ObjectId(v),
     ref: "institutions",
@@ -125,7 +123,7 @@ const subscriberSchema = new mongoose.Schema({
   city: {
     type: mongoose.Schema.Types.ObjectId,
     set: (v) => mongoose.Types.ObjectId(v),
-    ref: "city",
+    ref: "cities",
     required: [true, `please enter valid cityId`],
   },
   residentDistrict: String,
@@ -136,6 +134,21 @@ const subscriberSchema = new mongoose.Schema({
     // required: [true, `please provide valid user id`],
   },
   // audit,
+});
+
+
+subscriberSchema.pre(['find' , 'findOne' , 'save' , 'findOneAndUpdate'], function(next) {
+  this.populate('gender' , '-__v -_id -id');
+  this.populate('beneficiaries');
+  this.populate('institution' , '-_id -__v');
+  this.populate('city' , '-_id -__v');
+  next();
+});
+
+beneficiarySchema.pre(['find' , 'findOne' , 'save' , 'findOneAndUpdate'], function(next) {
+  this.populate('gender' , '-_id -__v');
+  this.populate('relationshipToSubscriber' , '-_id -__v');
+  next();
 });
 
 const subscribers = mongoose.model(`subscribers`, subscriberSchema);
