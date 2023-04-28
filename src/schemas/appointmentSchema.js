@@ -14,7 +14,7 @@ const appointmentSchema = new mongoose.Schema(
       required: [true, `please provide valid time slot id`],
     },
 
-    beneficiaryId: {
+    beneficiary: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "beneficiaries",
       // required: [true, `please provide valid beneficiary id`],
@@ -51,9 +51,9 @@ const appointmentSchema = new mongoose.Schema(
 
 
 appointmentSchema.pre(['find' , 'findOne' , 'save' , 'findOneAndUpdate'], function(next) {
-  this.populate('appointmentStatus' , '-__v -_id -id');
-  this.populate('timeSlot' , '-__v -_id');
-  
+  this.populate('appointmentStatus' , '-__v -id');
+  this.populate('timeSlot' , '-__v');
+  this.populate('beneficiary' , '-__v');
   next();
 });
 

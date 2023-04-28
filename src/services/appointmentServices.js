@@ -2,12 +2,12 @@ const AppointmentSchema = require("../schemas/appointmentSchema");
 const { renameKey } = require("../utilities/replaceKey");
 
 exports.createAppointment = async (query) => {
-  const renamedDoc = renameKey(query, ["appointmentStatus", "timeSlot"], ["appointmentStatusId", "timeSlotId"]);
+  const renamedDoc = renameKey(query, ["appointmentStatus", "timeSlot" , "beneficiary"], ["appointmentStatusId", "timeSlotId" , "beneficiaryId"]);
   return await AppointmentSchema.create(renamedDoc);
 };
 
 exports.updateAppointment = async (query, data) => {
-  const renamedDoc = renameKey(data, ["appointmentStatus", "timeSlot"], ["appointmentStatusId", "timeSlotId"]);
+  const renamedDoc = renameKey(data, ["appointmentStatus", "timeSlot" , "beneficiary"], ["appointmentStatusId", "timeSlotId" , "beneficiaryId"]);
   return await AppointmentSchema.findOneAndUpdate(query, renamedDoc, {
     new: true,
   }).select("-__v -createdAt -updatedAt");
