@@ -1,4 +1,5 @@
 const { faker } = require('@faker-js/faker');
+const appointment = require('../../../schemas/appointmentSchema');
 
 
 const fakerSchema = {
@@ -91,8 +92,18 @@ const fakerSchema = {
     }
 
     return schedule;
-  }
+  },
 
+  randomAppointment(){
+    const appointment = {
+      appointmentDate: faker.date.future(),
+      appointmentStatus: faker.lorem.word(1),
+  
+      notes: faker.lorem.sentence(20),
+    }
+
+    return appointment
+  }
 
 };
 

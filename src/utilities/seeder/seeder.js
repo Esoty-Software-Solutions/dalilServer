@@ -58,6 +58,8 @@ const UserRoleData = require("./data/userRole.json");
 
 // add fake schema
 const fakerSchema = require("./data/FakerSchemas");
+const { beneficiaries } = require("../../schemas/subscriberSchema");
+const appointment = require("../../schemas/appointmentSchema");
 
 
 // Add AccountStatus Data
@@ -81,6 +83,39 @@ const createAccountStatusData = async () => {
 
 const createAppointmentsData = async () => {
   try {
+
+    const fakeAppointment = [];
+    for (let i = 0; i < 10; i++) {
+      const sample = fakerSchema.randomAppointment();
+
+      const timeSlotObject = await commonServices.getOne({ schemaName: TimeSlotEnum});
+      sample.timeSlot = timeSlotObject._id;
+      
+      const beneficiaryObject = await commonServices.getOne({ schemaName: beneficiaries });
+      sample.beneficiaryId = beneficiaryObject._id;
+
+      const scheduleObject = await commonServices.getMany({ schemaName: schedule, skip: Math.floor(Math.random()*10), limit: 1 });
+      sample.scheduleId = scheduleObject[0]._id;
+
+      const medicalCenterObject = await commonServices.getMany({ schemaName: medicalCenter, skip: Math.floor(Math.random()*10), limit: 1 });
+      sample.medicalCenterId = medicalCenterObject[0]._id;
+
+      const doctorObejct = await commonServices.getMany({ schemaName: doctor, skip: Math.floor(Math.random()*10), limit: 1 });
+      sample.doctorId = doctorObejct[0]._id;
+
+      const userObject = await commonServices.getOne({ schemaName: user });
+      sample.userId = userObject._id;
+      sample.createdBy = userObject._id;
+      sample.updatedBy = userObject._id;
+
+      fakeAppointment.push(sample);
+    }
+
+
+    await appointment.insertMany(fakeAppointment);
+    console.log("Fake Appointments inserted");
+
+
     for (let i = 0; i < AppointmentsData.length; i++) {
       const newBody = {
         ...AppointmentsData[i],
@@ -547,7 +582,6 @@ const removeData = async () => {
 
 
     await createAccountStatusData();
-    await createAppointmentsData();
     await createAppointmentStatusData();
     await createCitiesData();
     await createGenderData();
@@ -570,6 +604,9 @@ const removeData = async () => {
     
     await createBeneficiaryData();
     await createSubscriberData();
+
+    await createAppointmentsData();
+
     process.exit();
   } catch (err) {
     console.error(err);
