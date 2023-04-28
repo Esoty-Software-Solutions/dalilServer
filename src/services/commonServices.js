@@ -75,6 +75,13 @@ class Service {
   }) => {
     return await schemaName.find(query).count();
   };
+
+  getRandom = async({
+    schemaName,
+    count
+  }) =>{
+    return schemaName.aggregate().sample(count? count: 1)
+  }
 }
 
 module.exports = new Service();
