@@ -97,6 +97,26 @@ const appointmentStatusEnums = {
       return serverErrorResponse(res, err);
     }
   },
+  deleteappointmentStatusEnums: async (req, res) => {
+    try {
+      let body = {
+        _id: req.params.id,
+      };
+
+      let data = await Services.deleteOne({
+        schemaName: AppointmentStatusEnumSchema,
+        body
+       });
+
+      if (!data) {
+        return badRequestErrorResponse(res, messageUtil.resourceNotFound);
+      }
+
+      return successResponse(res, messageUtil.resourceDeleted, data);
+    } catch (err) {
+      return serverErrorResponse(res, err);
+    }
+  },
 };
 
 module.exports = appointmentStatusEnums;

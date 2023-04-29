@@ -8,6 +8,9 @@ const {
 } = require("../utilities/response");
 const { getSearchQuery } = require("../utilities/searchQuery");
 
+const { messageUtil } = require("../utilities/message");
+
+
 const medicalSpecialties = {
   // Add Medical Specialty
 
@@ -90,6 +93,26 @@ const medicalSpecialties = {
         "Medical Specialty updated successfully",
         data
       );
+    } catch (err) {
+      return serverErrorResponse(res, err);
+    }
+  },
+  deleteMedicalSpecialty: async (req, res) => {
+    try {
+      let body = {
+        _id: req.params.id,
+      };
+
+      let data = await Services.deleteOne({
+        schemaName: MedicalSpecialties,
+        body
+       });
+
+      if (!data) {
+        return badRequestErrorResponse(res, messageUtil.resourceNotFound);
+      }
+
+      return successResponse(res, messageUtil.resourceDeleted, data);
     } catch (err) {
       return serverErrorResponse(res, err);
     }

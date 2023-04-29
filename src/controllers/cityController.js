@@ -115,6 +115,27 @@ const city = {
       return serverErrorResponse(res, err);
     }
   },
+  // delete by id
+  deleteCity: async (req, res) => {
+    try {
+      let body = {
+        _id: req.params.id,
+      };
+
+      let data = await Services.deleteOne({
+        schemaName: CitySchema,
+        body
+       });
+
+      if (!data) {
+        return badRequestErrorResponse(res, messageUtil.resourceNotFound);
+      }
+
+      return successResponse(res, messageUtil.resourceDeleted, data);
+    } catch (err) {
+      return serverErrorResponse(res, err);
+    }
+  },
 };
 
 module.exports = city;

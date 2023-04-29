@@ -107,6 +107,26 @@ const genderEnum = {
       return serverErrorResponse(res, err);
     }
   },
+  deletegenderEnum: async (req, res) => {
+    try {
+      let body = {
+        _id: req.params.id,
+      };
+
+      let data = await Services.deleteOne({
+        schemaName: GenderEnums,
+        body
+       });
+
+      if (!data) {
+        return badRequestErrorResponse(res, messageUtil.resourceNotFound);
+      }
+
+      return successResponse(res, messageUtil.resourceDeleted, data);
+    } catch (err) {
+      return serverErrorResponse(res, err);
+    }
+  },
 };
 
 module.exports = genderEnum;

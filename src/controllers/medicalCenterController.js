@@ -51,11 +51,12 @@ const SingleMedicalCenter = async (req, res) => {
 
 const UpdateMedicalCenter = async (req, res) => {
   try {
+    console.log(req.params)
     const document = await MedicalCenterServices.updateMedicalCenter(
       { _id: req.params.medicalCenterId },
       { ...req.body }
     );
-
+  
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
     }
@@ -131,6 +132,10 @@ const AllMedicalCenter = async (req, res) => {
       if (req.query.city) {
         query.city = req.query.city;
       }
+      if (req.query.cityId) {
+        query.city = req.query.cityId;
+      }
+      
       if(req.query.searchQuery) query = getSearchQuery(["name"], req.query.searchQuery ,  query);
       const documents = await MedicalCenterServices.getAllMedicalCenters(
         query,

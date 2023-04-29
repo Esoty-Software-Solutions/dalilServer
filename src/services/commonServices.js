@@ -34,7 +34,7 @@ class Service {
     limit,
     select,
     populate,
-  }) => {};
+  }) => {schemaName.remove(body);};
 
   getOne = async ({
     schemaName,
