@@ -48,7 +48,7 @@ const pharmacySchema = new mongoose.Schema(
 );
 // this middleware will always return the city object and not the city objectId
 pharmacySchema.pre(['find' , "findOne" , "save" , "findOneAndUpdate"], function(next) {
-  this.populate('city' , '-_id -__v');
+  this.populate('city' , '-__v');
   next();
 });
 const pharmacy = mongoose.model(`pharmacy`, pharmacySchema);

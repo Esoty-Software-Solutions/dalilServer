@@ -11,6 +11,18 @@ class Service {
     return await schemaName.create(body);
   };
 
+  createMany = async ({
+    schemaName,
+    body,
+    query,
+    skip,
+    limit,
+    select,
+    populate,
+  }) => {
+    return await schemaName.insertMany(body);
+  };
+
   updateOne = async ({
     schemaName,
     body,

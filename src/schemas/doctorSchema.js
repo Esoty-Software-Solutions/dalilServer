@@ -10,7 +10,7 @@ const doctorSchema = new mongoose.Schema(
     },
     secondName: {
       type: String,
-      required: [true, `please enter valid second name`],
+      // required: [true, `please enter valid second name`],
     },
     lastName: {
       type: String,
@@ -32,18 +32,20 @@ const doctorSchema = new mongoose.Schema(
       required: [true, `please enter valid gender`],
     },
     birthdate: {
-      type: String,
-      required: [true, `please enter valid birthdate`],
+      type: Date,
+      set: (v) => Date(v),
+      get: (v) => v.toISOString().split(`T`)[0],
+      // required: [true, `please provide valid date`], 
     },
-    starRating: { type: Number},
+    starRating: { type: Number, default: null},
     commentCount: { type: Number, default: 0 },
   },
   { collection: "doctors" }
 );
 
 doctorSchema.pre(['find' , 'findOne' , 'save' , 'findOneAndUpdate'], function(next) {
-  this.populate('specialty' , '-__v  -id');
-  this.populate('gender' , '-__v  -id');
+  this.populate('specialty' , '-__v ');
+  this.populate('gender' , '-__v');
   next();
 });
 
