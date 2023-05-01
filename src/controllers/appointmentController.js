@@ -66,6 +66,9 @@ const createAppointment = async (req, res) => {
 
 const updateAppointment = async (req, res) => {
   try {
+    if(req?.userId) {
+      req.body.createdBy = req.userId;
+    }
     const document = await AppointmentServices.updateAppointment(
       {
         _id: req.params.appointmentId,
@@ -129,7 +132,9 @@ const getAppointments = async (req, res) => {
       };
     }
     if (req.query.dateRange) {
-      let arr = JSON.parse(req.query.dateRange);
+      // dateRange: [ '2022-12-22', '2023-03-01' ]
+      // let arr = JSON.parse(req.query.dateRange);
+      let arr = req.query.dateRange;
       const startDate = new Date(arr[0]);
       const endDate = new Date(arr[1]);
       query.appointmentDate = {
@@ -162,8 +167,11 @@ const getUserAppointments = async (req, res) => {
     if (!subscriber) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
     }
-    let query = { beneficiaryId: { $in: subscriber.beneficiaries } };
-
+    let beneficiaryIds;
+    if(subscriber?.beneficiaries) {
+      beneficiaryIds = subscriber.beneficiaries.map(benefObject => benefObject._id.toString());
+    }
+    let query = { beneficiary: { $in: beneficiaryIds } };
     if (req.query.appointmentStatus) {
       let arr = JSON.parse(req.query.appointmentStatus);
       query.appointmentStatus = {
@@ -179,6 +187,7 @@ const getUserAppointments = async (req, res) => {
         $lte: endDate,
       };
     }
+    
     let documents = await AppointmentServices.getAppointments(query);
     let count = documents.length;
 

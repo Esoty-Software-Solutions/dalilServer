@@ -18,6 +18,7 @@ exports.deleteAppointment = async (query) => {
 };
 
 exports.getAppointments = async (query, limit) => {
+  console.log(JSON.stringify(query) , 123);
   return await AppointmentSchema.find(query).limit(limit).select("-__v");
 };
 
