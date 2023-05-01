@@ -45,7 +45,7 @@ appointmentSchema.pre(['find' , 'findOne' , 'save' , 'findOneAndUpdate'], functi
   this.populate('timeSlot' , '-__v');
   this.populate('beneficiary' , '-__v');
   this.populate('schedule' , '-__v');
-  this.populate('createdBy' , '__v');
+  this.populate('createdBy' , '-__v');
   next();
 });
 
