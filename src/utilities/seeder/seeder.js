@@ -92,21 +92,27 @@ const createAppointmentsData = async () => {
       sample.timeSlot = timeSlotObject[0]._id;
       
       const beneficiaryObject = await commonServices.getRandom({ schemaName: beneficiaries });
-      sample.beneficiaryId = beneficiaryObject[0]._id;
+      sample.beneficiary = beneficiaryObject[0]._id;
 
       const scheduleObject = await commonServices.getRandom({ schemaName: schedule });
-      sample.scheduleId = scheduleObject[0]._id;
+      sample.schedule = scheduleObject[0]._id;
 
       const medicalCenterObject = await commonServices.getRandom({ schemaName: medicalCenter });
-      sample.medicalCenterId = medicalCenterObject[0]._id;
+      sample.medicalCenter = medicalCenterObject[0]._id;
+
+      const appointmentStatusObject = await commonServices.getRandom({ schemaName: appointmentStatusEnums });
+      sample.appointmentStatus = appointmentStatusObject[0]._id;
 
       const doctorObejct = await commonServices.getRandom({ schemaName: doctor });
-      sample.doctorId = doctorObejct[0]._id;
+      sample.doctor = doctorObejct[0]._id;
 
       const userObject = await commonServices.getRandom({ schemaName: user });
-      sample.userId = userObject[0]._id;
-      sample.createdBy = userObject._id;
-      sample.updatedBy = userObject._id;
+      sample.user = userObject[0]._id;
+
+
+
+      sample.createdBy = userObject[0]._id;
+      sample.updatedBy = userObject[0]._id;
 
       fakeAppointment.push(sample);
     }
@@ -352,6 +358,7 @@ const createScheduleData = async () => {
       
       const timeSlotObject = await commonServices.getRandom({ schemaName: TimeSlotEnum});
       sample.timeSlot = timeSlotObject[0]._id;
+      console.log(sample);
       
       fakeSchedules.push(sample);
     }

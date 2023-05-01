@@ -44,14 +44,14 @@ const scheduleSchema = new mongoose.Schema(
     },
     startDate: {
       type: Date,
-      set: (v) => Date(v),
+      // set: (v) => Date(v),
       get: (v) => v.toISOString().split(`T`)[0],
       required: [true, `please provide valid startDate`]
     },
     endDate: {
       type: Date,
-      set: (v) => Date(v),
-      get: (v) => v.toISOString().split(`T`)[0], 
+      // set: (v) => Date(v),
+      // get: (v) => v.toISOString().split(`T`)[0], 
       required: [true, `please provide valid endDate`],
     },
     isActive: {
@@ -61,6 +61,8 @@ const scheduleSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+
 
 scheduleSchema.pre(['find' , 'findOne' , 'save' , 'create' , 'findOneAndUpdate'], function(next) {
   this.populate('timeSlot' , '-__v -_id -id');
@@ -73,5 +75,7 @@ scheduleSchema.pre(['find' , 'findOne' , 'save' , 'create' , 'findOneAndUpdate']
 
 
 const schedule = mongoose.model(`schedules`, scheduleSchema);
+
+
 
 module.exports = schedule;

@@ -211,6 +211,8 @@ const AllSchedule = async (req, res) => {
 
     }
 
+    console.log("schedule respo>>>>>>>>>>", document.documents);
+
     return successResponse(res, messageUtil.success, { objectCount: document.count, objectArray: document.documents });
 
   } catch (error) {
