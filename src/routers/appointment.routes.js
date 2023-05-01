@@ -11,7 +11,7 @@ const { authentication } = require("../utilities/auth");
 var router = express.Router();
 
 router.get("", getAppointments);
-router.post("", createAppointment);
+router.post("", authentication,createAppointment);
 router.get("/:appointmentId",  getAppointment);
 router.post("/:appointmentId",  updateAppointment);
 router.patch("/:appointmentId",  updateAppointment);

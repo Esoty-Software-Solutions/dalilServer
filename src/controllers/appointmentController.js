@@ -50,6 +50,10 @@ const createAppointment = async (req, res) => {
     );
 
     if (isError) return;
+      // adding user id to the body payload
+      if(req?.userId) {
+        req.body.createdBy = req.userId;
+      }
     const document = await AppointmentServices.createAppointment({
       ...req.body,
     });
