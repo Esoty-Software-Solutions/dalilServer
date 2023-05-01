@@ -17,7 +17,7 @@ router
     uploader.uploadFileS3("multiple", config.dalilStorage_bucket),
     CreateMedicalCenter,
   );
-router.patch("/:medicalCenterId", UpdateMedicalCenter);
+router.patch("/:medicalCenterId", uploader.uploadFileS3("multiple", config.dalilStorage_bucket), UpdateMedicalCenter);
 router.get("", AllMedicalCenter);
 router.get("/:medicalCenterId", SingleMedicalCenter);
 router.delete("/:medicalCenterId", DeleteMedicalCenter);

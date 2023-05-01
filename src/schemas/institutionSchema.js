@@ -13,7 +13,7 @@ const institutionSchema = new mongoose.Schema(
     city: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "cities",
-      required: [true, "please provide cityid"],
+      required: [true, "please provide city id"],
     },
     employeeCount: {
       type: String,
@@ -22,7 +22,7 @@ const institutionSchema = new mongoose.Schema(
       type: String,
     },
     subscriberCount: {
-      type: String,
+      type: Number,
     },
     benefitPolicy: {
       insuranceType: {
@@ -104,7 +104,7 @@ const institutionSchema = new mongoose.Schema(
 );
 
 institutionSchema.pre(["find", "findOne" , "save" , "findOneAndUpdate"], function (next) {
-  this.populate("city", "-_id -__v");
+  this.populate("city", "-__v");
   next();
 });
 

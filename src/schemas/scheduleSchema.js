@@ -17,7 +17,6 @@ const scheduleSchema = new mongoose.Schema(
       ref: "timeSlotEnum",
       required: [true, `please provide valid timeslot`],
     },
-
     monday: {
       type: Boolean,
     },
@@ -39,17 +38,20 @@ const scheduleSchema = new mongoose.Schema(
     sunday: {
       type: Boolean,
     },
-
     price: {
       type: Number,
       required: [true, `please provide valid price`],
     },
     startDate: {
-      type: String,
-      required: [true, `please provide valid startDate`],
+      type: Date,
+      set: (v) => Date(v),
+      get: (v) => v.toISOString().split(`T`)[0],
+      required: [true, `please provide valid startDate`]
     },
     endDate: {
-      type: String,
+      type: Date,
+      set: (v) => Date(v),
+      get: (v) => v.toISOString().split(`T`)[0], 
       required: [true, `please provide valid endDate`],
     },
     isActive: {
@@ -59,7 +61,6 @@ const scheduleSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
 
 scheduleSchema.pre(['find' , 'findOne' , 'save' , 'create' , 'findOneAndUpdate'], function(next) {
   this.populate('timeSlot' , '-__v -_id -id');

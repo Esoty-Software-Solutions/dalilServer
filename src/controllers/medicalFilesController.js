@@ -64,8 +64,24 @@ const getMedicalFiles = async (req, res) => {
 };
 
 
+const DeleteMedicalFile = async (req, res) => {
+  try {
+    const document = await MedicalFilesServices.deleteMedicalFile(req.params.schema, {
+      _id: req.params.fileId,
+    });
+    if (!document) {
+      return notFoundResponse(res, messageUtil.resourceNotFound);
+    }
+    return successResponse(res, messageUtil.resourceDeleted);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createMedicalFile,
   updateMedicalFile,
   getMedicalFiles,
+  DeleteMedicalFile
 };

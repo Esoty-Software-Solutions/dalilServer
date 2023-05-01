@@ -7,5 +7,6 @@ router.get("/", timeSlotEnumController.getAlltimeSlotEnum);
 router.get("/:id", timeSlotEnumController.getTimeSlotEnum);
 router.post("/", timeSlotEnumController.addTimeSlotEnum);
 router.patch("/:id", timeSlotEnumController.updateTimeSlotEnum);
+router.delete("/:id", timeSlotEnumController.deleteTimeSlotEnum);
 
 module.exports = router;

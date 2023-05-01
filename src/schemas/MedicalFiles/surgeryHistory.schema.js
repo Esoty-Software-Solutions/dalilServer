@@ -11,7 +11,9 @@ const surgeryHistorySchema = new mongoose.Schema({
         required : true,
     },
     surgeryDate: {
-        type : Date,
+        type: Date,
+        set: (v) => Date(v),
+        get: (v) => v.toISOString().split(`T`)[0],
         default : null,
     },
     doctorName: {

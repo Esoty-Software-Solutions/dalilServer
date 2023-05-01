@@ -11,6 +11,18 @@ class Service {
     return await schemaName.create(body);
   };
 
+  createMany = async ({
+    schemaName,
+    body,
+    query,
+    skip,
+    limit,
+    select,
+    populate,
+  }) => {
+    return await schemaName.insertMany(body);
+  };
+
   updateOne = async ({
     schemaName,
     body,
@@ -34,7 +46,7 @@ class Service {
     limit,
     select,
     populate,
-  }) => {};
+  }) => {schemaName.remove(body);};
 
   getOne = async ({
     schemaName,
@@ -75,6 +87,13 @@ class Service {
   }) => {
     return await schemaName.find(query).count();
   };
+
+  getRandom = async({
+    schemaName,
+    count
+  }) =>{
+    return schemaName.aggregate().sample(count? count: 1)
+  }
 }
 
 module.exports = new Service();

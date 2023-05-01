@@ -88,23 +88,23 @@ const createAppointmentsData = async () => {
     for (let i = 0; i < 10; i++) {
       const sample = fakerSchema.randomAppointment();
 
-      const timeSlotObject = await commonServices.getOne({ schemaName: TimeSlotEnum});
-      sample.timeSlot = timeSlotObject._id;
+      const timeSlotObject = await commonServices.getRandom({ schemaName: TimeSlotEnum});
+      sample.timeSlot = timeSlotObject[0]._id;
       
-      const beneficiaryObject = await commonServices.getOne({ schemaName: beneficiaries });
-      sample.beneficiaryId = beneficiaryObject._id;
+      const beneficiaryObject = await commonServices.getRandom({ schemaName: beneficiaries });
+      sample.beneficiaryId = beneficiaryObject[0]._id;
 
-      const scheduleObject = await commonServices.getMany({ schemaName: schedule, skip: Math.floor(Math.random()*10), limit: 1 });
+      const scheduleObject = await commonServices.getRandom({ schemaName: schedule });
       sample.scheduleId = scheduleObject[0]._id;
 
-      const medicalCenterObject = await commonServices.getMany({ schemaName: medicalCenter, skip: Math.floor(Math.random()*10), limit: 1 });
+      const medicalCenterObject = await commonServices.getRandom({ schemaName: medicalCenter });
       sample.medicalCenterId = medicalCenterObject[0]._id;
 
-      const doctorObejct = await commonServices.getMany({ schemaName: doctor, skip: Math.floor(Math.random()*10), limit: 1 });
+      const doctorObejct = await commonServices.getRandom({ schemaName: doctor });
       sample.doctorId = doctorObejct[0]._id;
 
-      const userObject = await commonServices.getOne({ schemaName: user });
-      sample.userId = userObject._id;
+      const userObject = await commonServices.getRandom({ schemaName: user });
+      sample.userId = userObject[0]._id;
       sample.createdBy = userObject._id;
       sample.updatedBy = userObject._id;
 
@@ -166,16 +166,19 @@ const createDoctorData = async () => {
   try {
 
     const fakeDoctor = [];
+
+    const userObject = await commonServices.getRandom({ schemaName: user });
+    console.log("userObject>>>>", userObject);
     for (let i = 0; i < 10; i++) {
       const sample = fakerSchema.randomDoctor();
       
-      const specialtyObject = await commonServices.getOne({ schemaName: MedicalSpecialties });
-      sample.specialty = specialtyObject._id;
-      const levelObject = await commonServices.getOne({ schemaName: Level });
-      sample.level = levelObject._id;
+      const specialtyObject = await commonServices.getRandom({ schemaName: MedicalSpecialties });
+      sample.specialty = specialtyObject[0]._id;
+      const levelObject = await commonServices.getRandom({ schemaName: Level });
+      sample.level = levelObject[0]._id;
 
-      const genderObject = await commonServices.getOne({ schemaName: Gender });
-      sample.gender = genderObject._id;
+      const genderObject = await commonServices.getRandom({ schemaName: Gender });
+      sample.gender = genderObject[0]._id;
 
       fakeDoctor.push(sample);
     }
@@ -264,8 +267,8 @@ const createMedicalCenterData = async () => {
     for (let i = 0; i < 10; i++) {
       const sample = fakerSchema.randomMedicalCenter();
       
-      const cityObject = await commonServices.getOne({ schemaName: Cities });
-      sample.city = cityObject._id;
+      const cityObject = await commonServices.getRandom({ schemaName: Cities });
+      sample.city = cityObject[0]._id;
       fakeMedicalCenter.push(sample);
     }
 
@@ -341,14 +344,14 @@ const createScheduleData = async () => {
     for (let i = 0; i < 10; i++) {
       const sample = fakerSchema.randomSchedule();
 
-      const doctorObejct = await commonServices.getMany({ schemaName: doctor, skip: Math.floor(Math.random()*10), limit: 1 });
+      const doctorObejct = await commonServices.getRandom({ schemaName: doctor });
       sample.doctor = doctorObejct[0]._id;
       
-      const medicalCenterObject = await commonServices.getMany({ schemaName: medicalCenter, skip: Math.floor(Math.random()*10), limit: 1 });
+      const medicalCenterObject = await commonServices.getRandom({ schemaName: medicalCenter });
       sample.medicalCenter = medicalCenterObject[0]._id;
       
-      const timeSlotObject = await commonServices.getOne({ schemaName: TimeSlotEnum});
-      sample.timeSlot = timeSlotObject._id;
+      const timeSlotObject = await commonServices.getRandom({ schemaName: TimeSlotEnum});
+      sample.timeSlot = timeSlotObject[0]._id;
       
       fakeSchedules.push(sample);
     }
@@ -442,10 +445,10 @@ const createBeneficiaryData = async () => {
     const fakeBeneficiaries = [];
     for (let i = 0; i < 50; i++) {
       const sample = fakerSchema.randomBeneficiary();
-      const genderObject = await commonServices.getOne({ schemaName: Gender });
-      sample.gender = genderObject._id;
-      const relationshipToSubscriberEnumObject = await commonServices.getOne({ schemaName: relationshipToSubscriberEnum });
-      sample.relationshipToSubscriber = relationshipToSubscriberEnumObject._id;
+      const genderObject = await commonServices.getRandom({ schemaName: Gender });
+      sample.gender = genderObject[0]._id;
+      const relationshipToSubscriberEnumObject = await commonServices.getRandom({ schemaName: relationshipToSubscriberEnum });
+      sample.relationshipToSubscriber = relationshipToSubscriberEnumObject[0]._id;
       fakeBeneficiaries.push(sample);
     }
 
@@ -473,24 +476,24 @@ const createSubscriberData = async () => {
 
     for (let i = 0; i < 10; i++) {
       const fakeData = fakerSchema.randomSubscriber();
-      const genderObject = await commonServices.getOne({ schemaName: Gender });
-      fakeData.gender = genderObject._id;
+      const genderObject = await commonServices.getRandom({ schemaName: Gender });
+      fakeData.gender = genderObject[0]._id;
       fakeData.beneficiaries = [];
-      const institutionObject = await commonServices.getOne({ schemaName: institution });
-      fakeData.institutionId = institutionObject._id;
-      const doctorObejct = await commonServices.getOne({ schemaName: doctor });
-      fakeData.doctorId = doctorObejct._id;
-      const cityObejct = await commonServices.getOne({ schemaName: Cities });
-      fakeData.city = cityObejct._id;
-      const userObject = await commonServices.getOne({ schemaName: user });
-      fakeData.userId = userObject._id;
+      const institutionObject = await commonServices.getRandom({ schemaName: institution });
+      fakeData.institutionId = institutionObject[0]._id;
+      const doctorObejct = await commonServices.getRandom({ schemaName: doctor });
+      fakeData.doctorId = doctorObejct[0]._id;
+      const cityObejct = await commonServices.getRandom({ schemaName: Cities });
+      fakeData.city = cityObejct[0]._id;
+      const userObject = await commonServices.getRandom({ schemaName: user });
+      fakeData.userId = userObject[0]._id;
 
       for (let i = 0; i < 4; i++) {
         const sample = fakerSchema.randomBeneficiary();
-        const genderObject = await commonServices.getOne({ schemaName: Gender });
-        sample.gender = genderObject._id;
-        const relationshipToSubscriberEnumObject = await commonServices.getOne({ schemaName: relationshipToSubscriberEnum });
-        sample.relationshipToSubscriber = relationshipToSubscriberEnumObject._id;
+        const genderObject = await commonServices.getRandom({ schemaName: Gender });
+        sample.gender = genderObject[0]._id;
+        const relationshipToSubscriberEnumObject = await commonServices.getRandom({ schemaName: relationshipToSubscriberEnum });
+        sample.relationshipToSubscriber = relationshipToSubscriberEnumObject[0]._id;
         fakeBeneficiaries.push(sample);
         fakeData.beneficiaries.push(sample._id);
       }
