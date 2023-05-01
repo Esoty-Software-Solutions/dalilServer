@@ -32,7 +32,7 @@ const appointmentSchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
-      required: [true, `please provide valid user id`],
+      // required: [true, `please provide valid user id`],
     },
     updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   },
