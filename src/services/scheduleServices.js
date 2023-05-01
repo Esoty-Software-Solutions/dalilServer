@@ -1,4 +1,6 @@
 const ScheduleSchema = require("../schemas/scheduleSchema");
+const medicalSpecialtiesSchema = require("../schemas/medicalSpecialtiesSchema");
+const timeSlotEnumSchema = require("../schemas/timeSlotEnumSchema");
 const { renameKey } = require("../utilities/replaceKey");
 const mongoose = require('mongoose');
 const uploader = require("../utilities/uploader")
@@ -142,7 +144,8 @@ exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
           as: `doctorObject`,
         },
       },
-
+     
+     
       {
         $match: {
           $and: query["$and"]
@@ -153,7 +156,7 @@ exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
       { "$skip": skip }
 
     ]);
-    console.log(documents);
+
 
     documents.forEach((document) => {
       document.doctor = document.doctor[0];
@@ -169,8 +172,25 @@ exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
     if (documents.length === 0) {
       message = "list is empty change your query";
     }
+    let finalResult=[];
+    for (const iterator of documents) {
+        let tempObject={};
+        tempObject=iterator;
+        let specialty=await medicalSpecialtiesSchema.findById(iterator.doctor.specialty);
+        tempObject.doctor.specialty=specialty;
+        let scheduleList=[];
+        for (const schedule of iterator.scheduleList) {
+            let scheduleTemp={};
+            scheduleTemp=schedule;
+            let tempslot=await timeSlotEnumSchema.findById(schedule.timeSlot);
+            scheduleTemp.timeSlot=tempslot;
+            scheduleList.push(scheduleTemp);
+        }
+        tempObject.doctor.scheduleList=scheduleList;
+        finalResult.push(tempObject)
+    }
 
-    return { documents, count }
+    return { documents:finalResult, count }
     // res.status(200).json({ ...responseBody });
   } catch (error) {
     console.log(error);
