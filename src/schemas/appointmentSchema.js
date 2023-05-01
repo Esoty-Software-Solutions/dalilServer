@@ -19,11 +19,10 @@ const appointmentSchema = new mongoose.Schema(
       ref: "beneficiaries",
       // required: [true, `please provide valid beneficiary id`],
     },
-    scheduleId: {
-      // type: mongoose.Schema.Types.ObjectId,
-      // ref: "schedules",
-      // required: [true, `please provide valid schedule id`],
-      type : String
+    schedule: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "schedules",
+      required: [true, `please provide valid schedule id`],
     },
     // medicalCenterId: {
     //   type: mongoose.Schema.Types.ObjectId,
@@ -54,6 +53,7 @@ appointmentSchema.pre(['find' , 'findOne' , 'save' , 'findOneAndUpdate'], functi
   this.populate('appointmentStatus' , '-__v -id');
   this.populate('timeSlot' , '-__v');
   this.populate('beneficiary' , '-__v');
+  this.populate('schedule' , '-__v');
   next();
 });
 

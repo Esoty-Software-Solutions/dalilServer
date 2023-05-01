@@ -65,10 +65,9 @@ const updateAppointment = async (req, res) => {
     const document = await AppointmentServices.updateAppointment(
       {
         _id: req.params.appointmentId,
-        // userId: req.userId,
       },
       {
-        appointmentStatus: req.body.appointmentStatus,
+        ...req.body
       }
     );
 
