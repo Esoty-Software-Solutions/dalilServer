@@ -2,6 +2,7 @@ const ScheduleServices = require("../services/scheduleServices");
 const DoctorServices = require("../services/doctorServices");
 const MedicalCenterServices = require("../services/medicalCenterServices");
 const { messageUtil } = require("../utilities/message");
+const mongoose = require('mongoose');
 const {
   successResponse,
   serverErrorResponse,
@@ -158,7 +159,55 @@ const AllSchedule = async (req, res) => {
 
     }
     else {
-      document = await ScheduleServices.getAllSchedules({ "groupBy": groupBy }, limitQP, skipOP);
+      let searchQuery = req.query.searchQuery;
+      let medicalCenterId = req.query.medicalCenterId;
+  
+      let doctorId = req.query.doctorId;
+      let city = req.query.city ? req.query.city : req.query.cityId ? req.query.cityId : '';
+      let timeSlot = req.query.timeSlot;
+      let specialty = req.query.specialty ? req.query.specialty : req.query.medicalSpecialtyId ? req.query.medicalSpecialtyId : '';
+     
+      let query = {};
+      query["$and"] = [];
+      if (medicalCenterId) {
+        query["$and"].push({ "medicalCenter": { $eq: mongoose.Types.ObjectId(medicalCenterId) } });
+      }
+      if (specialty) {
+        query["$and"].push({ "doctorObject.specialty": { $eq: mongoose.Types.ObjectId(specialty) } });
+      }
+      if (doctorId) {
+        query["$and"].push({ "doctor": { $eq: mongoose.Types.ObjectId(doctorId) } });
+      }
+      // City Filter
+      if (city) {
+        query["$and"].push({ "medicalCenter.city": { $eq: mongoose.Types.ObjectId(city) } });
+      }
+  
+      // Time Slot
+      if (timeSlot) {
+        query["$and"].push({ timeSlot: { $eq: mongoose.Types.ObjectId(timeSlot) } });
+      }
+      if (searchQuery) {
+        query["$and"].push({
+          $or: [
+            {
+              'medicalCenter.name': {
+                $regex: searchQuery,
+                $options: "i", // Case-insensitive search
+              }
+            },
+            {
+              'doctor.firstName': {
+                $regex: searchQuery,
+                $options: "i", // Case-insensitive search
+              }
+            }
+  
+          ]
+        })
+      }
+      console.log(query)
+      document = await ScheduleServices.getAllSchedules(query, limitQP, skipOP);
 
     }
 

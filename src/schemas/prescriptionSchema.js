@@ -12,7 +12,7 @@ const quoteSchema = new mongoose.Schema({
     prescriptionId: {
       type: mongoose.Schema.Types.ObjectId,
       ref : "prescriptions",
-      default : null
+      required: [true, 'Please enter prescription id'],
     },
     notes: {
       type: String,
@@ -49,7 +49,6 @@ const prescriptionCenterSchema = new mongoose.Schema(
         type : mongoose.Schema.Types.ObjectId,
         ref : "subscribers",
         required: [true, `please enter subscriber id`],
-
     },
     notes: {
      type : String,

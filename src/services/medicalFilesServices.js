@@ -5,6 +5,12 @@ const uploader = require("../utilities/uploader");
 const config = require("../config/config");
 const { beneficiaries } = require("../schemas/subscriberSchema");
 const { getSearchQuery } = require("../utilities/searchQuery");
+const chronicDiseases = require("../schemas/MedicalFiles/chronicDisease.schema");
+const allergy = require("../schemas/MedicalFiles/allergy.schema");
+const clinicalVisit = require("../schemas/MedicalFiles/clinicalVisit.schema");
+const medicalTests = require("../schemas/MedicalFiles/medicalTests.schema");
+const surgeryHistory = require("../schemas/MedicalFiles/surgeryHistory.schema");
+
 // exports.createMedicalFile = async (query) => {
 //   return await medicalFiles.create(query);
 // };
@@ -124,4 +130,10 @@ exports.createMedFileForSubscriber = async (query, body , param) => {
   else{
     return {}
   }
+};
+
+exports.deleteMedicalFile = async (schema, query) => {
+
+  console.log(schema, query);
+  return await eval(schema).findOneAndDelete(query);
 }

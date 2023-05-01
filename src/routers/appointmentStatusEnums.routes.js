@@ -7,5 +7,6 @@ router.get("/", appointmentStatusEnumsController.getAllappointmentStatusEnums);
 router.get("/:id", appointmentStatusEnumsController.getappointmentStatusEnums);
 router.post("/", appointmentStatusEnumsController.addappointmentStatusEnums);
 router.patch("/:id", appointmentStatusEnumsController.updateappointmentStatusEnums);
+router.delete("/:id", appointmentStatusEnumsController.deleteappointmentStatusEnums);
 
 module.exports = router;

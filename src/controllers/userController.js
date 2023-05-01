@@ -140,7 +140,7 @@ const login = async (req, res) => {
     }
     const hashedPassword = doc.password;
 
-    const { userId, role } = doc;
+    const { userId, userRole } = doc;
 
     // comparing hashed password
     const hash = await bcrypt.compare(password, hashedPassword);
@@ -161,7 +161,7 @@ const login = async (req, res) => {
       }
     );
     const token = jwt.sign(
-      { userId: userId, username, role },
+      { userId: userId, username, userRole },
       process.env.jwtSecret,
       {
         expiresIn: `30d`,

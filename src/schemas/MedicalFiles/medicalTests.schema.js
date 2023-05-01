@@ -14,7 +14,9 @@ const medicalTestSchema = new mongoose.Schema({
         default : null,
     },
     reportDate: {
-        type : Date,
+        type: Date,
+        set: (v) => Date(v),
+        get: (v) => v.toISOString().split(`T`)[0],
         default : null,
     },
     notes: {
