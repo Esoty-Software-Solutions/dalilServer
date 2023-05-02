@@ -5,11 +5,14 @@ const app = express();
 const routes = require("./src/routers/routes");
 const dotenv = require(`dotenv`).config();
 const config = require("./src/config/config");
+const mongoose = require("mongoose");
 // app.use(express.json({ urlencoded: true }));
 
 // enable cors
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
+// this will set the getters to true for the entire project globally
+mongoose.set('toJSON', { getters: true });
 
 app.use(express.json({ limit: "150mb" }));
 app.use(express.urlencoded({ limit: "150mb" }));

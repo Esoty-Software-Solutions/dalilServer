@@ -68,8 +68,9 @@ const userSchema = new mongoose.Schema({
   updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   updatedTimeStamp: {
     type: Date,
-    set: (v) => Date(v),
-    get: (v) => v.toISOString().split(`T`)[0]
+    set: (v) => new Date(v),
+    get: (v) => v.toISOString().split(`T`)[0],
+    default: new Date()
   },
   userFile: {
     type: [String],
@@ -93,10 +94,13 @@ userSchema.pre("save", function (next) {
       if (err) return next(err);
       // override the cleartext password with the hashed one
       user.password = hash;
+       
       next();
     });
   });
 });
+
+
 const user = mongoose.model(`users`, userSchema);
 
 /// exporting user model to usermiddleware for querying user collection
