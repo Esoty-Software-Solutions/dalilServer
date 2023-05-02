@@ -69,12 +69,14 @@ class Service {
     select,
     populate,
   }) => {
+    console.log(query,"final")
     return await schemaName
       .find(query)
       .populate(populate)
       .skip(skip)
       .limit(limit)
       .select(select);
+      
   };
   count = async ({
     schemaName,
