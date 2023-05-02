@@ -5,7 +5,7 @@ const appointmentSchema = new mongoose.Schema(
   {
     appointmentDate: {
       type: Date,
-      set: (v) => Date(v),
+      set: (v) => new Date(v),
       get: (v) => v.toISOString().split(`T`)[0],
       required: [true, `please provide valid date`],
     },

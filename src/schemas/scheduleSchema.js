@@ -44,13 +44,13 @@ const scheduleSchema = new mongoose.Schema(
     },
     startDate: {
       type: Date,
-      set: (v) => Date(v),
+      set: (v) => new Date(v),
       get: (v) => v.toISOString().split(`T`)[0],
       required: [true, `please provide valid startDate`]
     },
     endDate: {
       type: Date,
-      set: (v) => Date(v),
+      set: (v) => new Date(v),
       get: (v) => v.toISOString().split(`T`)[0], 
       required: [true, `please provide valid endDate`],
     },

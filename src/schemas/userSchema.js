@@ -61,7 +61,7 @@ const userSchema = new mongoose.Schema({
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   createdTimeStamp: {
     type: Date,
-    set: (v) => Date(v),
+    set: (v) => new Date(v),
     get: (v) => v.toISOString().split(`T`)[0],
     default: new Date()
   },

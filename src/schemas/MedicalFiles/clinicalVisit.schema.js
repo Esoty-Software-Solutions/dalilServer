@@ -8,7 +8,7 @@ const clinicalVisitsSchema = new mongoose.Schema({
         },
         visitDate: {
             type: Date,
-            set: (v) => Date(v),
+            set: (v) => new Date(v),
             get: (v) => v.toISOString().split(`T`)[0],
             default : null,
         },

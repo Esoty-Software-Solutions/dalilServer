@@ -47,7 +47,7 @@ const beneficiarySchema = new mongoose.Schema({
   },
   birthdate: {
     type: Date,
-    set: (v) => Date(v),
+    set: (v) => new Date(v),
     get: (v) => v.toISOString().split(`T`)[0],
     required: [true, `please provide valid birthdate`]
   },
@@ -88,7 +88,7 @@ const subscriberSchema = new mongoose.Schema({
   },
   birthdate: {
     type: Date,
-    set: (v) => Date(v),
+    set: (v) => new Date(v),
     get: (v) => v.toISOString().split(`T`)[0],
     required: [true, `please provide valid birthdate`]
   },
