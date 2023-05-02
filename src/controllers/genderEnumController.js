@@ -7,7 +7,7 @@ const {
   serverErrorResponse,
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
-const {searchQuery} = require("../utilities/searchQuery");
+const {searchQuery,getSearchQuery} = require("../utilities/searchQuery");
 const genderEnum = {
   // Add Appointment Status Enum
 
