@@ -144,8 +144,7 @@ exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
           as: `doctorObject`,
         },
       },
-     
-     
+      
       {
         $match: {
           $and: query["$and"]
@@ -184,6 +183,14 @@ exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
             scheduleTemp=schedule;
             let tempslot=await timeSlotEnumSchema.findById(schedule.timeSlot);
             scheduleTemp.timeSlot=tempslot;
+            const date = new Date(schedule.startDate);
+            const formattedDate = date.toISOString().slice(0, 10);
+            scheduleTemp.startDate=formattedDate;
+
+            const endDate = new Date(schedule.endDate);
+            const endDateFormatted = date.toISOString().slice(0, 10);
+            scheduleTemp.endDate=endDateFormatted;
+
             scheduleList.push(scheduleTemp);
         }
         tempObject.doctor.scheduleList=scheduleList;
