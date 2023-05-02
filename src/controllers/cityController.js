@@ -70,9 +70,13 @@ const city = {
         searchquery = searchQuery(searchFields, req.query.searchQuery);
         query = { ...query, ...searchquery };
       }
-
+      console.log(query,"query");
+      console.log( req.query.searchQuery,"searchQuery");
+     
+      let body='';
       let objectArray = await Services.getMany({
         schemaName: CitySchema,
+        body:body,
         query: query,
         limit,
         skip,
