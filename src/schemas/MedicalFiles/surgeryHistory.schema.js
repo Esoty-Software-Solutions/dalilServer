@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const moment = require("moment/moment");
 
 const surgeryHistorySchema = new mongoose.Schema({
     medicalFileId: {
@@ -49,6 +49,16 @@ const surgeryHistorySchema = new mongoose.Schema({
         required : [true , "Please provide valid Subscriber" ]
     }
 });
+
+surgeryHistorySchema.post(["findOne" , "find" , "findOneAndUpdate"] , function (doc) {
+    if(Array.isArray(doc)) {
+      doc.forEach(document => {
+        document.surgeryDate = moment(document.surgeryDate).format('YYYY-MM-DD')
+      });
+    }else if (doc) {
+      doc.surgeryDate = moment(doc.surgeryDate).format('YYYY-MM-DD');
+    }
+  });
 
 const surgeryHistory = mongoose.model("surgeryHistory" , surgeryHistorySchema);
 module.exports = surgeryHistory;

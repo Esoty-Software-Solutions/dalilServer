@@ -1,5 +1,7 @@
 // importing mongoose dependency for subscriber schema and model creation
 const mongoose = require(`mongoose`);
+const moment = require("moment/moment");
+
 // const audit = require(`./auditSchema`);
 
 // // medicalFile schema or structure
@@ -154,7 +156,24 @@ beneficiarySchema.pre(['find' , 'findOne' , 'save' , 'findOneAndUpdate'], functi
   this.populate('relationshipToSubscriber' , '-_id -__v');
   next();
 });
-
+beneficiarySchema.post(["findOne" , "find" , "findOneAndUpdate"] , function (doc) {
+  if(Array.isArray(doc)) {
+    doc.forEach(document => {
+      document.birthdate = moment(document.birthdate).format('YYYY-MM-DD')
+    });
+  }else if (doc) {
+    doc.birthdate = moment(doc.birthdate).format('YYYY-MM-DD');
+  }
+});
+subscriberSchema.post(["findOne" , "find" , "findOneAndUpdate"] , function (doc) {
+  if(Array.isArray(doc)) {
+    doc.forEach(document => {
+      document.birthdate = moment(document.birthdate).format('YYYY-MM-DD')
+    });
+  }else if (doc) {
+    doc.birthdate = moment(doc.birthdate).format('YYYY-MM-DD');
+  }
+});
 const subscribers = mongoose.model(`subscribers`, subscriberSchema);
 const beneficiaries = mongoose.model(`beneficiaries`, beneficiarySchema);
 // const medicalFiles = mongoose.model(`medicalFiles`, medicalFileSchema);

@@ -1,5 +1,5 @@
 const mongoose = require(`mongoose`);
-
+const moment = require("moment");
 const scheduleSchema = new mongoose.Schema(
   {
     medicalCenter: {
@@ -61,6 +61,18 @@ const scheduleSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+scheduleSchema.post(["findOne" , "find" , "findOneAndUpdate"] , function (doc) {
+  if(Array.isArray(doc)) {
+    doc.forEach(document => {
+      document.startDate = moment(document.startDate).format('YYYY-MM-DD')
+      document.endDate = moment(document.endDate).format('YYYY-MM-DD')
+    });
+  }else if (doc) {
+    doc.startDate = moment(doc.startDate).format('YYYY-MM-DD');
+    doc.endDate = moment(doc.endDate).format('YYYY-MM-DD')
+  }
+});
 
 scheduleSchema.pre(['find' , 'findOne' , 'save' , 'create' , 'findOneAndUpdate'], function(next) {
   this.populate('timeSlot' , '-__v -_id -id');

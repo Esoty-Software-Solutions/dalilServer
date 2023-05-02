@@ -1,4 +1,5 @@
 const mongoose = require ("mongoose");
+const moment = require("moment/moment");
 
 const medicalTestSchema = new mongoose.Schema({
     title: {
@@ -43,6 +44,16 @@ const medicalTestSchema = new mongoose.Schema({
         required : [true , "Please provide valid Subscriber" ]
     }
 });
+
+medicalTestSchema.post(["findOne" , "find" , "findOneAndUpdate"] , function (doc) {
+    if(Array.isArray(doc)) {
+      doc.forEach(document => {
+        document.reportDate = moment(document.reportDate).format('YYYY-MM-DD')
+      });
+    }else if (doc) {
+      doc.reportDate = moment(doc.reportDate).format('YYYY-MM-DD');
+    }
+  });
 
 const medicalTests = mongoose.model("medicalTests" , medicalTestSchema);
 module.exports = medicalTests;

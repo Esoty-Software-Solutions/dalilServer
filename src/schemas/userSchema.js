@@ -1,6 +1,7 @@
 // importing mongoose dependency for user schema and model creation
 const mongoose = require(`mongoose`);
 const bcrypt = require("bcrypt");
+const moment = require("moment/moment");
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -100,6 +101,17 @@ userSchema.pre("save", function (next) {
   });
 });
 
+userSchema.post(["findOne" , "find" , "findOneAndUpdate"] , function (doc) {
+  if(Array.isArray(doc)) {
+    doc.forEach(document => {
+      document.createdTimeStamp = moment(document.createdTimeStamp).format('YYYY-MM-DD')
+      document.updatedTimeStamp = moment(document.updatedTimeStamp).format('YYYY-MM-DD')
+    });
+  }else if (doc) {
+    doc.createdTimeStamp = moment(doc.createdTimeStamp).format('YYYY-MM-DD');
+    doc.updatedTimeStamp = moment(doc.updatedTimeStamp).format('YYYY-MM-DD')
+  }
+});
 
 const user = mongoose.model(`users`, userSchema);
 

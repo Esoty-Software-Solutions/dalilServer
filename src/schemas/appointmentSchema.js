@@ -1,4 +1,5 @@
 const mongoose = require(`mongoose`);
+const moment = require("moment/moment");
 
 const appointmentSchema = new mongoose.Schema(
   {
@@ -39,6 +40,13 @@ const appointmentSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
+appointmentSchema.post(["findOne" , "find" , "findOneAndUpdate"] , function (doc) {
+  if(Array.isArray(doc)) {
+    doc.forEach(document => document.appointmentDate = moment(document.appointmentDate).format('YYYY-MM-DD'));
+  }else if (doc) {
+    doc.appointmentDate = moment(doc.appointmentDate).format('YYYY-MM-DD');
+  }
+});
 
 appointmentSchema.pre(['find' , 'findOne' , 'save' , 'findOneAndUpdate'], function(next) {
   this.populate('appointmentStatus' , '-__v -id');
