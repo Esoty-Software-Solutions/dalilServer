@@ -47,7 +47,7 @@ const beneficiarySchema = new mongoose.Schema({
     type: Date,
     set: (v) => Date(v),
     get: (v) => v.toISOString().split(`T`)[0],
-    required: [true, `please provide valid birthdate`],
+    required: [true, `please provide valid birthdate`]
   },
   gender: {
     type: mongoose.Schema.Types.ObjectId,
@@ -85,8 +85,10 @@ const subscriberSchema = new mongoose.Schema({
     required: [true, `please provide valid lastName`],
   },
   birthdate: {
-    type: String,
-    required: [true, `please provide valid birthdate`],
+    type: Date,
+    set: (v) => Date(v),
+    get: (v) => v.toISOString().split(`T`)[0],
+    required: [true, `please provide valid birthdate`]
   },
   phoneNumber: {
     type: String,
