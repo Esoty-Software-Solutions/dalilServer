@@ -2,6 +2,8 @@ const AppointmentServices = require("../services/appointmentServices");
 const SubscriberServices = require("../services/subscriberServices");
 const checkFeilds = require("../utilities/checkFields");
 const SmsServices = require("../services/smsServices");
+const { subscribers, beneficiaries } = require("../schemas/subscriberSchema");
+const {searchQuery,getSearchQuery} = require("../utilities/searchQuery");
 const dateRegex = /^([0-9]{4})-(?:[0-9]{2})-([0-9]{2})$/;
 const {
   successResponse,
@@ -125,10 +127,10 @@ const getAppointments = async (req, res) => {
       query.doctorId = req.query.doctorId;
     }
 
-    if (req.query.appointmentStatus) {
-      let arr = JSON.parse(req.query.appointmentStatus);
+       if (req.query.appointmentStatusId) {
+      // let arr = JSON.parse(req.query.appointmentStatusId);
       query.appointmentStatus = {
-        $in: arr,
+        $in: req.query.appointmentStatusId,
       };
     }
     if (req.query.dateRange) {
@@ -141,6 +143,21 @@ const getAppointments = async (req, res) => {
         $gte: startDate,
         $lte: endDate,
       };
+    }
+    if(req.query.searchQuery)
+    {
+      const searchFields = ["firstName", "secondName","lastName"];
+      let searchquery = getSearchQuery(searchFields, req.query.searchQuery);
+      
+      let beneficiary=await beneficiaries.find(searchquery);
+      let beneficiaryIds=[];
+      for (const iterator of beneficiary) {
+        beneficiaryIds.push(iterator._id.toString());
+      }
+
+     
+
+      query.$or=[{beneficiary:{$in:beneficiaryIds}}];
     }
     console.log("query: ", query);
     let documents = await AppointmentServices.getAppointments(query, limitQP);
