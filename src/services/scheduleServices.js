@@ -188,7 +188,7 @@ exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
             scheduleTemp.startDate=formattedDate;
 
             const endDate = new Date(schedule.endDate);
-            const endDateFormatted = date.toISOString().slice(0, 10);
+            const endDateFormatted = endDate.toISOString().slice(0, 10);
             scheduleTemp.endDate=endDateFormatted;
 
             scheduleList.push(scheduleTemp);
