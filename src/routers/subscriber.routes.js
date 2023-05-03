@@ -26,6 +26,7 @@ const {
   updateSimpleMedicalFilevalidator,
 } = require("../validators/medicalFiles.validator");
 const config = require("../config/config");
+const { createAppointment, getUserAppointments } = require("../controllers/appointmentController");
 var router = express.Router();
 const {
   createClinicalVisitsController,
@@ -137,6 +138,15 @@ router
 // ---------------------------------------- Medical files routes -----------------------------------------------
 
 // csv parse route
-router.route(`/csv-parse`).post(upload.single("buffer") , csvParseController)
+router.route(`/csv-parse`).post(upload.single("buffer") , csvParseController);
+
+
+// requesting an appointment
+router.post("/:subscriberId/appointments", createAppointment);
+
+// list all appointment for a user
+router.get("/:subscriberId/appointments", getUserAppointments);
+
+
 
 module.exports = router;

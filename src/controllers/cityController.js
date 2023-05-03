@@ -6,7 +6,7 @@ const {
   serverErrorResponse,
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
-const {searchQuery} = require("../utilities/searchQuery");
+const {searchQuery,getSearchQuery} = require("../utilities/searchQuery");
 const CitySchema = require("../schemas/citiesSchema");
 const mongoose = require('mongoose');
 
@@ -67,18 +67,22 @@ const city = {
       }
 
       if (req.query.searchQuery) {
-        searchquery = searchQuery(searchFields, req.query.searchQuery);
+        searchquery = getSearchQuery(searchFields, req.query.searchQuery);
         query = { ...query, ...searchquery };
       }
-
+      console.log(query,"query");
+      console.log( req.query.searchQuery,"searchQuery");
+     
+      let body='';
       let objectArray = await Services.getMany({
         schemaName: CitySchema,
+        body:body,
         query: query,
         limit,
         skip,
         select: "-__v ",
       });
-      console.log(objectArray)
+   
       let objectCount = await Services.count({ schemaName: CitySchema , query : query });
       return successResponse(
         res,

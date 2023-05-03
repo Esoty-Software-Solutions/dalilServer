@@ -10,7 +10,7 @@
 //       },
 //       createdTimeStamp: {
 //         type: Date,
-//         set: (v) => Date(v),
+//         set: (v) => new Date(v),
 //         get: (v) => v.toISOString(),
 //         required: [true, `please record the datetime this was created`],
 //         default: new Date(),
@@ -23,7 +23,7 @@
 //       },
 //       updatedTimeStamp: {
 //         type: Date,
-//         set: (v) => Date(v),
+//         set: (v) => new Date(v),
 //         get: (v) => v.toISOString(),
 //       },
 // }

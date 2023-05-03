@@ -1,10 +1,11 @@
 const mongoose = require(`mongoose`);
+const moment = require("moment/moment");
 
 const appointmentSchema = new mongoose.Schema(
   {
     appointmentDate: {
       type: Date,
-      set: (v) => Date(v),
+      set: (v) => new Date(v),
       get: (v) => v.toISOString().split(`T`)[0],
       required: [true, `please provide valid date`],
     },
@@ -32,13 +33,20 @@ const appointmentSchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
-      required: [true, `please provide valid user id`],
+      // required: [true, `please provide valid user id`],
     },
     updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   },
   { timestamps: true },
 );
 
+appointmentSchema.post(["findOne" , "find" , "findOneAndUpdate"] , function (doc) {
+  if(Array.isArray(doc)) {
+    doc.forEach(document => document.appointmentDate = moment(document.appointmentDate).format('YYYY-MM-DD'));
+  }else if (doc) {
+    doc.appointmentDate = moment(doc.appointmentDate).format('YYYY-MM-DD');
+  }
+});
 
 appointmentSchema.pre(['find' , 'findOne' , 'save' , 'findOneAndUpdate'], function(next) {
   this.populate('appointmentStatus' , '-__v -id');

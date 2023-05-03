@@ -2,6 +2,8 @@ const AppointmentServices = require("../services/appointmentServices");
 const SubscriberServices = require("../services/subscriberServices");
 const checkFeilds = require("../utilities/checkFields");
 const SmsServices = require("../services/smsServices");
+const { subscribers, beneficiaries } = require("../schemas/subscriberSchema");
+const {searchQuery,getSearchQuery} = require("../utilities/searchQuery");
 const dateRegex = /^([0-9]{4})-(?:[0-9]{2})-([0-9]{2})$/;
 const {
   successResponse,
@@ -66,6 +68,9 @@ const createAppointment = async (req, res) => {
 
 const updateAppointment = async (req, res) => {
   try {
+    if(req?.userId) {
+      req.body.createdBy = req.userId;
+    }
     const document = await AppointmentServices.updateAppointment(
       {
         _id: req.params.appointmentId,
@@ -122,20 +127,37 @@ const getAppointments = async (req, res) => {
       query.doctorId = req.query.doctorId;
     }
 
-    if (req.query.appointmentStatus) {
-      let arr = JSON.parse(req.query.appointmentStatus);
+       if (req.query.appointmentStatusId) {
+      // let arr = JSON.parse(req.query.appointmentStatusId);
       query.appointmentStatus = {
-        $in: arr,
+        $in: req.query.appointmentStatusId,
       };
     }
     if (req.query.dateRange) {
-      let arr = JSON.parse(req.query.dateRange);
+      // dateRange: [ '2022-12-22', '2023-03-01' ]
+      // let arr = JSON.parse(req.query.dateRange);
+      let arr = req.query.dateRange;
       const startDate = new Date(arr[0]);
       const endDate = new Date(arr[1]);
       query.appointmentDate = {
         $gte: startDate,
         $lte: endDate,
       };
+    }
+    if(req.query.searchQuery)
+    {
+      const searchFields = ["firstName", "secondName","lastName"];
+      let searchquery = getSearchQuery(searchFields, req.query.searchQuery);
+      
+      let beneficiary=await beneficiaries.find(searchquery);
+      let beneficiaryIds=[];
+      for (const iterator of beneficiary) {
+        beneficiaryIds.push(iterator._id.toString());
+      }
+
+     
+
+      query.$or=[{beneficiary:{$in:beneficiaryIds}}];
     }
     console.log("query: ", query);
     let documents = await AppointmentServices.getAppointments(query, limitQP);
@@ -162,8 +184,11 @@ const getUserAppointments = async (req, res) => {
     if (!subscriber) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
     }
-    let query = { beneficiaryId: { $in: subscriber.beneficiaries } };
-
+    let beneficiaryIds;
+    if(subscriber?.beneficiaries) {
+      beneficiaryIds = subscriber.beneficiaries.map(benefObject => benefObject._id.toString());
+    }
+    let query = { beneficiary: { $in: beneficiaryIds } };
     if (req.query.appointmentStatus) {
       let arr = JSON.parse(req.query.appointmentStatus);
       query.appointmentStatus = {
@@ -179,6 +204,7 @@ const getUserAppointments = async (req, res) => {
         $lte: endDate,
       };
     }
+    
     let documents = await AppointmentServices.getAppointments(query);
     let count = documents.length;
 

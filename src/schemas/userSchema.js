@@ -1,6 +1,7 @@
 // importing mongoose dependency for user schema and model creation
 const mongoose = require(`mongoose`);
 const bcrypt = require("bcrypt");
+const moment = require("moment/moment");
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -60,7 +61,7 @@ const userSchema = new mongoose.Schema({
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   createdTimeStamp: {
     type: Date,
-    set: (v) => Date(v),
+    set: (v) => new Date(v),
     get: (v) => v.toISOString().split(`T`)[0],
     default: new Date()
   },
@@ -68,8 +69,9 @@ const userSchema = new mongoose.Schema({
   updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   updatedTimeStamp: {
     type: Date,
-    set: (v) => Date(v),
-    get: (v) => v.toISOString().split(`T`)[0]
+    set: (v) => new Date(v),
+    get: (v) => v.toISOString().split(`T`)[0],
+    default: new Date()
   },
   userFile: {
     type: [String],
@@ -93,10 +95,24 @@ userSchema.pre("save", function (next) {
       if (err) return next(err);
       // override the cleartext password with the hashed one
       user.password = hash;
+       
       next();
     });
   });
 });
+
+userSchema.post(["findOne" , "find" , "findOneAndUpdate"] , function (doc) {
+  if(Array.isArray(doc)) {
+    doc.forEach(document => {
+      document.createdTimeStamp = moment(document.createdTimeStamp).format('YYYY-MM-DD')
+      document.updatedTimeStamp = moment(document.updatedTimeStamp).format('YYYY-MM-DD')
+    });
+  }else if (doc) {
+    doc.createdTimeStamp = moment(doc.createdTimeStamp).format('YYYY-MM-DD');
+    doc.updatedTimeStamp = moment(doc.updatedTimeStamp).format('YYYY-MM-DD')
+  }
+});
+
 const user = mongoose.model(`users`, userSchema);
 
 /// exporting user model to usermiddleware for querying user collection

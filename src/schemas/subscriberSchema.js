@@ -1,5 +1,7 @@
 // importing mongoose dependency for subscriber schema and model creation
 const mongoose = require(`mongoose`);
+const moment = require("moment/moment");
+
 // const audit = require(`./auditSchema`);
 
 // // medicalFile schema or structure
@@ -45,9 +47,9 @@ const beneficiarySchema = new mongoose.Schema({
   },
   birthdate: {
     type: Date,
-    set: (v) => Date(v),
+    set: (v) => new Date(v),
     get: (v) => v.toISOString().split(`T`)[0],
-    required: [true, `please provide valid birthdate`],
+    required: [true, `please provide valid birthdate`]
   },
   gender: {
     type: mongoose.Schema.Types.ObjectId,
@@ -85,8 +87,10 @@ const subscriberSchema = new mongoose.Schema({
     required: [true, `please provide valid lastName`],
   },
   birthdate: {
-    type: String,
-    required: [true, `please provide valid birthdate`],
+    type: Date,
+    set: (v) => new Date(v),
+    get: (v) => v.toISOString().split(`T`)[0],
+    required: [true, `please provide valid birthdate`]
   },
   phoneNumber: {
     type: String,
@@ -152,7 +156,24 @@ beneficiarySchema.pre(['find' , 'findOne' , 'save' , 'findOneAndUpdate'], functi
   this.populate('relationshipToSubscriber' , '-_id -__v');
   next();
 });
-
+beneficiarySchema.post(["findOne" , "find" , "findOneAndUpdate"] , function (doc) {
+  if(Array.isArray(doc)) {
+    doc.forEach(document => {
+      document.birthdate = moment(document.birthdate).format('YYYY-MM-DD')
+    });
+  }else if (doc) {
+    doc.birthdate = moment(doc.birthdate).format('YYYY-MM-DD');
+  }
+});
+subscriberSchema.post(["findOne" , "find" , "findOneAndUpdate"] , function (doc) {
+  if(Array.isArray(doc)) {
+    doc.forEach(document => {
+      document.birthdate = moment(document.birthdate).format('YYYY-MM-DD')
+    });
+  }else if (doc) {
+    doc.birthdate = moment(doc.birthdate).format('YYYY-MM-DD');
+  }
+});
 const subscribers = mongoose.model(`subscribers`, subscriberSchema);
 const beneficiaries = mongoose.model(`beneficiaries`, beneficiarySchema);
 // const medicalFiles = mongoose.model(`medicalFiles`, medicalFileSchema);

@@ -1,12 +1,9 @@
 const ScheduleSchema = require("../schemas/scheduleSchema");
+const medicalSpecialtiesSchema = require("../schemas/medicalSpecialtiesSchema");
+const timeSlotEnumSchema = require("../schemas/timeSlotEnumSchema");
 const { renameKey } = require("../utilities/replaceKey");
 const mongoose = require("mongoose");
 const uploader = require("../utilities/uploader");
-
-const options  = {
-  startDate: { $dateToString: { format: "%Y-%m-%d", date: "$startDate" } },
-  endDate: { $dateToString: { format: "%Y-%m-%d", date: "$endDate" } },
-}
 
 exports.createSchedule = async (query) => {
   const renamedDoc = renameKey(
@@ -164,7 +161,7 @@ exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
           as: `doctorObject`,
         },
       },
-
+      
       {
         $match: {
           $and: query["$and"],
@@ -174,7 +171,7 @@ exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
       { $limit: limit },
       { $skip: skip },
     ]);
-    console.log(documents);
+
 
     documents.forEach((document) => {
       document.doctor = document.doctor[0];
@@ -190,8 +187,33 @@ exports.getAllSchedulesGroupBy = async (req, limit, skip, sort) => {
     if (documents.length === 0) {
       message = "list is empty change your query";
     }
+    let finalResult=[];
+    for (const iterator of documents) {
+        let tempObject={};
+        tempObject=iterator;
+        let specialty=await medicalSpecialtiesSchema.findById(iterator.doctor.specialty);
+        tempObject.doctor.specialty=specialty;
+        let scheduleList=[];
+        for (const schedule of iterator.scheduleList) {
+            let scheduleTemp={};
+            scheduleTemp=schedule;
+            let tempslot=await timeSlotEnumSchema.findById(schedule.timeSlot);
+            scheduleTemp.timeSlot=tempslot;
+            const date = new Date(schedule.startDate);
+            const formattedDate = date.toISOString().slice(0, 10);
+            scheduleTemp.startDate=formattedDate;
 
-    return { documents, count };
+            const endDate = new Date(schedule.endDate);
+            const endDateFormatted = endDate.toISOString().slice(0, 10);
+            scheduleTemp.endDate=endDateFormatted;
+
+            scheduleList.push(scheduleTemp);
+        }
+        tempObject.doctor.scheduleList=scheduleList;
+        finalResult.push(tempObject)
+    }
+
+    return { documents:finalResult, count }
     // res.status(200).json({ ...responseBody });
   } catch (error) {
     console.log(error);

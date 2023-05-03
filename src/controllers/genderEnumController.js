@@ -7,7 +7,7 @@ const {
   serverErrorResponse,
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
-const {searchQuery} = require("../utilities/searchQuery");
+const {searchQuery,getSearchQuery} = require("../utilities/searchQuery");
 const genderEnum = {
   // Add Appointment Status Enum
 
@@ -51,13 +51,13 @@ const genderEnum = {
       let skip = req.query.skip;
       let searchquery = {};
       let query = {};
-      const searchFields = ["backendName", "englishName",'_id'];
+      const searchFields = ["backendName", "englishName",'arabicName','_id'];
       if (req.query.id) {
         query._id = req.query.id;
       }
 
       if (req.query.searchQuery) {
-        searchquery = searchQuery(searchFields, req.query.searchQuery);
+        searchquery = getSearchQuery(searchFields, req.query.searchQuery);
         query = { ...query, ...searchquery };
       }
       let objectArray = await Services.getMany({

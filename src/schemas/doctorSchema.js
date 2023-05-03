@@ -1,4 +1,5 @@
 // importing mongooose for doctorSchema and collection setups
+const moment = require("moment/moment");
 const mongoose = require(`mongoose`);
 
 // doctor schema setup
@@ -33,7 +34,7 @@ const doctorSchema = new mongoose.Schema(
     },
     birthdate: {
       type: Date,
-      set: (v) => Date(v),
+      set: (v) => new Date(v),
       get: (v) => v.toISOString().split(`T`)[0],
       // required: [true, `please provide valid date`], 
     },
@@ -42,6 +43,13 @@ const doctorSchema = new mongoose.Schema(
   },
   { collection: "doctors" }
 );
+doctorSchema.post(["findOne" , "find" , "findOneAndUpdate"] , function (doc) {
+  if(Array.isArray(doc)) {
+    doc.forEach(document => document.birthdate = moment(document.birthdate).format('YYYY-MM-DD'));
+  }else if (doc) {
+    doc.birthdate = moment(doc.birthdate).format('YYYY-MM-DD');
+  }
+});
 
 doctorSchema.pre(['find' , 'findOne' , 'save' , 'findOneAndUpdate'], function(next) {
   this.populate('specialty' , '-__v ');

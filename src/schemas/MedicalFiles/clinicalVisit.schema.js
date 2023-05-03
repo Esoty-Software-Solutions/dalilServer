@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moment = require("moment/moment");
 
 const clinicalVisitsSchema = new mongoose.Schema({
         visitType: {
@@ -7,7 +8,7 @@ const clinicalVisitsSchema = new mongoose.Schema({
         },
         visitDate: {
             type: Date,
-            set: (v) => Date(v),
+            set: (v) => new Date(v),
             get: (v) => v.toISOString().split(`T`)[0],
             default : null,
         },
@@ -45,7 +46,15 @@ const clinicalVisitsSchema = new mongoose.Schema({
             required : [true , "Please provide valid Subscriber" ]
         }
 });
-
+clinicalVisitsSchema.post(["findOne" , "find" , "findOneAndUpdate"] , function (doc) {
+    if(Array.isArray(doc)) {
+      doc.forEach(document => {
+        document.visitDate = moment(document.visitDate).format('YYYY-MM-DD')
+      });
+    }else if (doc) {
+      doc.visitDate = moment(doc.visitDate).format('YYYY-MM-DD');
+    }
+  });
 const clinicalVisit = mongoose.model("clinicalVisit" , clinicalVisitsSchema);
 
 module.exports = clinicalVisit;
