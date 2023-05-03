@@ -16,5 +16,17 @@
     "backendName": "cancelled",
     "arabicName": "ملغية",
     "englishName": "Cancelled"
+  },
+  {
+    "_id": "6451fc8cedb6ad7cd8fc09bb",
+    "backendName": "rejected",
+    "arabicName": "Rejected",
+    "englishName": "Rejected"
+  },
+  {
+    "_id": "6451fc91ba34877845b3f2b7",
+    "backendName": "other",
+    "arabicName": "Other",
+    "englishName": "Other"
   }
 ]
