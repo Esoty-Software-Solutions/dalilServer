@@ -43,6 +43,9 @@ exports.getMedicalFilesAggregator = async (schema, query, skip, limit) => {
         );
         data.fileLink = presignedUrl;
       }
+      if (!data?.thumbnailLink) {
+        data.thumbnailLink = "https://cdn4.iconfinder.com/data/icons/document-71/24/13--512.png";
+      }
       return data;
     })
   );
@@ -62,7 +65,7 @@ exports.getDataMedicalFiles = async (queryPayload, params ,schema) => {
       limit ? limit : LIMIT
     );
     // parsing the url in the get file to return the presigned url with expiry time instead of public url
-
+      
     return {
       success: true,
       data: allData,
@@ -113,7 +116,10 @@ exports.createMedicalFiles = async (body, params, schema, fileData) => {
 
 exports.createMedFileForSubscriber = async (query, body , param) => {
   let user;
+  console.log(body);
+  console.log(param);
   if(param === "create") {
+    console.log(body);
    user = await beneficiaries.findOneAndUpdate(query , body , {new : true});
   }else if(param === "get"){
     user = await beneficiaries.findOne(query);
