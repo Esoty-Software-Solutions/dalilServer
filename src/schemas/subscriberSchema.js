@@ -144,16 +144,16 @@ const subscriberSchema = new mongoose.Schema({
 
 
 subscriberSchema.pre(['find' , 'findOne' , 'save' , 'findOneAndUpdate'], function(next) {
-  this.populate('gender' , '-__v -_id -id');
+  this.populate('gender' , '-__v  -id');
   this.populate('beneficiaries');
-  this.populate('institution' , '-_id -__v');
-  this.populate('city' , '-_id -__v');
+  this.populate('institution' , '-__v');
+  this.populate('city' , '-id -__v');
   next();
 });
 
 beneficiarySchema.pre(['find' , 'findOne' , 'save' , 'findOneAndUpdate'], function(next) {
-  this.populate('gender' , '-_id -__v');
-  this.populate('relationshipToSubscriber' , '-_id -__v');
+  this.populate('gender' , ' -__v');
+  this.populate('relationshipToSubscriber' , ' -__v');
   next();
 });
 beneficiarySchema.post(["findOne" , "find" , "findOneAndUpdate"] , function (doc) {
@@ -173,6 +173,18 @@ subscriberSchema.post(["findOne" , "find" , "findOneAndUpdate"] , function (doc)
   }else if (doc) {
     doc.birthdate = moment(doc.birthdate).format('YYYY-MM-DD');
   }
+});
+subscriberSchema.set('toJSON', {
+  transform: (doc, ret, opt) => {
+      ret.birthdate = moment(ret.birthdate).format('YYYY-MM-DD');
+      return ret;
+  },
+});
+beneficiarySchema.set('toJSON', {
+  transform: (doc, ret, opt) => {
+      ret.birthdate = moment(ret.birthdate).format('YYYY-MM-DD');
+      return ret;
+  },
 });
 const subscribers = mongoose.model(`subscribers`, subscriberSchema);
 const beneficiaries = mongoose.model(`beneficiaries`, beneficiarySchema);

@@ -34,6 +34,7 @@ const allergySchema = new mongoose.Schema({
     }
 });
 
+
 const allergy = mongoose.model("allergies" , allergySchema);
 
 module.exports = allergy;

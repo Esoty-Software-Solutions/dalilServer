@@ -4,6 +4,10 @@ const checkFeilds = require("../utilities/checkFields");
 const SmsServices = require("../services/smsServices");
 const { subscribers, beneficiaries } = require("../schemas/subscriberSchema");
 const {searchQuery,getSearchQuery} = require("../utilities/searchQuery");
+const {
+  singleNotification
+} = require("../utilities/notificationSender");
+
 const dateRegex = /^([0-9]{4})-(?:[0-9]{2})-([0-9]{2})$/;
 const {
   successResponse,
@@ -12,6 +16,8 @@ const {
   notFoundResponse,
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
+const schedule = require("../schemas/scheduleSchema");
+const appointment = require("../schemas/appointmentSchema");
 
 const createMessage = async (
   doctor,
@@ -71,6 +77,7 @@ const updateAppointment = async (req, res) => {
     if(req?.userId) {
       req.body.createdBy = req.userId;
     }
+    let checkAppointmentSatatus=await appointment.findById(req.params.appointmentId);
     const document = await AppointmentServices.updateAppointment(
       {
         _id: req.params.appointmentId,
@@ -79,6 +86,26 @@ const updateAppointment = async (req, res) => {
         ...req.body
       }
     );
+   
+   
+   
+      if(req.body.appointmentStatus && checkAppointmentSatatus.appointmentStatus._id.toString() !=req.body.appointmentStatus.toString() )
+      {
+       
+        // singleNotification
+        let doctorName=document.schedule.doctor.firstName+" "+document.schedule.doctor.secondName+" "+document.schedule.doctor.lastName;
+        let medicalCenter=document.schedule.medicalCenter.name;
+        let appointmentStatus=document.appointmentStatus.englishName;
+        let message="Your appointment with "+doctorName+" at "+medicalCenter+" has been "+appointmentStatus;
+        let deviceToken=document?.createdBy?.deviceToken;
+       
+        if(deviceToken)
+        {
+          const {result, response} = await singleNotification("Appointment Status Updated", message, deviceToken, '');
+          console.log(result,response)
+        }
+      
+      }
 
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
@@ -120,8 +147,14 @@ const getAppointments = async (req, res) => {
       limitQP = 30;
     }
 
-    if (req.query.medicalCenterId) {
-      query.medicalCenterId = req.query.medicalCenterId;
+    if (req.query.medicalCenterId ) {
+      // console.log("chetan",req.query.medicalCenterId)
+      let scheduleList=await schedule.find({medicalCenter:req.query.medicalCenterId});
+      let scheduleIds=[];
+      for (const iterator of scheduleList) {
+        scheduleIds.push(iterator._id.toString());
+      }    
+      query.schedule={$in:scheduleIds};
     }
     if (req.query.doctorId) {
       query.doctorId = req.query.doctorId;
