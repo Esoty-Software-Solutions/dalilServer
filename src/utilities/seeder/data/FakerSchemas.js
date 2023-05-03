@@ -86,8 +86,8 @@ const fakerSchema = {
       sunday: faker.datatype.boolean(),
   
       price: faker.random.numeric(3),
-      startDate: faker.date.future(),
-      endDate: faker.date.future(),
+      startDate: faker.date.future(3),
+      endDate: faker.date.future(3),
       isActive: faker.datatype.boolean(),
     }
 
@@ -97,7 +97,6 @@ const fakerSchema = {
   randomAppointment(){
     const appointment = {
       appointmentDate: faker.date.future(),
-      appointmentStatus: faker.lorem.word(1),
   
       notes: faker.lorem.sentence(20),
     }

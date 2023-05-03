@@ -16,5 +16,35 @@
     "backendName": "daughter",
     "arabicName": "ابنة",
     "englishName": "Daughter"
+  },
+  {
+    "_id": "6451fae28334c56c0cecb454",
+    "backendName": "mother",
+    "arabicName": "Mother",
+    "englishName": "Mother"
+  },
+  {
+    "_id": "6451faf06d42a2ba5d0fe475",
+    "backendName": "father",
+    "arabicName": "Father",
+    "englishName": "Father"
+  },
+  {
+    "_id": "6451fafa2128f9592c8c6509",
+    "backendName": "wife",
+    "arabicName": "Wife",
+    "englishName": "Wife"
+  },
+  {
+    "_id": "6451faff1020ed9f026d71ef",
+    "backendName": "husband",
+    "arabicName": "Husband",
+    "englishName": "Husband"
+  },
+  {
+    "_id": "6451fb04e571ef5347476d06",
+    "backendName": "other",
+    "arabicName": "Other",
+    "englishName": "Other"
   }
 ]
