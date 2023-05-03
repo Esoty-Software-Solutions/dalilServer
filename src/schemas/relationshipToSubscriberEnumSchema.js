@@ -2,7 +2,7 @@
 const mongoose = require(`mongoose`);
 
 // relationshipToSubscriberEnum schema setup
-const relationshipToSubscriberEnumSchema = mongoose.Schema(
+const relationshipToSubscriberEnumSchema = new mongoose.Schema(
   {
     backendName: {
       type: String,

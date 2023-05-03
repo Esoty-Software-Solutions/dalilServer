@@ -14,9 +14,12 @@ const surgeryHistory = require("../schemas/MedicalFiles/surgeryHistory.schema");
 const chronicDiseases = require("../schemas/MedicalFiles/chronicDisease.schema");
 const medicalTests = require("../schemas/MedicalFiles/medicalTests.schema");
 const medicalFilesServices = require("../services/medicalFilesServices");
-const parseCSVToJSON = require("../utilities/CSVParser");
+const csvParser = require("../utilities/CSVParser");
 const { subscribers } = require("../schemas/subscriberSchema");
 const { validationErrorResponse } = require("../utilities/response");
+const { createSubscriber, createBeneficiaries, updateSubscriber } = require("../services/subscriberServices");
+const RelationshipToSubscriberSchema = require("../schemas/relationshipToSubscriberEnumSchema");
+
 /*
 
 when we are creating a document in the model then we will extend the services created in medicalFiles services
@@ -258,17 +261,17 @@ const initMedicalFilesController = () => {
     const csvParseController = async (req, res) => {
         try {
             const csvBuffer = req.file.buffer; // assuming the CSV data is in a file upload field
-                parseCSVToJSON(csvBuffer)
+                csvParser.parseCSVToJSON(csvBuffer)
                 .then(async(json) => {
-                    // will add the json value to mongodb 
-                    const addData = await subscribers.insertMany(json);
-                    if(addData) {
-                        return successResponse(res, messageUtil.resourceCreated);
+                    const data = csvParser.linkToSubscribers(json);
+                    if(data) {
+                        return successResponse(res, messageUtil.resourceFound);
                     }else{
-                        return validationErrorResponse(res , "Data not added");
+                        return validationErrorResponse(res , "Provide a valid csv file");
                     }
                 })
                 .catch((error) => {
+                    console.log(error);
                     return validationErrorResponse(res , "Provide a valid csv file");
                 });
             

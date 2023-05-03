@@ -12,6 +12,10 @@ function replaceKey(object, newKey, oldKey) {
 }
 
 function renameKey(document, newKeys, oldKeys) {
+  // if old keys are not present in the document then return the og doc
+  if(!document[oldKeys]) {
+    return document;
+  }
   // check if newKeys and oldKeys are strings and convert them to arrays if necessary
   if (typeof newKeys === "string" && typeof oldKeys === "string") {
     newKeys = [newKeys];
