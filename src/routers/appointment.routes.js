@@ -10,10 +10,10 @@ const {
 const { authentication } = require("../utilities/auth");
 var router = express.Router();
 
-router.get("", getAppointments);
-router.get("/:appointmentId",  getAppointment);
-router.post("/:appointmentId",  updateAppointment);
-router.patch("/:appointmentId",  updateAppointment);
-router.delete("/:appointmentId",  deleteAppointment);
+router.get("",authentication, getAppointments);
+router.get("/:appointmentId",  authentication,getAppointment);
+router.post("/:appointmentId", authentication, updateAppointment);
+router.patch("/:appointmentId", authentication, updateAppointment);
+router.delete("/:appointmentId", authentication, deleteAppointment);
 // router.get("/subscribers/:subscriberId", getUserAppointments);
 module.exports = router;

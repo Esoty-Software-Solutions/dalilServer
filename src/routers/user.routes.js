@@ -13,16 +13,17 @@ const {
   UpdateDeviceToken,
 } = require("../controllers/userController");
 const { checkToken } = require("../utilities/tokenAuth");
+const { authentication } = require("../utilities/auth");
 var router = express.Router();
 
 router.post("/login", login);
 router.post("/:userId/logout", logout);
 
-router.get("", getUsers);
-router.post("", createUser);
-router.get("/:id", getUserById);
-router.post("/:id", updateUser);
-router.patch("/:id", updateUser);
+router.get("", authentication,getUsers);
+router.post("", authentication,createUser);
+router.get("/:id", authentication,getUserById);
+router.post("/:id", authentication,updateUser);
+router.patch("/:id", authentication,updateUser);
 // router.delete("/:id", deleteUser);
 
 router.post("/registerToken", RegisterAppToken);

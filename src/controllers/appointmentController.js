@@ -177,6 +177,28 @@ const getAppointments = async (req, res) => {
         $lte: endDate,
       };
     }
+    if (req.query.fromDate) {
+      // dateRange: [ '2022-12-22', '2023-03-01' ]
+      // let arr = JSON.parse(req.query.dateRange);
+      let fromDate = req.query.fromDate;
+      const startDate = new Date(fromDate);
+     
+      query.appointmentDate = {
+        $gte: startDate,
+      
+      };
+    }
+    if (req.query.toDate) {
+      // dateRange: [ '2022-12-22', '2023-03-01' ]
+      // let arr = JSON.parse(req.query.dateRange);
+      let toDate = req.query.toDate;
+      const endDate = new Date(toDate);
+    
+      query.appointmentDate = {
+        $lte: endDate,
+      
+      };
+    }
     if(req.query.searchQuery)
     {
       const searchFields = ["firstName", "secondName","lastName"];
@@ -192,8 +214,14 @@ const getAppointments = async (req, res) => {
 
       query.$or=[{beneficiary:{$in:beneficiaryIds}}];
     }
+    let sort={appointmentDate:-1};
+    if(req.query.sort=="ascending")
+    {
+      sort={appointmentDate:1};
+    }
+    
     console.log("query: ", query);
-    let documents = await AppointmentServices.getAppointments(query, limitQP);
+    let documents = await AppointmentServices.getAppointments(query, limitQP,sort);
     let count = documents.length;
 
     const data = {

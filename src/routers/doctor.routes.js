@@ -9,9 +9,9 @@ const {
 const { authentication } = require("../utilities/auth");
 var router = express.Router();
 
-router.post("", CreateDoctor);
-router.patch("/:doctorId", UpdateDoctor);
-router.get("", AllDoctors);
-router.get("/:doctorId", GetDoctor);
-router.delete("/:doctorId", DeleteDoctor);
+router.post("", authentication,CreateDoctor);
+router.patch("/:doctorId", authentication,UpdateDoctor);
+router.get("",authentication, AllDoctors);
+router.get("/:doctorId",authentication, GetDoctor);
+router.delete("/:doctorId", authentication,DeleteDoctor);
 module.exports = router;

@@ -48,25 +48,25 @@ const {
 //   uploader.uploads.any({ name: "file" }),
 //   createSubscribersCSV
 // );
-router.get("", getSubscribers);
-router.post("", createSubscriber);
-router.get("/:subscriberId", getSubscriber);
-router.get("/:subscriberId/beneficiaries", getBeneficiaries);
-router.get("/:subscriberId/beneficiaries/:beneficiaryId", getBeneficiary);
-router.patch("/:subscriberId/beneficiaries/:beneficiaryId", updateBeneficiary);
+router.get("", authentication,getSubscribers);
+router.post("", authentication,createSubscriber);
+router.get("/:subscriberId", authentication,getSubscriber);
+router.get("/:subscriberId/beneficiaries", authentication,getBeneficiaries);
+router.get("/:subscriberId/beneficiaries/:beneficiaryId", authentication,getBeneficiary);
+router.patch("/:subscriberId/beneficiaries/:beneficiaryId", authentication,updateBeneficiary);
 router.post(
   "/:subscriberId/beneficiaries",
 
   createBeneficiaryForSubscriber
 );
-router.patch("/:subscriberId", updateSubscriber);
+router.patch("/:subscriberId",authentication, updateSubscriber);
 
 // ---------------------------------------- just medical files router -----------------------------------------------
 
 router
 .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles`)
-.patch(customValidation(updateSimpleMedicalFilevalidator , "body") , updateMedicalFileController)
-.get(getMedicalFilesController)
+.patch(customValidation(updateSimpleMedicalFilevalidator , "body") ,authentication, updateMedicalFileController)
+.get(authentication,getMedicalFilesController)
 
 // ---------------------------------------- just medical files router -----------------------------------------------
 
@@ -75,22 +75,22 @@ router
   .route(
     `/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/clinicalVisits`
   )
-  .get(
+  .get(authentication,
     customValidation(getMedicalFilesValidator, "query"),
     getClinicalVisitsController
   )
-  .post(
+  .post(authentication,
     uploader.uploadFileS3("single", config.aws_bucketName),
     customValidation(clinicalVisitValidator, "body"),
     createClinicalVisitsController
   );
 router
   .route(`/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/allergies`)
-  .get(
+  .get(authentication,
     customValidation(getMedicalFilesValidator, "query"),
     getAllergiesController
   )
-  .post(
+  .post(authentication,
     uploader.uploadFileS3("single", config.aws_bucketName),
     customValidation(createMedicalFilesValidator, "body"),
     createAllergiesController
@@ -99,11 +99,11 @@ router
   .route(
     `/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/surgeryHistories`
   )
-  .get(
+  .get(authentication,
     customValidation(getMedicalFilesValidator, "query"),
     getSurgeryHistoriesController
   )
-  .post(
+  .post(authentication,
     uploader.uploadFileS3("single", config.aws_bucketName),
     customValidation(createSurgeryHistoryFilesValidator, "body"),
     createSurgeryHistoriesController
@@ -112,11 +112,11 @@ router
   .route(
     `/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/chronicDiseases`
   )
-  .get(
+  .get(authentication,
     customValidation(getMedicalFilesValidator, "query"),
     getChronicDiseasesController
   )
-  .post(
+  .post(authentication,
     uploader.uploadFileS3("single", config.aws_bucketName),
     customValidation(createChronicDiseasesFilesValidator, "body"),
     createChronicDiseasesController
@@ -125,11 +125,11 @@ router
   .route(
     `/:subscriberId/beneficiaries/:beneficiaryId/medicalFiles/medicalTests`
   )
-  .get(
+  .get(authentication,
     customValidation(getMedicalFilesValidator, "query"),
     getMedicalTestsController
   )
-  .post(
+  .post(authentication,
     uploader.uploadFileS3("single", config.aws_bucketName),
     customValidation(createMedicalTestsValidator, "body"),
     createMedicalTestsController
@@ -138,14 +138,14 @@ router
 // ---------------------------------------- Medical files routes -----------------------------------------------
 
 // csv parse route
-router.route(`/csv-parse`).post(upload.single("buffer") , csvParseController);
+router.route(`/csv-parse`).post(authentication,upload.single("buffer") , csvParseController);
 
 
 // requesting an appointment
-router.post("/:subscriberId/appointments", createAppointment);
+router.post("/:subscriberId/appointments",authentication, createAppointment);
 
 // list all appointment for a user
-router.get("/:subscriberId/appointments", getUserAppointments);
+router.get("/:subscriberId/appointments",authentication, getUserAppointments);
 
 
 
