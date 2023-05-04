@@ -17,7 +17,7 @@ const medicalFilesServices = require("../services/medicalFilesServices");
 const csvParser = require("../utilities/CSVParser");
 const { subscribers } = require("../schemas/subscriberSchema");
 const { validationErrorResponse } = require("../utilities/response");
-const { createSubscriber, createBeneficiaries, updateSubscriber } = require("../services/subscriberServices");
+const { createSubscriber, createBeneficiaries, updateSubscriber, getMultipleBeneficiary } = require("../services/subscriberServices");
 const RelationshipToSubscriberSchema = require("../schemas/relationshipToSubscriberEnumSchema");
 
 /*
@@ -263,12 +263,13 @@ const initMedicalFilesController = () => {
             const csvBuffer = req.file.buffer; // assuming the CSV data is in a file upload field
                 csvParser.parseCSVToJSON(csvBuffer)
                 .then(async(json) => {
-                    const data = csvParser.linkToSubscribers(json);
-                    if(data) {
-                        return successResponse(res, messageUtil.resourceFound);
-                    }else{
-                        return validationErrorResponse(res , "Provide a valid csv file");
-                    }
+                    csvParser.linkToSubscribers(json)
+                    .then(results => {
+                        return successResponse(res, messageUtil.resourceUpdated);
+                    })
+                    .catch(error => {
+                        return validationErrorResponse(res , error);
+                    })
                 })
                 .catch((error) => {
                     console.log(error);

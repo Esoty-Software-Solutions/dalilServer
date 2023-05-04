@@ -67,6 +67,10 @@ const beneficiarySchema = new mongoose.Schema({
     height: Number,
     weight: Number,
   },
+  familyID : {
+    type : String,
+    default : null
+  }
 });
 
 // subscriber schema or structure

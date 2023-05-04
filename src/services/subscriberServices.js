@@ -18,7 +18,9 @@ exports.updateBeneficiaries = async (query, data) => {
 exports.getBeneficiary = async (query, data) => {
   return await beneficiaries.findOne(query);
 };
-
+exports.getMultipleBeneficiary = async (query) => {
+  return await beneficiaries.find(query);
+}
 exports.updateBeneficiary = async (query, data) => {
   return await beneficiaries.findOneAndUpdate(query, data, { new: true });
 };
