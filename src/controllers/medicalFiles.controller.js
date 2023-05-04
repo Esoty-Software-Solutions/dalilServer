@@ -265,7 +265,7 @@ const initMedicalFilesController = () => {
                 .then(async(json) => {
                     csvParser.linkToSubscribers(json)
                     .then(results => {
-                        return successResponse(res, messageUtil.resourceUpdated);
+                        return successResponse(res, results?.message);
                     })
                     .catch(error => {
                         return validationErrorResponse(res , error);
