@@ -12,6 +12,7 @@ const {
   notFoundResponse,
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
+const { askForReview } = require("../utilities/askForReview");
 
 const createMessage = async (
   doctor,
@@ -66,7 +67,7 @@ const createAppointment = async (req, res) => {
   }
 };
 
-const updateAppointment = async (req, res) => {
+const updateAppointment = async (req, res) => { 
   try {
     if(req?.userId) {
       req.body.createdBy = req.userId;
@@ -83,7 +84,8 @@ const updateAppointment = async (req, res) => {
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
     }
-
+    
+    askForReview(req.params.appointmentId)
     return successResponse(res, messageUtil.success, document);
   } catch (error) {
     return serverErrorResponse(res, error);

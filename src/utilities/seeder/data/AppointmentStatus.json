@@ -24,6 +24,12 @@
     "englishName": "Rejected"
   },
   {
+    "_id": "64538d10bdfc1479895952a7",
+    "backendName": "completed",
+    "arabicName": "Completed",
+    "englishName": "Completed"
+  },
+  {
     "_id": "6451fc91ba34877845b3f2b7",
     "backendName": "other",
     "arabicName": "Other",

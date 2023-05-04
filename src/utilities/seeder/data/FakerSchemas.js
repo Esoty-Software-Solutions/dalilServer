@@ -102,6 +102,15 @@ const fakerSchema = {
     }
 
     return appointment
+  },
+
+  randomReview(){
+    const reviews = {
+      comment: faker.lorem.sentence(20),
+      starRating:  faker.random.numeric(),
+    }
+
+    return reviews
   }
 
 };

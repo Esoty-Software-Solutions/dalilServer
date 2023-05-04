@@ -58,7 +58,7 @@ const UserRoleData = require("./data/userRole.json");
 
 // add fake schema
 const fakerSchema = require("./data/FakerSchemas");
-const { beneficiaries } = require("../../schemas/subscriberSchema");
+const { beneficiaries, subscribers } = require("../../schemas/subscriberSchema");
 const appointment = require("../../schemas/appointmentSchema");
 
 
@@ -174,7 +174,6 @@ const createDoctorData = async () => {
     const fakeDoctor = [];
 
     const userObject = await commonServices.getRandom({ schemaName: user });
-    console.log("userObject>>>>", userObject);
     for (let i = 0; i < 200; i++) {
       const sample = fakerSchema.randomDoctor();
       
@@ -330,6 +329,27 @@ const createPrescriptionData = async () => {
 
 const createReviewData = async () => {
   try {
+
+    const fakeReview = [];   
+    
+    for (let i = 0; i < 100; i++) {
+      const sample = fakerSchema.randomReview();
+
+      const doctorObejct = await commonServices.getRandom({ schemaName: doctor });
+      sample.doctorId = doctorObejct[0]._id;
+      
+      const subscriberObject = await commonServices.getRandom({ schemaName: subscribers });
+      sample.subscriberId = subscriberObject[0]._id;
+      
+      const appointmentObject = await commonServices.getRandom({ schemaName: appointment});
+      sample.appointmentId = appointmentObject[0]._id;
+      
+      fakeReview.push(sample);
+    }
+
+    await Review.insertMany(fakeReview);
+    console.log("Fake Review Data inserted");
+
     for (let i = 0; i < ReviewData.length; i++) {
       const newBody = {
         ...ReviewData[i],
@@ -600,7 +620,6 @@ const removeData = async () => {
     await createMedicalCenterData();
     await createPharmacyData();
     await createPrescriptionData();
-    await createReviewData();
     await createSMSData();
     await createMedicalServcieData();
     await createMedicalSpecialtiesData();
@@ -608,13 +627,14 @@ const removeData = async () => {
     await createTimeSlotData();
     await createUserRoleData();
     await createDoctorData();
-
+    
     await createScheduleData();
     
     await createBeneficiaryData();
     await createSubscriberData();
-
+    
     await createAppointmentsData();
+    await createReviewData();
 
     process.exit();
   } catch (err) {
