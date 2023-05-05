@@ -10,14 +10,15 @@ const {
 var router = express.Router();
 const uploader = require("../utilities/uploader");
 const config = require("../config/config");
+const { authentication } = require("../utilities/auth");
 
 router.post(
   "",
   uploader.uploadFileS3("multiple", config.dalilStorage_bucket),
   AddInstitution
 );
-router.patch("/:institutionId", UpdateInstitution);
-router.get("", AllInstitutions);
-router.get("/:institution_id", InstitutionById);
-router.delete("/:institution_id", DeleteInstitution);
+router.patch("/:institutionId",authentication, UpdateInstitution);
+router.get("", authentication,AllInstitutions);
+router.get("/:institution_id", authentication,InstitutionById);
+router.delete("/:institution_id",authentication, DeleteInstitution);
 module.exports = router;

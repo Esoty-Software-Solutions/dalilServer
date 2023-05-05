@@ -17,8 +17,12 @@ exports.deleteAppointment = async (query) => {
   return await AppointmentSchema.findOneAndDelete(query);
 };
 
-exports.getAppointments = async (query, limit) => {
-  return await AppointmentSchema.find(query).limit(limit).select("-__v");
+exports.getAppointments = async (query, limit,sort='') => {
+    if(sort=='')
+    {
+      sort={appointmentDate:-1};
+    }
+  return await AppointmentSchema.find(query).limit(limit).sort(sort).select("-__v");
 };
 
 exports.getAppointmentDetails = async (query) => {

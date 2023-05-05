@@ -1,12 +1,12 @@
 var express = require("express");
 var router = express.Router();
-
+const { authentication } = require("../utilities/auth");
 const medicalServicesController = require('../controllers/medicalServicesController');
 
-router.get("/", medicalServicesController.getAllMedicalServices);
-router.get("/:id", medicalServicesController.getMedicalService);
-router.post("/", medicalServicesController.addMedicalService);
-router.patch("/:id", medicalServicesController.updateMedicalService);
-router.delete("/:id", medicalServicesController.deleteMedicalService);
+router.get("/",authentication, medicalServicesController.getAllMedicalServices);
+router.get("/:id",authentication, medicalServicesController.getMedicalService);
+router.post("/", authentication,medicalServicesController.addMedicalService);
+router.patch("/:id", authentication,medicalServicesController.updateMedicalService);
+router.delete("/:id", authentication,medicalServicesController.deleteMedicalService);
 
 module.exports = router;
