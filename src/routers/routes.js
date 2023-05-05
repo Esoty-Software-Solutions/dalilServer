@@ -21,6 +21,7 @@ const medicalServices = require("./medicalServices.routes");
 const timeSlotEnumRouter = require("./timeSlotEnum.routes");
 const accountStatusEnumRouter = require("./accountStatusEnum.routes");
 const cityRouter = require("./city.routes");
+const roleRouter = require("./role.routes");
 const genderEnumRouter = require("./genderEnum.routes");
 
 const reviewRouter = require("./review.routes");
@@ -48,6 +49,7 @@ router.use(API_VERSION + "/sms", smsRouter);
 router.use(API_VERSION + "/medicalFiles", medicalFileRouter);
 router.use(API_VERSION + "/doctors", doctorRouter);
 router.use(API_VERSION + "/review", reviewRouter);
+router.use(API_VERSION + "/role", roleRouter);
 // router.use("/claims", claimsRouter);
 
 // Miscellaneous APIs

@@ -19,7 +19,7 @@ exports.getUsers = async (filter, sort, skip, limit) => {
     .select("-__v -password")
     .count(sort);
 
-  let documents = await UserSchema.find(filter)
+  let documents = await UserSchema.find(filter).populate("role")
     .sort(sort)
     .skip(skip)
     .limit(limit)
