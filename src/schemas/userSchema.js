@@ -17,6 +17,11 @@ const userSchema = new mongoose.Schema({
     default: new mongoose.Types.ObjectId(),
     unique: true,
   },
+  role:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Role",
+    default: null,
+  },
   password: {
     type: String,
     required: [true, `please provide valid password`],
