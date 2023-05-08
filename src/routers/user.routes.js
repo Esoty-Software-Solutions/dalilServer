@@ -11,6 +11,7 @@ const {
   ChangePassword,
   getUserById,
   UpdateDeviceToken,
+  verifyRefreshToken,
 } = require("../controllers/userController");
 const { checkToken } = require("../utilities/tokenAuth");
 const { authentication } = require("../utilities/auth");
@@ -31,4 +32,8 @@ router.post("/sendNotification", SendNotification);
 router.post("/sendToAll", SendNotificationToUsers);
 router.post("/:userId/changePassword", ChangePassword);
 router.post("/:userId/deviceTokens", UpdateDeviceToken);
+
+router.get("/refreshToken/verify", verifyRefreshToken);
+
+
 module.exports = router;

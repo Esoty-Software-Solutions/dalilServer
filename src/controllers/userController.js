@@ -9,7 +9,7 @@ const {
 } = require("../utilities/response");
 const { messageUtil } = require("../utilities/message");
 const checkFeilds = require("../utilities/checkFields");
-const {searchQuery, getSearchQuery} = require("../utilities/searchQuery");
+const { searchQuery, getSearchQuery } = require("../utilities/searchQuery");
 // const { default: mongoose } = require("mongoose");
 
 const createUser = async (req, res) => {
@@ -19,7 +19,6 @@ const createUser = async (req, res) => {
     if (req.body.password) {
       myPlaintextPassword = req.body.password;
     }
-    
 
     // hashing user password
     // const hash = bcrypt.hashSync(myPlaintextPassword, 10);
@@ -45,11 +44,7 @@ const createUser = async (req, res) => {
     // delete document._doc.password;
     // // delete document._doc.sd;
     // // server response
-    return successResponse(
-      res,
-      messageUtil.resourceCreated,
-      document._doc
-    );
+    return successResponse(res, messageUtil.resourceCreated, document._doc);
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
@@ -67,12 +62,16 @@ const getUsers = async (req, res) => {
 
     let sortByQP = Number(req.query.sortBy) ?? { userId: 1 };
     let filterQP = {};
-    if(req.query.searchQuery) filterQP = getSearchQuery(["firstName","secondName", "thirdName" , "lastName"], req.query.searchQuery)
+    if (req.query.searchQuery)
+      filterQP = getSearchQuery(
+        ["firstName", "secondName", "thirdName", "lastName"],
+        req.query.searchQuery,
+      );
     const [docArray, docCount] = await UserServices.getUsers(
       filterQP,
       sortByQP,
       skipQP,
-      limitQP
+      limitQP,
     );
 
     let message = "good";
@@ -110,16 +109,12 @@ const updateUser = async (req, res) => {
     // }
     const users = await UserServices.updateUser(
       { _id: req.params.id },
-      { ...req.body }
+      { ...req.body },
     );
     if (!users) {
       return res.status(404).json({ error: "No user found" });
     }
-    return successResponse(
-      res,
-      messageUtil.resourceCreated,
-      users
-    );
+    return successResponse(res, messageUtil.resourceCreated, users);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -128,29 +123,29 @@ const updateUser = async (req, res) => {
 const login = async (req, res) => {
   try {
     console.log("login", req.body);
-    const { username, password , deviceToken, deviceType } = req.body;
+    const { username, password, deviceToken, deviceType } = req.body;
     const doc = await UserServices.getUser({
       username,
     });
     if (!doc) {
       return badRequestErrorResponse(
         res,
-        `Either username or password is invalid`
+        `Either username or password is invalid`,
       );
     }
     const hashedPassword = doc.password;
 
-    const { userId, userRole } = doc;
+    const { _id, userId, userRole } = doc;
 
     // comparing hashed password
     const hash = await bcrypt.compare(password, hashedPassword);
     if (!hash) {
       return badRequestErrorResponse(
         res,
-        `Either username or password is invalid`
+        `Either username or password is invalid`,
       );
     }
-// saving the token to user schema
+    // saving the token to user schema
     const updateUser = await UserServices.updateUser(
       {
         username,
@@ -158,20 +153,38 @@ const login = async (req, res) => {
       {
         deviceToken: req.body.deviceToken,
         deviceType: req.body.deviceType,
-      }
+      },
     );
     const token = jwt.sign(
       { userId: userId, username, userRole },
       process.env.jwtSecret,
       {
-        expiresIn: `30d`,
-      }
+        // expiresIn: `30d`,
+        expiresIn: 1000 * 60 * 60,
+      },
+    );
+
+    const refreshToken = jwt.sign(
+      {
+        _id: _id,
+      },
+      process.env.refreshTokenSecret,
+      { expiresIn: "1d" },
     );
 
     res.cookie("access_token", `Bearer ${token}`, {
-      expires: new Date(Date.now() + 720 * 3600000),
+      // expires: new Date(Date.now() + 720 * 3600000),
+      expires: new Date(Date.now() + 1000 * 60 * 60),
       httpOnly: true,
       path: `/`,
+    });
+
+    res.cookie("refresh_token", refreshToken, {
+      httpOnly: true,
+      sameSite: "Strict",
+      // secure: true,
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      path: "/",
     });
 
     // removing password from doc
@@ -184,7 +197,7 @@ const login = async (req, res) => {
       messageUtil.loginSuccessful,
       doc,
       undefined,
-      `Bearer ${token}`
+      `Bearer ${token}`,
     );
   } catch (error) {
     console.log(error);
@@ -198,7 +211,7 @@ const RegisterAppToken = async (req, res) => {
   try {
     user = await UserServices.updateUserById(
       { _id: req.userId },
-      { userAppToken: req.body.registrationToken }
+      { userAppToken: req.body.registrationToken },
     );
     console.log("🚀  ~ user:", user);
     if (!user) {
@@ -275,7 +288,7 @@ const logout = async (req, res) => {
 
 const ChangePassword = async (req, res) => {
   try {
-    console.log("change password")
+    console.log("change password");
     console.log("req.params", req.params);
     console.log("req.body", req.body);
     const { currentPassword, newPassword } = req.body;
@@ -285,7 +298,7 @@ const ChangePassword = async (req, res) => {
         currentPassword,
         newPassword,
       },
-      res
+      res,
     );
     //returning if required filed is missing
     if (isError) return;
@@ -308,7 +321,7 @@ const ChangePassword = async (req, res) => {
     //updating user
     const updatedUser = await UserServices.updateUser(
       { _id: req.params.userId },
-      { password: newHash }
+      { password: newHash },
     );
     return successResponse(res, messageUtil.resourceUpdated, updatedUser);
   } catch (err) {
@@ -324,7 +337,7 @@ const UpdateDeviceToken = async (req, res) => {
       deviceToken,
       deviceType,
     },
-    res
+    res,
   );
   //returning if required filed is missing
   if (isError) return;
@@ -334,13 +347,76 @@ const UpdateDeviceToken = async (req, res) => {
     {
       deviceToken,
       deviceType,
-    }
+    },
   );
   if (!user) {
     return notFoundResponse(res, messageUtil.notFound);
   }
   return successResponse(res, messageUtil.success);
 };
+
+const verifyRefreshToken = async (req, res) => {
+  console.log(req.headers.cookie.split("refresh_token=")[1]);
+  if (req.headers.cookie.split("refresh_token=")[1]) {
+    // Destructuring refreshToken from cookie
+    const refreshToken = req.headers.cookie.split("refresh_token=")[1];
+
+    console.log(refreshToken);
+
+    // Verifying refresh token
+    jwt.verify(
+      refreshToken,
+      process.env.refreshTokenSecret,
+      async (err, decoded) => {
+        console.log("decoded", decoded);
+        if (err) {
+          // Wrong Refesh Token
+          return res.status(406).json({ message: "Unauthorized" });
+        } else {
+          const doc = await UserServices.getUser({ _id: decoded._id });
+          console.log(doc);
+          const { userId, username,  userRole } = doc;
+          // Correct token we send a new access token
+          const token = jwt.sign(
+            { userId: userId, username, userRole },
+            process.env.jwtSecret,
+            {
+              // expiresIn: `30d`,
+              expiresIn: 1000 * 60 * 60,
+            },
+          );
+
+          const refreshToken = jwt.sign(
+            {
+              _id: decoded._id,
+            },
+            process.env.refreshTokenSecret,
+            { expiresIn: "1d" },
+          );
+
+          res.cookie("access_token", `Bearer ${token}`, {
+            // expires: new Date(Date.now() + 720 * 3600000),
+            expires: new Date(Date.now() + 1000 * 60 * 60),
+            httpOnly: true,
+            path: `/`,
+          });
+
+          res.cookie("refresh_token", refreshToken, {
+            httpOnly: true,
+            sameSite: "Strict",
+            // secure: true,
+            expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+            path: "/",
+          });
+          return res.json({ accessToken: token, refreshToken: refreshToken });
+        }
+      },
+    );
+  } else {
+    return res.status(406).json({ message: "Unauthorized" });
+  }
+};
+
 module.exports = {
   createUser,
   getUsers,
@@ -354,4 +430,5 @@ module.exports = {
   ChangePassword,
   getUserById,
   UpdateDeviceToken,
+  verifyRefreshToken,
 };
