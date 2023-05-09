@@ -68,9 +68,11 @@ class Service {
     limit = 100,
     select,
     populate,
+    sort
   }) => {
     return await schemaName
       .find(query)
+      .sort(sort)
       .populate(populate)
       .skip(skip)
       .limit(limit)

@@ -37,7 +37,7 @@ router.use(API_VERSION + "/login", loginRouter);
 router.use(API_VERSION + "/logout", logoutRouter);
 router.use(API_VERSION + "/users", usersRouter);
 router.use(API_VERSION + "/userRoles", userRolesRouter);
-router.use(API_VERSION + "/subscribers", subscribersRouter);
+router.use(API_VERSION + "/subscribers", subscribersRouter); // pending 
 router.use(API_VERSION + "/appointments", appointmentsRouter);
 router.use(API_VERSION + "/institutions", institutesRouter);
 router.use(API_VERSION + "/prescriptions", prescriptionsRouter);

@@ -18,6 +18,9 @@ const {
 const { messageUtil } = require("../utilities/message");
 const schedule = require("../schemas/scheduleSchema");
 const appointment = require("../schemas/appointmentSchema");
+const { findOne } = require("../schemas/userSchema");
+const { getMany } = require("../services/commonServices");
+const AppointmentSchema = require("../schemas/appointmentSchema");
 
 const createMessage = async (
   doctor,
@@ -149,7 +152,12 @@ const getAppointments = async (req, res) => {
 
     if (req.query.medicalCenterId ) {
       // console.log("chetan",req.query.medicalCenterId)
-      let scheduleList=await schedule.find({medicalCenter:req.query.medicalCenterId});
+      // let scheduleList= await schedule.find({medicalCenter:req.query.medicalCenterId});
+      let scheduleList= await getMany({
+        schemaName : schedule,
+        query : {medicalCenter:req.query.medicalCenterId}
+      });
+
       let scheduleIds=[];
       for (const iterator of scheduleList) {
         scheduleIds.push(iterator._id.toString());
@@ -204,13 +212,15 @@ const getAppointments = async (req, res) => {
       const searchFields = ["firstName", "secondName","lastName"];
       let searchquery = getSearchQuery(searchFields, req.query.searchQuery);
       
-      let beneficiary=await beneficiaries.find(searchquery);
+      // let beneficiary=await beneficiaries.find(searchquery);
+      let beneficiary = await getMany({
+        schemaName : beneficiaries,
+        query : searchquery
+      })
       let beneficiaryIds=[];
       for (const iterator of beneficiary) {
         beneficiaryIds.push(iterator._id.toString());
       }
-
-     
 
       query.$or=[{beneficiary:{$in:beneficiaryIds}}];
     }
@@ -220,8 +230,13 @@ const getAppointments = async (req, res) => {
       sort={appointmentDate:1};
     }
     
-    console.log("query: ", query);
-    let documents = await AppointmentServices.getAppointments(query, limitQP,sort);
+    // let documents = await AppointmentServices.getAppointments(query, limitQP,sort);
+    let documents = await getMany({
+      schemaName : AppointmentSchema,
+      query : query,
+      limit : limitQP,
+      sort : sort
+    })
     let count = documents.length;
 
     const data = {
