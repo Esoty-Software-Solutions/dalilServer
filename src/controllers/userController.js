@@ -1,4 +1,5 @@
 const UserServices = require("../services/userServices");
+const UserSchema = require("../schemas/userSchema");
 const bcrypt = require("bcrypt");
 const jwt = require(`jsonwebtoken`);
 const {
@@ -10,6 +11,7 @@ const {
 const { messageUtil } = require("../utilities/message");
 const checkFeilds = require("../utilities/checkFields");
 const {searchQuery, getSearchQuery} = require("../utilities/searchQuery");
+const { createOne, getMany, count, getOne, updateOne } = require("../services/commonServices");
 // const { default: mongoose } = require("mongoose");
 
 const createUser = async (req, res) => {
@@ -32,7 +34,8 @@ const createUser = async (req, res) => {
       // userId: `SSD-${idNumber + 1}`,
       // sd: idNumber + 1,
     };
-    const document = await UserServices.createUser(newBody);
+    // const document = await UserServices.createUser(UserSchema , newBody);
+    const document = await createOne({schemaName : UserSchema , body : newBody});
     // const { userId, username, password } = document;
     // // siginig/authenticating user with jwt token for authorization
     // const token = jwt.sign(
@@ -58,23 +61,29 @@ const createUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    let limitQP = Number(req.query.limit) ?? 100;
-    if (limitQP > 100) limitQP = 100;
-    if (limitQP < 1) limitQP = 1;
-
-    let skipQP = Number(req.query.skip) ?? 0;
-    if (skipQP < 0) skipQP = 0;
-
-    let sortByQP = Number(req.query.sortBy) ?? { userId: 1 };
+    let limitQP , skipQP, sortByQP;
+    if(req.query.limit) {
+      limitQP = Number(req.query.limit) ?? 100;
+      if (limitQP > 100) limitQP = 100;
+      if (limitQP < 1) limitQP = 1;
+    }
+    if(req.query.skip) {
+       skipQP = Number(req.query.skip) ?? 0;
+      if (skipQP < 0) skipQP = 0;
+    }
+    if(req.query.sortBy) {
+     sortByQP = Number(req.query.sortBy) ?? { userId: 1 };
+    }
     let filterQP = {};
     if(req.query.searchQuery) filterQP = getSearchQuery(["firstName","secondName", "thirdName" , "lastName"], req.query.searchQuery)
-    const [docArray, docCount] = await UserServices.getUsers(
-      filterQP,
-      sortByQP,
-      skipQP,
-      limitQP
-    );
-
+    // const [docArray, docCount] = await UserServices.getUsers(
+    //   filterQP,
+    //   sortByQP,
+    //   skipQP,
+    //   limitQP
+    // );
+    const docArray = await getMany({schemaName : UserSchema , body : {} , query : filterQP , skip : skipQP , limit : limitQP});
+    const docCount = await count({schemaName : UserSchema , query : filterQP})
     let message = "good";
     if (docArray.length === 0) message = "list is empty change your query";
 
@@ -94,8 +103,8 @@ const getUserById = async (req, res) => {
   //   return notFoundResponse(res, "Invalid id");
   // }
 
-  let user = await UserServices.getUser({ _id: req.params.id });
-
+  // let user = await UserServices.getUser({ _id: req.params.id });
+  let user = await getOne({schemaName : UserSchema , body : { _id: req.params.id } , select : "-__v -password"})
   if (!user) {
     return notFoundResponse(res, messageUtil.notFound);
   }
@@ -108,10 +117,16 @@ const updateUser = async (req, res) => {
     // if (!req?.files[0]?.location) {
     //   return res.status(401).json({ error: "Please upload a picture" });
     // }
-    const users = await UserServices.updateUser(
-      { _id: req.params.id },
-      { ...req.body }
-    );
+    // const users = await UserServices.updateUser(
+    //   { _id: req.params.id },
+    //   { ...req.body }
+    // );
+    const users = await updateOne({
+      schemaName : UserSchema,
+      query : { _id: req.params.id },
+      body : { ...req.body },
+      select : "-__v -password"
+    })
     if (!users) {
       return res.status(404).json({ error: "No user found" });
     }
@@ -129,9 +144,10 @@ const login = async (req, res) => {
   try {
     console.log("login", req.body);
     const { username, password , deviceToken, deviceType } = req.body;
-    const doc = await UserServices.getUser({
-      username,
-    });
+    // const doc = await UserServices.getUser({
+    //   username,
+    // });
+    const doc = await getOne({schemaName : UserSchema , query : {username : username}})
     if (!doc) {
       return badRequestErrorResponse(
         res,
@@ -151,15 +167,15 @@ const login = async (req, res) => {
       );
     }
 // saving the token to user schema
-    const updateUser = await UserServices.updateUser(
-      {
-        username,
-      },
-      {
-        deviceToken: req.body.deviceToken,
-        deviceType: req.body.deviceType,
-      }
-    );
+    // const updateUser = await UserServices.updateUser(
+    //   {
+    //     username,
+    //   },
+    //   {
+    //     deviceToken: req.body.deviceToken,
+    //     deviceType: req.body.deviceType,
+    //   }
+    // );
     const token = jwt.sign(
       { userId: userId, username, userRole },
       process.env.jwtSecret,
@@ -196,10 +212,15 @@ const RegisterAppToken = async (req, res) => {
   console.log("req.body", req.body);
   let user;
   try {
-    user = await UserServices.updateUserById(
-      { _id: req.userId },
-      { userAppToken: req.body.registrationToken }
-    );
+    // user = await UserServices.updateUserById(
+    //   { _id: req.userId },
+    //   { userAppToken: req.body.registrationToken }
+    // );
+    user = await updateOne({
+      schemaName : UserSchema,
+      query : { _id: req.userId },
+      body : { userAppToken: req.body.registrationToken }
+    })
     console.log("🚀  ~ user:", user);
     if (!user) {
       return notFoundResponse(res, messageUtil.notFound);
@@ -213,7 +234,10 @@ const RegisterAppToken = async (req, res) => {
 
 const GetAll = async (req, res) => {
   try {
-    let users = await UserServices.getAllUser();
+    // let users = await UserServices.getAllUser();
+    const users = await getMany({
+      schemaName : UserSchema,
+    })
     if (users.length < 1) {
       return notFoundResponse(res, messageUtil.notFound);
     }
@@ -227,7 +251,11 @@ const GetAll = async (req, res) => {
 const SendNotification = async (req, res) => {
   let user;
   try {
-    user = await UserServices.getUser({ _id: req.userId });
+    // user = await UserServices.getUser({ _id: req.userId });
+    user = await getOne({
+      schemaName : UserSchema,
+      body : { _id: req.userId } 
+    });
     console.log("this is the user ", user);
     if (!user) {
       return notFoundResponse(res, messageUtil.notFound);
@@ -249,7 +277,8 @@ const SendNotificationToUsers = async (req, res) => {
     let array = [];
 
     for (let i = 0; i < users.length; i++) {
-      let user = await UserServices.getUser({ _id: users[i] });
+      // let user = await UserServices.getUser({ _id: users[i] });
+      let user = await getOne({schemaName : UserSchema , body : { _id: users[i] }});
       if (user.userAppToken) {
         array.push(user.userAppToken);
       }
@@ -291,7 +320,9 @@ const ChangePassword = async (req, res) => {
     if (isError) return;
 
     //getting user by id
-    let user = await UserServices.getUser({ _id: req.params.userId });
+    // let user = await UserServices.getUser({ _id: req.params.userId });
+    let user = await getOne({schemaName : UserSchema , body : { _id: req.params.userId} });
+    
     if (!user) {
       return notFoundResponse(res, messageUtil.notFound);
     }
@@ -306,10 +337,15 @@ const ChangePassword = async (req, res) => {
     const newHash = bcrypt.hashSync(newPassword, 10);
 
     //updating user
-    const updatedUser = await UserServices.updateUser(
-      { _id: req.params.userId },
-      { password: newHash }
-    );
+    // const updatedUser = await UserServices.updateUser(
+    //   { _id: req.params.userId },
+    //   { password: newHash }
+    // );
+    const updatedUser = await updateOne({
+      schemaName : UserSchema,
+      query : { _id: req.params.userId },
+      body : { password: newHash }
+    });
     return successResponse(res, messageUtil.resourceUpdated, updatedUser);
   } catch (err) {
     serverErrorResponse(res, err);
@@ -329,13 +365,21 @@ const UpdateDeviceToken = async (req, res) => {
   //returning if required filed is missing
   if (isError) return;
 
-  let user = await UserServices.updateUser(
-    { _id: req.params.userId },
-    {
+  // let user = await UserServices.updateUser(
+  //   { _id: req.params.userId },
+  //   {
+  //     deviceToken,
+  //     deviceType,
+  //   }
+  // );
+  let user = await updateOne({
+    schemaName : UserSchema,
+    query : { _id: req.params.userId },
+    body : {
       deviceToken,
       deviceType,
     }
-  );
+  });
   if (!user) {
     return notFoundResponse(res, messageUtil.notFound);
   }

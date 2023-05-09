@@ -57,7 +57,7 @@ class Service {
     select,
     populate,
   }) => {
-    return await schemaName.findOne(body).populate(populate);
+    return await schemaName.findOne(body).populate(populate).select(select);
   };
 
   getMany = async ({
@@ -69,14 +69,12 @@ class Service {
     select,
     populate,
   }) => {
-    console.log(query,"final")
     return await schemaName
       .find(query)
       .populate(populate)
       .skip(skip)
       .limit(limit)
-      .select(select);
-      
+      .select(select)
   };
   count = async ({
     schemaName,
@@ -95,7 +93,7 @@ class Service {
     count
   }) =>{
     return schemaName.aggregate().sample(count? count: 1)
-  }
+  };
 }
 
 module.exports = new Service();
