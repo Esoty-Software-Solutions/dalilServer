@@ -47,22 +47,19 @@ router.use(API_VERSION + "/schedules", schedulesRouter);
 router.use(API_VERSION + "/TestPushNotification", notificationRouter);
 router.use(API_VERSION + "/sms", smsRouter);
 router.use(API_VERSION + "/medicalFiles", medicalFileRouter);
-router.use(API_VERSION + "/doctors", doctorRouter);
-router.use(API_VERSION + "/review", reviewRouter);
-router.use(API_VERSION + "/role", roleRouter);
+router.use(API_VERSION + "/doctors", doctorRouter); // done
+router.use(API_VERSION + "/review", reviewRouter); // pending
+router.use(API_VERSION + "/role", roleRouter); // done
 // router.use("/claims", claimsRouter);
 
 // Miscellaneous APIs
-router.use(API_VERSION + "/misc/appointmentStatusEnum", appointmentStatusEnums);
-router.use(
-  API_VERSION + "/misc/relationshipToSubscriberEnum",
-  relationshipToSubscriber,
-);
-router.use(API_VERSION + "/misc/appointmentStatusEnum", appointmentStatusEnums);
-router.use(API_VERSION + "/misc/medicalSpecialties", medicalSpecialties);
-router.use(API_VERSION + "/misc/medicalServices", medicalServices);
-router.use(API_VERSION + "/misc/timeSlotEnum", timeSlotEnumRouter);
-router.use(API_VERSION + "/misc/accountStatusEnum", accountStatusEnumRouter);
-router.use(API_VERSION + "/misc/cities", cityRouter);
-router.use(API_VERSION + "/misc/genderEnum", genderEnumRouter);
+router.use(API_VERSION + "/misc/appointmentStatusEnum", appointmentStatusEnums); // done
+router.use(API_VERSION + "/misc/relationshipToSubscriberEnum",relationshipToSubscriber); // done
+router.use(API_VERSION + "/misc/appointmentStatusEnum", appointmentStatusEnums); // done
+router.use(API_VERSION + "/misc/medicalSpecialties", medicalSpecialties); // done
+router.use(API_VERSION + "/misc/medicalServices", medicalServices); // done
+router.use(API_VERSION + "/misc/timeSlotEnum", timeSlotEnumRouter); // done 
+router.use(API_VERSION + "/misc/accountStatusEnum", accountStatusEnumRouter);  // done
+router.use(API_VERSION + "/misc/cities", cityRouter);  // done
+router.use(API_VERSION + "/misc/genderEnum", genderEnumRouter);  // done
 module.exports = router;

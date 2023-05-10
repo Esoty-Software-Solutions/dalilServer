@@ -15,8 +15,11 @@ const medicalServices = {
             let query = {
                 ...req.body,
             };
-            let data = await medicalServiceServices.addMedicalService(query);
-
+            // let data = await medicalServiceServices.addMedicalService(query);
+            let data = await Services.createOne({ 
+                schemaName : MedicalServiceSchema,
+                body : query         
+            })
             return successResponse(res, "Medical Service Added successfully", data)
         } catch (err) {
             return serverErrorResponse(res, err);
@@ -28,7 +31,11 @@ const medicalServices = {
 
     getMedicalService: async (req, res) => {
         try {
-            let data = await medicalServiceServices.getMedicalService({ _id: req.params.id });
+            // let data = await medicalServiceServices.getMedicalService({ _id: req.params.id });
+            let data = await Services.getOne({
+                schemaName : MedicalServiceSchema,
+                body : {_id: req.params.id}
+                 });
             if(!data) return notFoundResponse(res, "No Record Found")
             return successResponse(res, "Success", data)
         } catch (err) {
@@ -47,7 +54,13 @@ const medicalServices = {
             // }
             let filterQP = {}; // temporary
             if(req.query.searchQuery) filterQP = getSearchQuery(["backendName","arabicName", "englishName","_id"], req.query.searchQuery)
-            let objectArray = await medicalServiceServices.getAllMedicalServices(filterQP , req.query.limit , req.query.skip);
+            // let objectArray = await medicalServiceServices.getAllMedicalServices(filterQP , req.query.limit , req.query.skip);
+            let objectArray = await getMany({
+                schemaName : MedicalServiceSchema,
+                query : filterQP , 
+                limit : req.query.limit , 
+                skip : req.query.skip
+            });
 
             return successResponse(res, "Success", {objectCount : objectArray.objectsCount , objectArray : objectArray.object});
         } catch (err) {
@@ -59,10 +72,15 @@ const medicalServices = {
 
     updateMedicalService: async (req, res) => {
         try {
-            let data = await medicalServiceServices.updateMedicalService(
-                { _id: req.params.id },
-                {...req.body}
-            );
+            // let data = await medicalServiceServices.updateMedicalService(
+            //     { _id: req.params.id },
+            //     {...req.body}
+            // );
+            let data = await Services.updateOne({
+                schemaName : MedicalServiceSchema,
+                query : { _id: req.params.id },
+                body : {...req.body}
+            });
 
             if (!data) {
                 return badRequestErrorResponse(res, "Record Not Found")

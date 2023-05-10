@@ -1,3 +1,4 @@
+const { createOne, updateOne , getOne , getMany , deleteOne, count } = require("../services/commonServices");
 const DoctorServices = require("../services/doctorServices");
 const ScheduleServices = require("../services/scheduleServices");
 const { messageUtil } = require("../utilities/message");
@@ -10,16 +11,21 @@ const {
 } = require("../utilities/response");
 const { getSearchQuery } = require("../utilities/searchQuery");
 const dateRegex = /^([0-9]{4})-(?:[0-9]{2})-([0-9]{2})$/;
+const DoctorSchema = require("../schemas/doctorSchema");
 
 const CreateDoctor = async (req, res) => {
   try {
     if (!dateRegex.test(req.body.birthdate)) {
       return badRequestErrorResponse(res, "Invalid date format");
     }
-    const document = await DoctorServices.createDoctor({
-      ...req.body,
-    });
-
+    // const document = await DoctorServices.createDoctor({
+    //   ...req.body,
+    // });
+    const renamedData = renameKey({...req.body} , "specialty" , "specialtyId");
+    const document = await createOne({
+      schemaName : DoctorSchema,
+      body : renamedData
+    })
     return successResponse(res, messageUtil.resourceCreated, document);
   } catch (error) {
     //   checking for server errors
@@ -29,9 +35,14 @@ const CreateDoctor = async (req, res) => {
 
 const GetDoctor = async (req, res) => {
   try {
-    const document = await DoctorServices.getDoctorDetails({
-      _id: req.params.doctorId,
-    });
+
+    const document = await getOne({
+      schemaName : DoctorSchema, 
+      body : {
+        _id: req.params.doctorId,
+      },
+      select : "-__v -createdAt -updatedAt"
+    })
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
     }
@@ -50,11 +61,17 @@ const UpdateDoctor = async (req, res) => {
         return badRequestErrorResponse(res, "Invalid date format");
       }
     }
-
-    const document = await DoctorServices.updateDoctor(
-      { _id: req.params.doctorId },
-      { ...req.body }
-    );
+    const renamedData = renameKey(data , "specialty" , "specialtyId");
+    const document = await updateOne({
+      schemaName : DoctorSchema,
+      body : renamedData,
+      query : { _id: req.params.doctorId },
+      select : "-__v -createdAt -updatedAt"
+    })
+    // const document = await DoctorServices.updateDoctor(
+    //   { _id: req.params.doctorId },
+    //   { ...req.body }
+    // );
 
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
@@ -68,9 +85,13 @@ const UpdateDoctor = async (req, res) => {
 
 const DeleteDoctor = async (req, res) => {
   try {
-    const document = await DoctorServices.deleteDoctor({
-      _id: req.params.doctorId,
-    });
+    // const document = await DoctorServices.deleteDoctor({
+    //   _id: req.params.doctorId,
+    // });
+    const document = await deleteOne({
+      schemaName : DoctorSchema, 
+      body : {_id: req.params.doctorId}
+    })
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
     }
@@ -113,10 +134,20 @@ const AllDoctors = async (req, res) => {
     
 
     if(req.query.searchQuery) query = getSearchQuery(["firstName" , "secondName" ,"lastName","_id" ], req.query.searchQuery , query);
-    const documents = await DoctorServices.getDoctors(query, limitQP, skipOP);
+    // const documents = await DoctorServices.getDoctors(query, limitQP, skipOP);
+    const documents = await getMany({
+      schemaName : DoctorSchema,
+      query : query, 
+      limit : limitQP, 
+      skip : skipOP
+    });
+    const counts = await count({
+      schemaName : DoctorSchema,
+      query : query
+    })
     return successResponse(res, messageUtil.success, {
-      objectCount: documents.objectsCount,
-      objectArray: documents.object,
+      objectCount: counts,
+      objectArray: documents,
     });
   } catch (error) {
     return serverErrorResponse(res, error);
