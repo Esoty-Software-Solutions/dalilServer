@@ -29,6 +29,7 @@ exports.getUsers = async (filter, sort, skip, limit) => {
 };
 
 exports.getUser = async (query) => {
+  console.log(query);
   return await UserSchema.findOne(query).select("-__v");
 };
 

@@ -1,13 +1,14 @@
 const messageUtil = require("./message.js");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 
-const successResponse = (res, message, data, dataCount, token) => {
+const successResponse = (res, message, data, dataCount, token, refreshToken) => {
   const response = {
     statusCode: StatusCodes.OK,
     success: true,
     message,
   };
   if (token) response.token = token;
+  if (refreshToken) response.refreshToken = refreshToken;
   if (dataCount) {
     let objData = {
       objectCount: dataCount,
