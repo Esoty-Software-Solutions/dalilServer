@@ -10,6 +10,8 @@ const {
 const { messageUtil } = require("../utilities/message");
 const checkFeilds = require("../utilities/checkFields");
 const { searchQuery, getSearchQuery } = require("../utilities/searchQuery");
+const refreshTokenServices = require("../services/refreshTokenServices.js");
+const { default: mongoose } = require("mongoose");
 // const { default: mongoose } = require("mongoose");
 
 const createUser = async (req, res) => {
@@ -160,16 +162,16 @@ const login = async (req, res) => {
       process.env.jwtSecret,
       {
         // expiresIn: `30d`,
-        expiresIn: 1000 * 60 * 60,
+        expiresIn: 1000 * 60 * 60 * 24,
       },
     );
 
     const refreshToken = jwt.sign(
       {
-        _id: _id,
+        userId: _id,
       },
       process.env.refreshTokenSecret,
-      { expiresIn: "1d" },
+      { expiresIn: "30d" },
     );
 
     res.cookie("access_token", `Bearer ${token}`, {
@@ -179,13 +181,29 @@ const login = async (req, res) => {
       path: `/`,
     });
 
-    res.cookie("refresh_token", refreshToken, {
-      httpOnly: true,
-      sameSite: "Strict",
-      // secure: true,
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-      path: "/",
+
+    // Check if token refresh token already exists for user
+    let isRefreshToken = await refreshTokenServices.verifyRefreshToken({userId: _id});
+    if(isRefreshToken.length){
+      await refreshTokenServices.updateRefreshToken({
+        userId: _id,
+        refreshToken: refreshToken,
+        expiryDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+      });
+    }
+    else{
+      await refreshTokenServices.saveToken({
+      userId: _id,
+      refreshToken: refreshToken,
+      expiryDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
     });
+    }
+
+
+
+    
+
+    // console.log(saveRefreshToken)
 
     // removing password from doc
     doc.password = undefined;
@@ -198,6 +216,7 @@ const login = async (req, res) => {
       doc,
       undefined,
       `Bearer ${token}`,
+      refreshToken,
     );
   } catch (error) {
     console.log(error);
@@ -356,59 +375,72 @@ const UpdateDeviceToken = async (req, res) => {
 };
 
 const verifyRefreshToken = async (req, res) => {
-  console.log(req.headers.cookie.split("refresh_token=")[1]);
-  if (req.headers.cookie.split("refresh_token=")[1]) {
+  if (req.body.refreshToken) {
     // Destructuring refreshToken from cookie
-    const refreshToken = req.headers.cookie.split("refresh_token=")[1];
-
-    console.log(refreshToken);
+    const refreshTokenReq = req.body.refreshToken;
 
     // Verifying refresh token
     jwt.verify(
-      refreshToken,
+      refreshTokenReq,
       process.env.refreshTokenSecret,
       async (err, decoded) => {
-        console.log("decoded", decoded);
         if (err) {
           // Wrong Refesh Token
           return res.status(406).json({ message: "Unauthorized" });
         } else {
-          const doc = await UserServices.getUser({ _id: decoded._id });
-          console.log(doc);
-          const { userId, username,  userRole } = doc;
-          // Correct token we send a new access token
-          const token = jwt.sign(
-            { userId: userId, username, userRole },
-            process.env.jwtSecret,
-            {
-              // expiresIn: `30d`,
-              expiresIn: 1000 * 60 * 60,
-            },
-          );
-
-          const refreshToken = jwt.sign(
-            {
-              _id: decoded._id,
-            },
-            process.env.refreshTokenSecret,
-            { expiresIn: "1d" },
-          );
-
-          res.cookie("access_token", `Bearer ${token}`, {
-            // expires: new Date(Date.now() + 720 * 3600000),
-            expires: new Date(Date.now() + 1000 * 60 * 60),
-            httpOnly: true,
-            path: `/`,
+          const matchToken = await refreshTokenServices.verifyRefreshToken({
+            refreshToken: refreshTokenReq,
           });
 
-          res.cookie("refresh_token", refreshToken, {
-            httpOnly: true,
-            sameSite: "Strict",
-            // secure: true,
-            expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-            path: "/",
-          });
-          return res.json({ accessToken: token, refreshToken: refreshToken });
+          if (
+            (matchToken[0]?.userId).toString() ==
+            mongoose.Types.ObjectId(decoded.userId).toString()
+          ) {
+            const doc = await UserServices.getUser({ _id: decoded.userId });
+            const { userId, username, userRole } = doc;
+            // Correct token we send a new access token
+            const token = jwt.sign(
+              { userId: userId, username, userRole },
+              process.env.jwtSecret,
+              {
+                // expiresIn: `30d`,
+                expiresIn: 1000 * 60 * 60,
+              },
+            );
+
+            const refreshToken = jwt.sign(
+              {
+                userId: decoded.userId,
+              },
+              process.env.refreshTokenSecret,
+              { expiresIn: "30d" },
+            );
+
+            res.cookie("access_token", `Bearer ${token}`, {
+              // expires: new Date(Date.now() + 720 * 3600000),
+              expires: new Date(Date.now() + 1000 * 60 * 60),
+              httpOnly: true,
+              path: `/`,
+            });
+
+            res.cookie("refresh_token", refreshToken, {
+              httpOnly: true,
+              sameSite: "Strict",
+              // secure: true,
+              expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+              path: "/",
+            });
+
+            const updateRefreshToken =
+              await refreshTokenServices.updateRefreshToken({
+                userId: decoded.userId,
+                refreshToken: refreshToken,
+                expiryDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+              });
+
+
+            return res.json({ accessToken: token, refreshToken: refreshToken });
+          } else return res.json({ message: "Refresh Token mismatced" });
         }
       },
     );
