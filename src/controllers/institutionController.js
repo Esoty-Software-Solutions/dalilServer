@@ -1,4 +1,5 @@
 const InstitutionServices = require("../services/institutionServices");
+const InstitutionSchema = require("../schemas/institutionSchema");
 const {
   successResponse,
   serverErrorResponse,
@@ -6,12 +7,17 @@ const {
 const { messageUtil } = require("../utilities/message");
 require("dotenv").config();
 const { getSearchQuery } = require("../utilities/searchQuery");
+const { getOne, createOne, getMany, deleteOne, updateOne } = require("../services/commonServices");
 
 // class Institution {
 const AddInstitution = async (req, res) => {
   try {
-    const institute = await InstitutionServices.getInstitutionDetails({
-      name: req.body.name,
+    // const institute = await InstitutionServices.getInstitutionDetails({
+    //   name: req.body.name,
+    // });
+    const institute = await getOne({
+      schemaName : InstitutionSchema,
+      body : {name: req.body.name}
     });
     console.log(req.body)
     if (institute) {
@@ -31,7 +37,12 @@ const AddInstitution = async (req, res) => {
     if (req.files.length > 0) {
       query.fileLink = fieldNamesList;
     }
-    let institution = await InstitutionServices.createInstitution(query);
+    // let institution = await InstitutionServices.createInstitution(query);
+    const renamedData = renameKey(query , "city" , "cityId");
+    let institution = await createOne({
+      schemaName : InstitutionSchema,
+      body : renamedData
+    })
     return successResponse(res, messageUtil.resourceCreated, institution);
   } catch (err) {
     return serverErrorResponse(res, err.message);
@@ -48,7 +59,14 @@ const AllInstitutions = async (req, res) => {
     if (skip < 0) skip = 0;
     let query={};
     if(req.query.searchQuery) query = getSearchQuery(["name" , "phoneNumber" ,"email","_id" ], req.query.searchQuery , query);
-    let institutions = await InstitutionServices.getAllInstitution(query , req.query.limit , req.query.skip);
+    // let institutions = await InstitutionServices.getAllInstitution(query , req.query.limit , req.query.skip);
+    let institutions = await getMany({
+      schemaName : InstitutionSchema,
+      query : query, 
+      limit : req.query.limit, 
+      skip : req.query.skip
+    });
+    
     return successResponse(res, messageUtil.success, {
       objectCount: institutions.objectsCount,
       objectArray: institutions.newDocuments,
@@ -79,9 +97,13 @@ const InstitutionById = async (req, res) => {
   // };
 
   try {
-    let findInstitution = await InstitutionServices.getInstitutionDetails({
-      _id: institution_id,
-    });
+    // let findInstitution = await InstitutionServices.getInstitutionDetails({
+    //   _id: institution_id,
+    // });
+    let findInstitution = await getOne({
+      schemaName : InstitutionSchema,
+      body : {_id: institution_id}
+    })
     if (!findInstitution) {
       return res.status(404).json({ message: "No institute found" });
     }
@@ -97,9 +119,15 @@ const InstitutionById = async (req, res) => {
 
 const DeleteInstitution = async (req, res) => {
   try {
-    let institution = await InstitutionServices.deleteInstitution({
-      _id: req.params.id,
-    });
+    // let institution = await InstitutionServices.deleteInstitution({
+    //   _id: req.params.id,
+    // });
+    let institution = await deleteOne({ 
+        schemaName : InstitutionSchema , 
+        body : {
+          _id : req.params.id
+        }
+    })
     if (!institution) {
       return res.status(404).json({ message: "No institute found" });
     }
@@ -113,11 +141,17 @@ const UpdateInstitution = async (req, res) => {
   const { institutionId } = req.params;
 
   try {
-    let institution = await InstitutionServices.updateInstitution(
-      { _id: institutionId },
-      { ...req.body },
-    );
+    const renamedData = renameKey({...req.body} , "city" , "cityId");
 
+    // let institution = await InstitutionServices.updateInstitution(
+    //   { _id: institutionId },
+    //   { ...req.body },
+    // );
+    let institution = await updateOne({
+      schemaName : InstitutionSchema,
+      query : {_id : institutionId},
+      body : renamedData
+    });
     if (!institution) {
       return res.status(404).json({ message: "No institute found" });
     }

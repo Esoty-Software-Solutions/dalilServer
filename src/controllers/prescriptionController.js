@@ -1,4 +1,5 @@
 const PrescriptionServices = require("../services/prescriptionServices");
+const PrescriptionSchema = require("../schemas/prescriptionSchema");
 const { messageUtil } = require("../utilities/message");
 const { successResponse, serverErrorResponse } = require("../utilities/response");
 require("dotenv").config();
@@ -18,7 +19,15 @@ const AddPrescription = async (req, res) => {
     if (req.files.length > 0) {
       query.fileLink = fieldNamesList;
     }
-    let prescription = await PrescriptionServices.createPrescription(query);
+    // let prescription = await PrescriptionServices.createPrescription(query);
+    let prescription = await createOne({
+      schemaName : PrescriptionSchema,
+      body : query
+    }) 
+    if(prescription?.fileLink?.length) {
+      const presignedUrlArray = await Promise.all(prescription?.fileLink?.map(link => uploader.getPresignedUrl(link, config.dalilStorage_bucket)));
+      createdDoc.fileLink = presignedUrlArray;
+    }
     return successResponse(res, messageUtil.resourceCreated, prescription);
     
   } catch (err) {

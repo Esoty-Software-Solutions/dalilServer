@@ -15,5 +15,6 @@ router.get("/:appointmentId",  authentication,getAppointment);
 router.post("/:appointmentId", authentication, updateAppointment);
 router.patch("/:appointmentId", authentication, updateAppointment);
 router.delete("/:appointmentId", authentication, deleteAppointment);
+
 // router.get("/subscribers/:subscriberId", getUserAppointments);
 module.exports = router;

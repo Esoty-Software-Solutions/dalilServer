@@ -1,3 +1,4 @@
+const AppointmentSchema = require("../schemas/appointmentSchema");
 const AppointmentServices = require("../services/appointmentServices");
 const SubscriberServices = require("../services/subscriberServices");
 const checkFeilds = require("../utilities/checkFields");
@@ -19,8 +20,8 @@ const { messageUtil } = require("../utilities/message");
 const schedule = require("../schemas/scheduleSchema");
 const appointment = require("../schemas/appointmentSchema");
 const { findOne } = require("../schemas/userSchema");
-const { getMany } = require("../services/commonServices");
-const AppointmentSchema = require("../schemas/appointmentSchema");
+const { getMany, getOne, updateOne, createOne } = require("../services/commonServices");
+const { renameKey } = require("../utilities/replaceKey");
 
 const createMessage = async (
   doctor,
@@ -65,9 +66,16 @@ const createAppointment = async (req, res) => {
       if(req?.userId) {
         req.body.createdBy = req.userId;
       }
-    const document = await AppointmentServices.createAppointment({
-      ...req.body,
-    });
+    
+    const renamedDoc = renameKey({...req.body}, ["appointmentStatus", "timeSlot" , "beneficiary" , "schedule"], ["appointmentStatusId", "timeSlotId" , "beneficiaryId" , "scheduleId"]);
+    
+    // const document = await AppointmentServices.createAppointment({
+    //   ...req.body,
+    // });
+    const document = await createOne({
+      schemaName : AppointmentSchema , 
+      body : renamedDoc
+    })
 
     return successResponse(res, messageUtil.success, document);
   } catch (error) {
@@ -81,14 +89,24 @@ const updateAppointment = async (req, res) => {
       req.body.createdBy = req.userId;
     }
     let checkAppointmentSatatus=await appointment.findById(req.params.appointmentId);
-    const document = await AppointmentServices.updateAppointment(
+    
+    // const document = await AppointmentServices.updateAppointment(
+    //   {
+    //     _id: req.params.appointmentId,
+    //   },
+    //   {
+    //     ...req.body
+    //   }
+    // );
+  const renamedDoc = renameKey({...req.body}, ["appointmentStatus", "timeSlot" , "beneficiary" , "schedule"], ["appointmentStatusId", "timeSlotId" , "beneficiaryId" , "scheduleId"]);
+  const document = await updateOne(
       {
+        schemaName : AppointmentSchema,
+      query : {
         _id: req.params.appointmentId,
       },
-      {
-        ...req.body
-      }
-    );
+      body : renamedDoc
+      });
    
    
    
@@ -122,9 +140,13 @@ const updateAppointment = async (req, res) => {
 
 const getAppointment = async (req, res) => {
   try {
-    const document = await AppointmentServices.getAppointmentDetails({
-      _id: req.params.appointmentId,
-    });
+    // const document = await AppointmentServices.getAppointmentDetails({
+    //   _id: req.params.appointmentId,
+    // });
+    const document = await getOne({
+      schemaName : AppointmentSchema,
+      query : {_id: req.params.appointmentId}
+    })
 
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
@@ -253,9 +275,15 @@ const getAppointments = async (req, res) => {
 
 const getUserAppointments = async (req, res) => {
   try {
-    let subscriber = await SubscriberServices.getSubscriber({
-      _id: req.params.subscriberId,
-    });
+    // let subscriber = await SubscriberServices.getSubscriber({
+    //   _id: req.params.subscriberId,
+    // });
+    let subscriber = await getOne({
+      schemaName : AppointmentSchema,
+      body : {
+        _id : req.params.subscriberId
+      }
+    })
 
     if (!subscriber) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
@@ -281,7 +309,10 @@ const getUserAppointments = async (req, res) => {
       };
     }
     
-    let documents = await AppointmentServices.getAppointments(query);
+    // let documents = await AppointmentServices.getAppointments(query);
+    let documents = await getMany({
+      schemaName : AppointmentSchema
+    });
     let count = documents.length;
 
 
