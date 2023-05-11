@@ -33,20 +33,20 @@ router.get(API_VERSION + "/serverHealth", (req, res) => {
   res.type("json");
   res.status(200).send(JSON.stringify({ Message: "Server is up and running" }));
 });
-router.use(API_VERSION + "/login", loginRouter);
-router.use(API_VERSION + "/logout", logoutRouter);
-router.use(API_VERSION + "/users", usersRouter);
-router.use(API_VERSION + "/userRoles", userRolesRouter);
+router.use(API_VERSION + "/login", loginRouter);// done
+router.use(API_VERSION + "/logout", logoutRouter); // done
+router.use(API_VERSION + "/users", usersRouter); // done
+router.use(API_VERSION + "/userRoles", userRolesRouter); // done
 router.use(API_VERSION + "/subscribers", subscribersRouter); // pending 
 router.use(API_VERSION + "/appointments", appointmentsRouter); // done
 router.use(API_VERSION + "/institutions", institutesRouter); // done
-router.use(API_VERSION + "/prescriptions", prescriptionsRouter);
-router.use(API_VERSION + "/medicalCenters", medicalCentersRouter);
-router.use(API_VERSION + "/pharmacies", pharmacyRouter);
-router.use(API_VERSION + "/schedules", schedulesRouter);
-router.use(API_VERSION + "/TestPushNotification", notificationRouter);
-router.use(API_VERSION + "/sms", smsRouter);
-router.use(API_VERSION + "/medicalFiles", medicalFileRouter);
+router.use(API_VERSION + "/prescriptions", prescriptionsRouter); // done
+router.use(API_VERSION + "/medicalCenters", medicalCentersRouter); // done
+router.use(API_VERSION + "/pharmacies", pharmacyRouter); // done
+router.use(API_VERSION + "/schedules", schedulesRouter); // done 
+router.use(API_VERSION + "/TestPushNotification", notificationRouter); // services not included
+router.use(API_VERSION + "/sms", smsRouter); // done
+router.use(API_VERSION + "/medicalFiles", medicalFileRouter); // schema different
 router.use(API_VERSION + "/doctors", doctorRouter);
 router.use(API_VERSION + "/review", reviewRouter);
 router.use(API_VERSION + "/role", roleRouter);

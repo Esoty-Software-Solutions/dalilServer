@@ -45,7 +45,6 @@ exports.getAllMedicalCenters = async (query, limit, skip) => {
 };
 
 exports.getMedicalCenterDetails = async (query) => {
-  console.log(query)
   const medicalDoc = await uploader.returnedSingleDoc(MedicalCenterSchema , query);
   return medicalDoc;
 };

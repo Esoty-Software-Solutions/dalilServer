@@ -1,14 +1,18 @@
 const PharmacyServices = require("../services/pharmacyServices");
 const { messageUtil } = require("../utilities/message");
 const ScheduleServices = require("../services/scheduleServices");
+const PharmacySchema = require("../schemas/pharmacySchema");
+const ScheduleSchema = require("../schemas/scheduleSchema");
 const {
   successResponse,
   serverErrorResponse,
   badRequestErrorResponse,
   notFoundResponse,
 } = require("../utilities/response");
-const { convertStringToArray } = require("../utilities/replaceKey");
-
+const { convertStringToArray, renameKey } = require("../utilities/replaceKey");
+const { createOne, updateOne , deleteOne, getMany, count } = require("../services/commonServices");
+const uploader = require("../utilities/uploader");
+const config = require("../config/config");
 const CreatePharmacy = async (req, res) => {
   try {
     const fieldNamesList = [];
@@ -18,13 +22,22 @@ const CreatePharmacy = async (req, res) => {
       });
     }
     const finalDoc = convertStringToArray(req.body, "phoneNumber");
-    const document = await PharmacyServices.createPharmacy({
-      ...finalDoc,
-      isActive: true,
-      fileLink: fieldNamesList,
-    });
-
-    return successResponse(res, messageUtil.resourceCreated, document);
+    const renamedData = renameKey(finalDoc , "city" , "cityId");
+    // const document = await PharmacyServices.createPharmacy({
+    //   ...finalDoc,
+    //   isActive: true,
+    //   fileLink: fieldNamesList,
+    // });
+    const document = await createOne({
+      schemaName : PharmacySchema,
+      body : {
+        ...renamedData,
+        isActive: true,
+        fileLink: fieldNamesList}
+    })
+    const doc = await uploader.returnedSingleDoc(PharmacySchema , document._id);
+    
+    return successResponse(res, messageUtil.resourceCreated, doc);
   } catch (error) {
     //   checking for server errors
     return serverErrorResponse(res, error);
@@ -34,9 +47,11 @@ const CreatePharmacy = async (req, res) => {
 const SinglePharmacy = async (req, res) => {
   try {
     
-    const document = await PharmacyServices.getPharmacyDetails({
-      _id: req.params.pharmacyId,
-    });
+    // const document = await PharmacyServices.getPharmacyDetails({
+    //   _id: req.params.pharmacyId,
+    // });
+    const document = await uploader.returnedSingleDoc(PharmacySchema , {_id: req.params.pharmacyId});
+
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
     }
@@ -50,10 +65,17 @@ const SinglePharmacy = async (req, res) => {
 
 const UpdatePharmacy = async (req, res) => {
   try {
-    const document = await PharmacyServices.updatePharmacy(
-      { _id: req.params.pharmacyId },
-      { ...req.body }
-    );
+    const renamedData = renameKey({...req.body} , "city" , "cityId");
+    
+    const document = await updateOne({
+      schemaName : PharmacySchema,
+      query : { _id: req.params.pharmacyId },
+      body : renamedData 
+    })
+    // const document = await PharmacyServices.updatePharmacy(
+    //   { _id: req.params.pharmacyId },
+    //   { ...req.body }
+    // );
 
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
@@ -67,9 +89,13 @@ const UpdatePharmacy = async (req, res) => {
 
 const DeletePharmacy = async (req, res) => {
   try {
-    const document = await PharmacyServices.deletePharmacy({
-      _id: req.params.pharmacyId,
-    });
+    // const document = await PharmacyServices.deletePharmacy({
+    //   _id: req.params.pharmacyId,
+    // });
+    const document = await deleteOne({
+      schemaName : PharmacySchema,
+      body : {_id: req.params.pharmacyId}
+    })
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceDeleted);
     }
@@ -102,8 +128,12 @@ const AllPharmacy = async (req, res) => {
     if (req.query.doctorId) {
       let medicalCenters = [];
       //finding schedules for doctor
-      let schedules = await ScheduleServices.getAllSchedules({
-        doctorId: req.query.doctorId,
+      // let schedules = await ScheduleServices.getAllSchedules({
+      //   doctorId: req.query.doctorId,
+      // });
+      let schedules = await getMany({
+        schemaName : ScheduleSchema,
+        query : {doctorId: req.query.doctorId}
       });
       //returning if schedules not found
       if (schedules.length < 1) {
@@ -113,9 +143,11 @@ const AllPharmacy = async (req, res) => {
       //iterating all schdules to find medical center through pharmacyId
       for (let i = 0; i < schedules.length; i++) {
         //finding medical centers
-        let medicalCenter = await PharmacyServices.getPharmacyDetails(
-          { _id: schedules[i].pharmacyId }
-        );
+        // let medicalCenter = await PharmacyServices.getPharmacyDetails(
+        //   { _id: schedules[i].pharmacyId }
+        // );
+        const medicalCenter = await uploader.returnedSingleDoc(PharmacySchema , {_id: schedules[i].pharmacyId });
+
         //pushing medical centers
         medicalCenters.push(medicalCenter);
       }
@@ -138,17 +170,31 @@ const AllPharmacy = async (req, res) => {
         query.city = req.query.city;
       }
 
-      const documents = await PharmacyServices.getAllPharmacys(
-        query,
-        limitQP,
-        skipOP
-      );
-      // if (documents.length < 1) {
-      //   return notFoundResponse(res, messageUtil.resourceNotFound);
-      // }
+      // const documents = await PharmacyServices.getAllPharmacys(
+      //   query,
+      //   limitQP,
+      //   skipOP
+      // );
+      const documents = await getMany({
+        schemaName : PharmacySchema,
+        query : query,
+        limit :limitQP,
+        skip : skipOP
+      });
+      const newDocuments = await Promise.all(documents.map(async data => {
+        if(data?.fileLink.length) {
+          const presignedUrlArray = await Promise.all(data.fileLink.map(async link => await uploader.getPresignedUrl(link , config.dalilStorage_bucket)));
+          data.fileLink = presignedUrlArray;
+        }
+        return data;
+      }))
+      const counts = await count({
+        schemaName : PharmacySchema,
+        query : query
+      });
       return successResponse(res, messageUtil.success, {
-        objectCount: documents.objectsCount,
-        objectArray: documents.newDocuments,
+        objectCount: counts,
+        objectArray: newDocuments,
       });
     }
   } catch (error) {

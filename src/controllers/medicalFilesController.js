@@ -10,12 +10,19 @@ const { messageUtil } = require("../utilities/message");
 
 const createMedicalFile = async (req, res) => {
   try {
-    const document = await MedicalFilesServices.createMedicalFile(req.body);
+    // common services not needed as one main function is being used
+    const document = await MedicalFilesServices.createMedicalFiles(req.body);
 
-    const updateBeneficiary = await SubscriberServices.updateBeneficiaries(
-      { _id: req.params.beneficiaryId },
-      { medicalFiles: document._id }
-    );
+    const updateBeneficiary = await updateOne({
+      schemaName : beneficiaries,
+      body : {medicalFiles: document._id},
+      query : {_id: req.params.beneficiaryId} 
+    });
+
+    // const updateBeneficiary = await SubscriberServices.updateBeneficiaries({
+    //   { _id: req.params.beneficiaryId },
+    //   { medicalFiles: document._id }
+    // });
 
     return successResponse(res, messageUtil.resourceUpdated, document);
   } catch (error) {
@@ -25,7 +32,6 @@ const createMedicalFile = async (req, res) => {
 };
 
 const updateMedicalFile = async (req, res) => {
-  console.log("in update medical file");
   try {
     // Update document and register the user
     const { type } = req.body;

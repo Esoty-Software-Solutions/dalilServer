@@ -3,6 +3,7 @@ const DoctorServices = require("../services/doctorServices");
 const MedicalCenterServices = require("../services/medicalCenterServices");
 const { messageUtil } = require("../utilities/message");
 const mongoose = require('mongoose');
+const uploader = require("../utilities/uploader");
 const {
   successResponse,
   serverErrorResponse,
@@ -10,8 +11,14 @@ const {
   notFoundResponse,
 } = require("../utilities/response");
 const TimeSlotEnum = require("../schemas/timeSlotEnumSchema");
+const { getOne, createOne, updateOne, deleteOne, getMany } = require("../services/commonServices");
 
 const dateRegex = /^([0-9]{4})-(?:[0-9]{2})-([0-9]{2})$/;
+const DoctorSchema = require("../schemas/doctorSchema");
+const MedicalCenterSchema = require("../schemas/medicalCenterSchema");
+const ScheduleSchema = require("../schemas/scheduleSchema");
+
+const { renameKey } = require("../utilities/replaceKey");
 
 const CreateSchedule = async (req, res) => {
   try {
@@ -42,27 +49,41 @@ const CreateSchedule = async (req, res) => {
       return badRequestErrorResponse(res, messageUtil.invalidStartDate);
     }
     //checking if doctor id is valid
-    let doctor = DoctorServices.getDoctorDetails({ _id: req.body.doctorId });
+    // let doctor = DoctorServices.getDoctorDetails({ _id: req.body.doctorId });
+    let doctor = await getOne({
+      schemaName : DoctorSchema,
+      body : {_id: req.body.doctorId}
+    })
     if (!doctor) {
       return notFoundResponse(res, messageUtil.invalidDoctorId);
     }
     //checking if medical center id is valid
-    let medicalCenter = MedicalCenterServices.getMedicalCenterDetails({
-      _id: req.body.medicalCenterId,
-    });
+    // let medicalCenter = MedicalCenterServices.getMedicalCenterDetails({
+    //   _id: req.body.medicalCenterId,
+    // });
+    let medicalCenter = await uploader.returnedSingleDoc(MedicalCenterSchema , {_id: req.body.medicalCenterId});
+
     if (!medicalCenter) {
       return notFoundResponse(res, messageUtil.invalidMedicalCenterId);
     }
     if (!req.body.timeSlot) {
       let timeSlotDetail = await TimeSlotEnum.findOne();
       console.log(timeSlotDetail);
-      req.body.timeSlot = timeSlotDetail._id.toString();
+      req.body.timeSlot = timeSlotDetail?._id.toString();
     }
     console.log("right")
-    const document = await ScheduleServices.createSchedule({
-      ...req.body,
+    const renamedDoc = renameKey(
+      {...req.body},
+      ["medicalCenter", "doctor", "timeSlot"],
+      ["medicalCenterId", "doctorId", "timeSlotId"],
+    );
+    // const document = await ScheduleServices.createSchedule({
+    //   ...req.body,
+    // });
+    const document = await createOne({
+      schemaName : ScheduleSchema,
+      body : {...req.body}
     });
-
     return successResponse(res, messageUtil.resourceCreated, document);
   } catch (error) {
     return serverErrorResponse(res, error);
@@ -73,28 +94,45 @@ const UpdateSchedule = async (req, res) => {
   try {
     //checking if doctor id is valid
     if (req.body.doctorId) {
-      let doctor = DoctorServices.getDoctorDetails({ _id: req.body.doctorId });
+      // let doctor = DoctorServices.getDoctorDetails({ _id: req.body.doctorId });
+      let doctor = await getOne({ 
+        schemaName : DoctorSchema,
+        body : {_id: req.body.doctorId},
+        select : {"-__v -createdAt -updatedAt"}
+       });
       if (!doctor) {
         return notFoundResponse(res, "Please provide valid doctor id");
       }
     }
     //checking if medical center id is valid
     if (req.body.medicalCenterId) {
-      let medicalCenter = MedicalCenterServices.getMedicalCenterDetails({
-        _id: req.body.medicalCenterId,
-      });
+      // let medicalCenter = MedicalCenterServices.getMedicalCenterDetails({
+      //   _id: req.body.medicalCenterId,
+      // });
+      const medicalCenter = await uploader.returnedSingleDoc(MedicalCenterSchema , {_id: req.body.medicalCenterId});
+
       if (!medicalCenter) {
         return notFoundResponse(res, "Please provide valid medical center id");
       }
     }
 
-    const document = await ScheduleServices.updateSchedule(
-      { _id: req.params.scheduleId },
-      {
-        ...req.body,
-      }
+    const renamedDoc = renameKey(
+      {...req.body},
+      ["medicalCenter", "doctor", "timeSlot"],
+      ["medicalCenterId", "doctorId", "timeSlotId"],
     );
-
+    
+    // const document = await ScheduleServices.updateSchedule(
+    //   { _id: req.params.scheduleId },
+    //   {
+    //     ...req.body,
+    //   }
+    // );
+      const document = await updateOne({
+        schemaName : ScheduleSchema,
+        query : { _id: req.params.scheduleId },
+        body : renamedDoc
+      })
     return successResponse(res, messageUtil.resourceUpdated, document);
   } catch (error) {
     return serverErrorResponse(res, error);
@@ -103,9 +141,14 @@ const UpdateSchedule = async (req, res) => {
 
 const SpecificSchedule = async (req, res) => {
   try {
-    const document = await ScheduleServices.getScheduleDetails({
-      _id: req.params.scheduleId,
-    });
+    // const document = await ScheduleServices.getScheduleDetails({
+    //   _id: req.params.scheduleId,
+    // });
+    const document = await getOne({
+      schemaName : ScheduleSchema,
+      body : {_id: req.params.scheduleId},
+      select : "-__v -createdAt -updatedAt"
+    })
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
     }
@@ -117,9 +160,13 @@ const SpecificSchedule = async (req, res) => {
 
 const DeleteSchedule = async (req, res) => {
   try {
-    const document = await ScheduleServices.deleteSchedule({
-      _id: req.params.scheduleId,
-    });
+    // const document = await ScheduleServices.deleteSchedule({
+    //   _id: req.params.scheduleId,
+    // });
+    const document = await deleteOne({
+      schemaName : ScheduleSchema,
+      body : {_id: req.params.scheduleId}
+    })
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
     }
@@ -207,7 +254,14 @@ const AllSchedule = async (req, res) => {
         })
       }
       console.log(query)
-      document = await ScheduleServices.getAllSchedules(query, limitQP, skipOP);
+      // document = await ScheduleServices.getAllSchedules(query, limitQP, skipOP);
+      document = await getMany({
+        schemaName : ScheduleSchema,
+        query : query,
+        limit : limitQP, 
+        skip : skipOP,
+        select : "-__v"
+      });
 
     }
 

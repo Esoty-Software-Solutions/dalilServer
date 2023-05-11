@@ -33,9 +33,9 @@ class Service {
     populate,
   }) => {
     return await schemaName
-      .findOneAndUpdate(query, body, { new: true })
+      .findOneAndUpdate(query, body, { new: true , lean : true })
       .populate(populate)
-      .select(select);
+      .select(select)
   };
 
   deleteOne = async ({
@@ -46,7 +46,9 @@ class Service {
     limit,
     select,
     populate,
-  }) => {schemaName.remove(body);};
+  }) => {
+    return await schemaName.findOneAndDelete(body);
+  };
 
   getOne = async ({
     schemaName,

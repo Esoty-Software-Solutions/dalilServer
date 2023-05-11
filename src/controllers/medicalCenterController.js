@@ -8,7 +8,11 @@ const {
   notFoundResponse,
 } = require("../utilities/response");
 const { getSearchQuery } = require("../utilities/searchQuery");
-const { convertStringToArray } = require("../utilities/replaceKey");
+const { convertStringToArray, renameKey, removeKey } = require("../utilities/replaceKey");
+const MedicalCenterSchema = require("../schemas/medicalCenterSchema");
+const { createOne, getOne, updateOne , deleteOne, getMany } = require("../services/commonServices");
+const uploader = require("../utilities/uploader");
+const ScheduleSchema = require("../schemas/scheduleSchema");
 
 const CreateMedicalCenter = async (req, res) => {
   try {
@@ -20,13 +24,22 @@ const CreateMedicalCenter = async (req, res) => {
       });
     }
     const finalDoc = convertStringToArray(req.body, "phoneNumber");
-    const document = await MedicalCenterServices.createMedicalCenter({
-      ...finalDoc,
-      isActive: true,
-      fileLink: fieldNamesList,
+    const renamedData = renameKey(finalDoc , "city" , "cityId");
+    renamedData.phoneNumber = Object.values(renamedData.phoneNumber);
+    
+    // const document = await MedicalCenterServices.createMedicalCenter({
+    //   ...finalDoc,
+    //   isActive: true,
+    //   fileLink: fieldNamesList,
+    // });
+    
+    const document = await createOne({
+      schemaName : MedicalCenterSchema,
+      body : renamedData
     });
+    const doc = await uploader.returnedSingleDoc(MedicalCenterSchema , document._id);
 
-    return successResponse(res, messageUtil.resourceCreated, document);
+    return successResponse(res, messageUtil.resourceCreated, doc);
   } catch (error) {
     //   checking for server errors
     return serverErrorResponse(res, error);
@@ -35,9 +48,13 @@ const CreateMedicalCenter = async (req, res) => {
 
 const SingleMedicalCenter = async (req, res) => {
   try {
-    const document = await MedicalCenterServices.getMedicalCenterDetails({
-      _id: req.params.medicalCenterId,
-    });
+    // const document = await MedicalCenterServices.getMedicalCenterDetails({
+    //   _id: req.params.medicalCenterId,
+    // });
+    const document = await getOne({
+      schemaName : MedicalCenterSchema,
+      body : {_id: req.params.medicalCenterId}
+    })
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
     }
@@ -52,16 +69,23 @@ const SingleMedicalCenter = async (req, res) => {
 const UpdateMedicalCenter = async (req, res) => {
   try {
     console.log(req.params)
-    const document = await MedicalCenterServices.updateMedicalCenter(
-      { _id: req.params.medicalCenterId },
-      { ...req.body }
-    );
-  
+    const renamedData = renameKey({...req.body} , "city" , "cityId");
+    
+    // const document = await MedicalCenterServices.updateMedicalCenter(
+    //   { _id: req.params.medicalCenterId },
+    //   { ...req.body }
+    // );
+    const document = await updateOne({
+      schemaName : MedicalCenterSchema,
+      query : {_id: req.params.medicalCenterId}, 
+      body : renamedData
+    });
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceNotFound);
     }
+    const finalData = removeKey(document , "fileLink");
 
-    return successResponse(res, messageUtil.resourceUpdated, document);
+    return successResponse(res, messageUtil.resourceUpdated, finalData);
   } catch (error) {
     return serverErrorResponse(res, error);
   }
@@ -69,8 +93,12 @@ const UpdateMedicalCenter = async (req, res) => {
 
 const DeleteMedicalCenter = async (req, res) => {
   try {
-    const document = await MedicalCenterServices.deleteMedicalCenter({
-      _id: req.params.medicalCenterId,
+    // const document = await MedicalCenterServices.deleteMedicalCenter({
+    //   _id: req.params.medicalCenterId,
+    // });
+    const document = await deleteOne({
+      schemaName : MedicalCenterSchema,
+      body : {_id: req.params.medicalCenterId}
     });
     if (!document) {
       return notFoundResponse(res, messageUtil.resourceDeleted);
@@ -104,17 +132,22 @@ const AllMedicalCenter = async (req, res) => {
     if (req.query.doctorId) {
       let medicalCenters = [];
       //finding schedules for doctor
-      let schedules = await ScheduleServices.getAllSchedules({
-        doctorId: req.query.doctorId,
+      // let schedules = await ScheduleServices.getAllSchedules({
+      //   doctorId: req.query.doctorId,
+      // });
+      let schedules = await getMany({
+        schemaName : ScheduleSchema,
+        query : {doctorId: req.query.doctorId}
       });
 
 
       //iterating all schdules to find medical center through medicalCenterId
       for (let i = 0; i < schedules.length; i++) {
         //finding medical centers
-        let medicalCenter = await MedicalCenterServices.getMedicalCenterDetails(
-          { _id: schedules[i].medicalCenterId }
-        );
+        // let medicalCenter = await MedicalCenterServices.getMedicalCenterDetails(
+        //   { _id: schedules[i].medicalCenterId }
+        // );
+        const medicalCenter = await uploader.returnedSingleDoc(MedicalCenterSchema , {_id : schedules[i].medicalCenterId});
         //pushing medical centers
         medicalCenters.push(medicalCenter);
       }
@@ -137,12 +170,17 @@ const AllMedicalCenter = async (req, res) => {
       }
       
       if(req.query.searchQuery) query = getSearchQuery(["name"], req.query.searchQuery ,  query);
-      const documents = await MedicalCenterServices.getAllMedicalCenters(
-        query,
-        limitQP,
-        skipOP
-      );
-
+      // const documents = await MedicalCenterServices.getAllMedicalCenters(
+      //   query,
+      //   limitQP,
+      //   skipOP
+      // );
+      const documents = await getMany({
+        schemaName : MedicalCenterSchema,
+        query : query,
+        limit : limitQP,
+        skip : skipOP
+      })
       return successResponse(res, messageUtil.success, {
         objectCount: documents.objectsCount,
         objectArray: documents.newDocuments,
